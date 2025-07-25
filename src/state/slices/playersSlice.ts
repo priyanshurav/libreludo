@@ -112,10 +112,11 @@ const reducers = {
 
   unlockToken: (state: TPlayerState, action: PayloadAction<TTokenColourAndId>) => {
     const token = getToken(state, action.payload.colour, action.payload.id);
-    if (!token.isLocked)
-      throw new Error(ERRORS.tokenAlreadyUnlocked(action.payload.colour, action.payload.id));
+    // if (!token.isLocked)
+    // throw new Error(ERRORS.tokenAlreadyUnlocked(action.payload.colour, action.payload.id));
     token.isLocked = false;
-    token.coordinates = TOKEN_START_COORDINATES[action.payload.colour];
+    // token.coordinates = TOKEN_START_COORDINATES[action.payload.colour];
+    token.coordinates = TOKEN_START_COORDINATES['blue'];
   },
   lockToken: (state: TPlayerState, action: PayloadAction<TTokenColourAndId>) => {
     const token = getToken(state, action.payload.colour, action.payload.id);

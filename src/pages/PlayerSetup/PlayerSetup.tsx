@@ -104,13 +104,6 @@ function PlayerSetup() {
         <Link type="button" className="play-btn" to="/play" onClick={handlePlayBtnClick} replace>
           PLAY
         </Link>
-        <span className="license-terms">
-          By pressing "PLAY", you agree to the terms of the{' '}
-          <a href={LICENSE_URL} target="_blank" rel="noopener noreferrer">
-            MIT License
-          </a>
-          .
-        </span>
       </div>
       <ToastContainer position="top-center" />
     </div>

@@ -16,20 +16,25 @@ export const useCoordsToPosition = (): ((
     const { boardBlockSize, boardSideLength, tokenHeight, tokenWidth } = boardDataRef.current;
     // console.log(boardBlockSize, boardSideLength, tokenHeight, tokenWidth);
 
-    const x = `${
-      coords.x * boardBlockSize +
-      boardBlockSize / 2 -
-      (tokenWidth * scaleFactor) / 2 +
-      boardBlockSize * xOffset
-    }px`;
+    // const x = `${
+    //   coords.x * boardBlockSize +
+    //   boardBlockSize / 2 -
+    //   (tokenWidth * scaleFactor) / 2 +
+    //   boardBlockSize * xOffset
+    // }px`;
 
-    const y = `${
-      boardSideLength -
-      ((coords.y + 1) * boardBlockSize -
-        boardBlockSize / 2 +
-        (tokenHeight * scaleFactor) / 2 +
-        boardBlockSize * yOffset)
-    }px`;
+    // const y = `${
+    //   boardSideLength -
+    //   ((coords.y + 1) * boardBlockSize -
+    //     boardBlockSize / 2 +
+    //     (tokenHeight * scaleFactor) / 2 +
+    //     boardBlockSize * yOffset)
+    // }px`;
+    const tileCenterX = coords.x * boardBlockSize + boardBlockSize / 2;
+    const tileCenterY = boardSideLength - ((coords.y + 1) * boardBlockSize - boardBlockSize / 2);
+
+    const x = `${tileCenterX - tokenWidth / 2 + xOffset * boardBlockSize}px`;
+    const y = `${tileCenterY - tokenHeight / 2 + yOffset * boardBlockSize}px`;
     return { x, y };
   }, []);
 };

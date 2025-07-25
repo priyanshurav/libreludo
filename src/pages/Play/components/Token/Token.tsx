@@ -98,28 +98,28 @@ function Token({ colour, id }: Props) {
   }, [dispatch, token]);
 
   useEffect(() => {
-    // dispatch(unlockToken({ id: 0, colour: 'blue' }));
-    // dispatch(unlockToken({ id: 1, colour: 'blue' }));
-    // dispatch(unlockToken({ id: 2, colour: 'blue' }));
-    // dispatch(unlockToken({ id: 3, colour: 'blue' }));
+    dispatch(unlockAndAlignTokens({ id: 0, colour: 'blue' }));
+    dispatch(unlockAndAlignTokens({ id: 1, colour: 'blue' }));
+    dispatch(unlockAndAlignTokens({ id: 2, colour: 'blue' }));
+    // dispatch(unlockAndAlignTokens({ id: 3, colour: 'blue' }));
+    // dispatch(unlockAndAlignTokens({ id: 0, colour: 'red' }));
+    // dispatch(unlockAndAlignTokens({ id: 1, colour: 'red' }));
+    // dispatch(unlockAndAlignTokens({ id: 2, colour: 'red' }));
+    // dispatch(unlockAndAlignTokens({ id: 3, colour: 'red' }));
+    // dispatch(unlockAndAlignTokens({ id: 0, colour: 'green' }));
+    // dispatch(unlockAndAlignTokens({ id: 1, colour: 'green' }));
+    // dispatch(unlockAndAlignTokens({ id: 2, colour: 'green' }));
+    // dispatch(unlockAndAlignTokens({ id: 3, colour: 'green' }));
+    // dispatch(unlockAndAlignTokens({ id: 0, colour: 'yellow' }));
+    // dispatch(unlockAndAlignTokens({ id: 1, colour: 'yellow' }));
+    // dispatch(unlockAndAlignTokens({ id: 2, colour: 'yellow' }));
+    // dispatch(unlockAndAlignTokens({ id: 3, colour: 'yellow' }));
     // setTimeout(() => {
     //   dispatch(changeCoordsAndAlignTokens({ colour: 'blue', id: 0, newCoords: { x: 7, y: 1 } }));
     //   dispatch(changeCoordsAndAlignTokens({ colour: 'blue', id: 1, newCoords: { x: 7, y: 1 } }));
     //   dispatch(changeCoordsAndAlignTokens({ colour: 'blue', id: 2, newCoords: { x: 7, y: 1 } }));
     //   dispatch(changeCoordsAndAlignTokens({ colour: 'blue', id: 3, newCoords: { x: 7, y: 1 } }));
     // }, 1000);
-    // dispatch(unlockToken({ id: 0, colour: 'red' }));
-    // dispatch(unlockToken({ id: 1, colour: 'red' }));
-    // dispatch(unlockToken({ id: 2, colour: 'red' }));
-    // dispatch(unlockToken({ id: 3, colour: 'red' }));
-    // dispatch(unlockToken({ id: 0, colour: 'green' }));
-    // dispatch(unlockToken({ id: 1, colour: 'green' }));
-    // dispatch(unlockToken({ id: 2, colour: 'green' }));
-    // dispatch(unlockToken({ id: 3, colour: 'green' }));
-    // dispatch(unlockToken({ id: 0, colour: 'yellow' }));
-    // dispatch(unlockToken({ id: 1, colour: 'yellow' }));
-    // dispatch(unlockToken({ id: 2, colour: 'yellow' }));
-    // dispatch(unlockToken({ id: 3, colour: 'yellow' }));
   }, [dispatch]);
 
   return (
@@ -129,9 +129,9 @@ function Token({ colour, id }: Props) {
       onClick={handleTokenClick}
       style={
         {
-          '--token-height': `${tokenHeight * scaleFactor}px`,
-          '--token-width': `${tokenWidth * scaleFactor}px`,
-          transform: `translate(${x}, ${y})`,
+          '--token-height': `${tokenHeight}px`,
+          '--token-width': `${tokenWidth}px`,
+          transform: `translate(${x}, ${y}) scale(${scaleFactor})`,
         } as React.CSSProperties
       }
     >
