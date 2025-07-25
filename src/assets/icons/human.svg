@@ -1,0 +1,15 @@
+<svg
+  viewBox="0 0 24 24"
+  xmlns="http://www.w3.org/2000/svg"
+  fill="none"
+  stroke="white"
+  stroke-width="1"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <!-- Head (circle) -->
+  <circle cx="12" cy="8" r="4" />
+
+  <!-- Shoulders / torso -->
+  <path d="M6 20c0-4 4-6 6-6s6 2 6 6" />
+</svg>

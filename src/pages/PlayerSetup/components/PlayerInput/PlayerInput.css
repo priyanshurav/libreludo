@@ -1,0 +1,49 @@
+.player-input {
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 0.5fr;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  padding-inline: 0;
+}
+.player-input > * {
+  justify-self: center;
+  align-self: center;
+}
+.player-input-colour-dot {
+  width: calc(var(--dialog-width) * 0.065);
+  border-radius: 1000px;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border: 1px solid black;
+}
+.bot-status-btn {
+  background-color: #4f46e5;
+  width: calc(var(--dialog-width) / 11.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: calc(var(--dialog-width) / 70);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+}
+.player-name-input {
+  padding: calc(var(--dialog-width) / 49) calc(var(--dialog-width) / 35);
+  font-size: calc(var(--dialog-width) / 31);
+  border: 1px solid #ccc;
+  border-radius: calc(var(--dialog-width) / 62);
+  outline: none;
+  transition: border-color 200ms ease-in-out;
+  width: 100%;
+}
+
+.player-name-input:hover,
+.player-name-input:focus {
+  border-color: #5b6ef5;
+  box-shadow: 0 0 0 2px rgba(91, 110, 245, 0.2);
+}
+.tooltip {
+  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}

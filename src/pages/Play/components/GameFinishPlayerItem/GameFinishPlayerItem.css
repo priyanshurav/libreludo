@@ -1,0 +1,27 @@
+.game-finish-player-item {
+  --padding: calc(var(--board-block-size) * 0.15);
+  display: grid;
+  grid-template-columns: 0.5fr 0.5fr 2fr;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  padding: var(--padding) 0 var(--padding) 0;
+}
+
+.game-finish-player-item > * {
+  justify-self: center;
+  align-self: center;
+}
+.game-finish-player-name {
+  font-size: calc(var(--board-block-size) * 0.8);
+  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 400;
+  word-break: break-all;
+}
+
+.player-colour-dot {
+  width: calc(var(--board-block-size) * 0.55);
+  border: 1px solid black;
+  border-radius: 1000px;
+  aspect-ratio: 1 / 1;
+}

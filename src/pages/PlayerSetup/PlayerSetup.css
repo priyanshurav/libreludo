@@ -1,0 +1,106 @@
+.player-setup {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../../assets/bg.jpg');
+}
+.player-setup-dialog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 55vh;
+  width: auto;
+  aspect-ratio: 1.8 / 1.5;
+  background-color: white;
+  border-radius: 3%;
+  overflow: hidden;
+  -moz-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.75);
+}
+.player-count-selector {
+  position: relative;
+  height: 9%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-bottom: 1px solid #aaa;
+}
+
+.player-count-selector::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  height: 12.5%;
+  width: calc(var(--dialog-width) / 3);
+  background-color: #4338ca; /* Indigo-700 */
+  border-radius: 10px;
+  transform: translateX(calc(var(--dialog-width) / 3 * (var(--player-count) - 2)));
+  transition: transform 250ms ease;
+  z-index: 10;
+}
+.player-count {
+  background: none;
+  border: none;
+  font-size: calc(var(--dialog-width) / 25);
+  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  transition: background-color 250ms ease-in-out, font-size 100ms ease;
+  user-select: none;
+}
+.player-count:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
+
+.player-count:active {
+  font-size: calc(var(--dialog-width) / 22);
+}
+.player-inputs {
+  padding-top: calc(var(--dialog-width) / 20);
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  width: 100%;
+}
+
+.play-btn {
+  height: auto;
+  background-color: #4f46e5; /* Indigo-600 */
+  color: white;
+  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  border: none;
+  font-size: calc(var(--dialog-width) / 17);
+  margin-top: calc(var(--dialog-width) / 35);
+  margin-bottom: calc(var(--dialog-width) / 60);
+  padding-block: calc(var(--dialog-width) / 40);
+  padding-inline: calc(var(--dialog-width) / 20);
+  border-radius: calc(var(--dialog-width) / 45);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+  cursor: pointer;
+}
+.play-btn:hover {
+  background-color: #4338ca; /* Indigo-700 */
+  transform: scale(1.05);
+}
+.license-terms {
+  font-size: calc(var(--dialog-width) / 35);
+  color: #444;
+  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  padding-block: calc(var(--dialog-width) / 60);
+}
+.license-terms > a {
+  color: #7a3cdd;
+}
+@media only screen and (max-width: calc(50vh + 15vw)) {
+  .player-setup-dialog {
+    height: auto;
+    width: 85vw;
+    aspect-ratio: 1 / 1;
+  }
+}

@@ -1,0 +1,43 @@
+.token {
+  position: absolute;
+  z-index: 10;
+  will-change: transform;
+  transform: translateZ(0);
+  height: calc(var(--token-height));
+  width: calc(var(--token-width));
+  transition: transform var(--token-transition-time) ease-in-out;
+}
+.token * {
+  user-select: none;
+}
+.token > svg {
+  will-change: transform;
+  transform: translateZ(0);
+}
+.token > svg.active {
+  cursor: pointer;
+  animation: bounce 0.7s ease-in-out infinite;
+}
+
+.token.backward {
+  transition: transform var(--token-transition-time) linear !important;
+}
+
+/* @keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+} */
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+}
