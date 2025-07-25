@@ -16,7 +16,7 @@ export function updateTokenPositionAndAlignmentThunk({
   newCoords: TCoordinate;
 }) {
   return (dispatch: AppDispatch, getState: () => RootState) => {
-    // dispatch(changeCoordsOfToken({ colour, id, newCoords }));
+    dispatch(changeCoordsOfToken({ colour, id, newCoords }));
     const allTokens = getState().players.players.flatMap((p) => p.tokens);
     const tokenPath = tokenPaths[colour];
     const currentCoordIndex = tokenPath.findIndex((c) => areCoordsEqual(c, newCoords));

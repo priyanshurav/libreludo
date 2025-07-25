@@ -6,6 +6,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import type { TPlayerInitData } from '../../types';
 import { ToastContainer, toast } from 'react-toastify';
 import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
+import { useDispatch } from 'react-redux';
+import { setPlayerInitData } from '../../state/slices/playersSlice';
+import { useCleanup } from '../../hooks/useCleanup';
 
 const INITIAL_PLAYER_DATA: TPlayerInitData[] = [
   {
@@ -33,9 +36,17 @@ function PlayerSetup() {
   const [dialogWidth, setDialogWidth] = useState(0);
   const [playersData, setPlayersData] = useState<TPlayerInitData[]>(INITIAL_PLAYER_DATA);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const dialogRef = useRef<HTMLDivElement>(null);
+  const cleanup = useCleanup();
   const playerSequence = useMemo(() => getPlayerSequence(playerCount), [playerCount]);
+
+  useEffect(() => {
+    document.title = 'LibreLudo - Player Setup';
+    cleanup();
+  }, [cleanup]);
+
   useEffect(() => {
     if (!dialogRef.current) return;
     const dialogNode = dialogRef.current;
@@ -52,12 +63,12 @@ function PlayerSetup() {
 
   const handlePlayBtnClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
-    const isAnyNameEmpty = playersData.some((d) => d.name === '');
+    const playerInitData = playersData.slice(0, playerCount);
+    const isAnyNameEmpty = playerInitData.some((d) => d.name === '');
     if (isAnyNameEmpty) return toast('Player name must not be empty', { type: 'error' });
+    dispatch(setPlayerInitData(playerInitData));
     setIsLoading(true);
-    navigate('/play', {
-      state: playersData.slice(0, playerCount),
-    });
+    navigate('/play');
   };
 
   return isLoading ? (
@@ -101,7 +112,7 @@ function PlayerSetup() {
             />
           ))}
         </div>
-        <Link type="button" className="play-btn" to="/play" onClick={handlePlayBtnClick} replace>
+        <Link type="button" className="play-btn" to="/play" onClick={handlePlayBtnClick}>
           PLAY
         </Link>
       </div>

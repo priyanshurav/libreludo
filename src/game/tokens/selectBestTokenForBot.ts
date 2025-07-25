@@ -93,12 +93,6 @@ export function selectBestTokenForBot(
   );
   const botTokenHomeCoord = getHomeCoordForColour(botPlayerColour);
 
-  // Move the token into Home if the dice number allows it to reach exactly
-  const tokenThatCanReachHome = movableBotTokens.find(
-    (t) => getDistanceFromCurrentCoord(t, botTokenHomeCoord) === diceNumber
-  );
-  if (tokenThatCanReachHome) return tokenThatCanReachHome;
-
   // Find all bot tokens that can capture an opponent token with the current dice roll.
   // Among the possible captures, choose the one that targets the opponent token nearest to its Home (i.e., hardest for opponent to recover).
   // Return the bot token that should perform the capture, along with the flag indicating a second chance (as capturing grants another turn in Ludo).
@@ -124,6 +118,27 @@ export function selectBestTokenForBot(
       : curr;
   }, null);
   if (capturableTokens.length > 0) return nearestOpponentTokenToHome.byWhichBotToken;
+
+  // Identify bot tokens that are at risk of being captured by an opponent's token.
+  // A token is considered at risk if:
+  // 1. It's not on a safe spot.
+  // 2. An opponent's token is within 1 to 6 steps behind it on the token path.
+  // If one or more at-risk tokens are found, return the one closest to home.
+  const botTokensAtRisk = movableBotTokens.filter((t) => {
+    if (isCoordASafeSpot(t.coordinates)) return false;
+    for (let i = 0; i < movableOpponentTokens.length; i++) {
+      const oppToken = movableOpponentTokens[i];
+      const isBotTokenAheadOfOppToken = isAheadInTokenPath(t.coordinates, oppToken.coordinates);
+      const dist = getMinDistanceBetweenCoordsInGeneralTokenPath(
+        t.coordinates,
+        oppToken.coordinates
+      );
+      if (dist >= 1 && dist <= 6 && isBotTokenAheadOfOppToken) return true;
+    }
+    return false;
+  });
+
+  if (botTokensAtRisk.length > 0) return nearestTokenToHome(botTokensAtRisk, botPlayerColour);
 
   // If there exists a token that can be unlocked, unlock it and grant a second turn.
   const unlockableTokens = botTokens.filter((t) => t.isLocked && !t.hasTokenReachedHome);
@@ -153,6 +168,12 @@ export function selectBestTokenForBot(
 
   if (tokensThatCanBeMovedToSafe.length > 0)
     return nearestTokenToHome(tokensThatCanBeMovedToSafe, botPlayerColour);
+
+  // Move the token into Home if the dice number allows it to reach exactly
+  const tokenThatCanReachHome = movableBotTokens.find(
+    (t) => getDistanceFromCurrentCoord(t, botTokenHomeCoord) === diceNumber
+  );
+  if (tokenThatCanReachHome) return tokenThatCanReachHome;
 
   // Calculate risk scores for each movable bot token based on multiple safety factors
   const tokenRisks = movableBotTokens

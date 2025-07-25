@@ -1,6 +1,6 @@
 import { Navigate, useBlocker, useLocation, useNavigate, useNavigation } from 'react-router-dom';
 import Game from './components/Game/Game';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useOnPageExit } from '../../hooks/useOnPageExit';
 import { clearPlayersState } from '../../state/slices/playersSlice';
 import { clearDiceState } from '../../state/slices/diceSlice';
@@ -8,6 +8,7 @@ import { clearBoardState } from '../../state/slices/boardSlice';
 import { useEffect, useRef, useState } from 'react';
 import type { TPlayerInitData } from '../../types';
 import { useCleanup } from '../../hooks/useCleanup';
+import type { RootState } from '../../gameStateStore';
 
 function Play() {
   const location = useLocation();
@@ -16,12 +17,8 @@ function Play() {
   const cleanup = useCleanup();
   // const [initData, setInitData] = useState<TPlayerInitData[]>([]);
   // const cleared = useRef(false);
-  const initData =
-    location.state ||
-    [
-      // { name: 'Player 1', isBot: false },
-      // { name: 'Player 2', isBot: false },
-    ];
+  const initData = useSelector((state: RootState) => state.players.playerInitData);
+
   // useEffect(() => {
   //   if (location.state) {
   //     setInitData(location.state);

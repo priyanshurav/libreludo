@@ -5,7 +5,6 @@ import { useWindowSize } from 'react-use';
 import GameFinishPlayerItem from '../GameFinishPlayerItem/GameFinishPlayerItem';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useCleanup } from '../../../../hooks/useCleanup';
 
 type Props = {
   playerFinishOrder: TPlayerNameAndColour[];
@@ -13,7 +12,6 @@ type Props = {
 
 function GameFinishedScreen({ playerFinishOrder }: Props) {
   const { width, height } = useWindowSize();
-  const cleanup = useCleanup();
   return (
     <AnimatePresence>
       <motion.div className="game-finished-screen">
@@ -44,8 +42,8 @@ function GameFinishedScreen({ playerFinishOrder }: Props) {
               />
             ))}
           </section>
-          <Link className="go-to-home-btn" type="button" onClick={() => cleanup()} to="/">
-            Go to Home
+          <Link className="play-again-btn" type="button" to="/">
+            Play Again!
           </Link>
         </motion.div>
       </motion.div>

@@ -5,12 +5,19 @@ import { TOKEN_START_COORDINATES } from '../../game/tokens/constants';
 import { setTokenTransitionTime } from '../../utils/setTokenTransitionTime';
 import { isTokenMovable } from '../../game/tokens/logic';
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../../game/players/constants';
-import type { TPlayer, TPlayerColour, TPlayerNameAndColour, TCoordinate } from '../../types';
+import type {
+  TPlayer,
+  TPlayerColour,
+  TPlayerNameAndColour,
+  TCoordinate,
+  TPlayerInitData,
+} from '../../types';
 import type { TToken, TTokenColourAndId, TTokenAlignmentData } from '../../types';
 import { getPlayerSequence } from '../../game/players/logic';
 
 type TPlayerState = {
   players: TPlayer[];
+  playerInitData: TPlayerInitData[];
   currentPlayerColour: TPlayerColour;
   playerSequence: TPlayerColour[];
   isAnyTokenMoving: boolean;
@@ -20,6 +27,7 @@ type TPlayerState = {
 
 const initialState: TPlayerState = {
   players: [],
+  playerInitData: [],
   currentPlayerColour: null,
   playerSequence: [],
   isAnyTokenMoving: false,
@@ -115,8 +123,8 @@ const reducers = {
     // if (!token.isLocked)
     // throw new Error(ERRORS.tokenAlreadyUnlocked(action.payload.colour, action.payload.id));
     token.isLocked = false;
-    // token.coordinates = TOKEN_START_COORDINATES[action.payload.colour];
-    token.coordinates = TOKEN_START_COORDINATES['blue'];
+    token.coordinates = TOKEN_START_COORDINATES[action.payload.colour];
+    // token.coordinates = TOKEN_START_COORDINATES['blue'];
   },
   lockToken: (state: TPlayerState, action: PayloadAction<TTokenColourAndId>) => {
     const token = getToken(state, action.payload.colour, action.payload.id);
@@ -180,6 +188,9 @@ const reducers = {
     const token = getToken(state, action.payload.colour, action.payload.id);
     token.tokenAlignmentData = action.payload.newAlignmentData;
   },
+  setPlayerInitData: (state: TPlayerState, action: PayloadAction<TPlayerInitData[]>) => {
+    state.playerInitData = action.payload;
+  },
   clearPlayersState: () => JSON.parse(JSON.stringify(initialState)),
 };
 
@@ -204,6 +215,7 @@ export const {
   setIsAnyTokenMoving,
   markTokenAsReachedHome,
   setTokenAlignmentData,
+  setPlayerInitData,
   clearPlayersState,
 } = playersSlice.actions;
 

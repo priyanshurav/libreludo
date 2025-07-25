@@ -98,9 +98,9 @@ function Token({ colour, id }: Props) {
   }, [dispatch, token]);
 
   useEffect(() => {
-    dispatch(unlockAndAlignTokens({ id: 0, colour: 'blue' }));
-    dispatch(unlockAndAlignTokens({ id: 1, colour: 'blue' }));
-    dispatch(unlockAndAlignTokens({ id: 2, colour: 'blue' }));
+    // dispatch(unlockAndAlignTokens({ id: 0, colour: 'blue' }));
+    // dispatch(unlockAndAlignTokens({ id: 1, colour: 'blue' }));
+    // dispatch(unlockAndAlignTokens({ id: 2, colour: 'blue' }));
     // dispatch(unlockAndAlignTokens({ id: 3, colour: 'blue' }));
     // dispatch(unlockAndAlignTokens({ id: 0, colour: 'red' }));
     // dispatch(unlockAndAlignTokens({ id: 1, colour: 'red' }));

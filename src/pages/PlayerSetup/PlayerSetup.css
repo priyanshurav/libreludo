@@ -56,7 +56,7 @@
 }
 
 .player-count:active {
-  font-size: calc(var(--dialog-width) / 22);
+  font-size: calc(var(--dialog-width) / 28);
 }
 .player-inputs {
   padding-top: calc(var(--dialog-width) / 20);

@@ -39,7 +39,7 @@
   width: 100%;
   height: 100%;
 }
-.go-to-home-btn {
+.play-again-btn {
   bottom: 0;
   background-color: #4f46e5; /* Indigo-600 */
   color: white;
@@ -53,8 +53,8 @@
   cursor: pointer;
 }
 
-.go-to-home-btn:hover,
-.go-to-home-btn:focus {
+.play-again-btn:hover,
+.play-again-btn:focus {
   background-color: #4338ca; /* Indigo-700 */
   transform: scale(1.05);
 }
