@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import './HomePage.css';
 import { useEffect } from 'react';
 import { useCleanup } from '../../hooks/useCleanup';
+import GitHubLogo from '../../assets/icons/github-mark-white.svg?react';
 
 function HomePage() {
   const cleanup = useCleanup();
@@ -10,47 +11,69 @@ function HomePage() {
     cleanup();
   }, [cleanup]);
   return (
-    <div className="homepage">
-      <header className="header">
-        <h1>Ludo Arena</h1>
-        <nav>
-          <Link to="/instructions">Instructions</Link>
-          <Link to="/license">License</Link>
-        </nav>
-      </header>
-
-      <main className="main">
-        <section className="hero">
-          <h2>🎲 Welcome to Ludo Arena</h2>
-          <p>A modern twist on the classic strategy game played by millions.</p>
-          <div className="buttons">
-            <Link to="/game" className="btn play">
-              ▶️ Play Now
-            </Link>
-            <Link to="/instructions" className="btn secondary">
-              📘 How to Play
-            </Link>
-          </div>
+    <main className="home-page">
+      <section className="welcome">
+        <h1>
+          <span>Welcome to</span> LibreLudo
+        </h1>
+        <p>Roll the dice, compete with friends, and send your tokens home first.</p>
+        <section className="cta-buttons">
+          <Link className="cta-button play-now-btn" to="/setup">
+            🔥 Play Now!
+          </Link>
+          <Link className="cta-button how-to-play-btn" to="/how-to-play">
+            How to Play
+          </Link>
         </section>
-
+      </section>
+      <section className="information">
+        <section className="why-play-libreludo">
+          <h2>🔥 Why Play LibreLudo?</h2>
+          <ul>
+            <li>Smooth, modern interface for easy gameplay.</li>
+            <li>Family-friendly: perfect for kids and adults alike.</li>
+            <li>Works great on mobile and desktop devices.</li>
+            <li>No registration—play instantly!</li>
+          </ul>
+        </section>
         <section className="history">
-          <h3>📜 A Brief History of Ludo</h3>
-          <p>
-            Ludo is based on the ancient Indian game "Pachisi", created in the 6th century. It was
-            popular in royal courts and adapted into a simplified version by the British in the late
-            19th century.
-          </p>
-          <p>
-            Today, Ludo is enjoyed around the world for its blend of luck, tactics, and competitive
-            fun — perfect for players of all ages!
-          </p>
+          <h2>📜 History of Ludo</h2>
+          <dl>
+            <dt>Origins</dt>
+            <dd>
+              Ludo is based on the ancient Indian game Pachisi, played as early as the 6th century
+              CE.
+            </dd>
+            <dt>Modern Development</dt>
+            <dd>
+              In 1896, a simpler version called "Ludo" was patented in England, using dice and a
+              square board.
+            </dd>
+            <dt>Gameplay</dt>
+            <dd>Players race colored tokens from start to finish based on dice rolls.</dd>
+            <dt>Worldwide Popularity</dt>
+            <dd>Today, Ludo is enjoyed globally in both board and digital forms.</dd>
+          </dl>
         </section>
-      </main>
-
-      <footer className="footer">
-        <p>© {new Date().getFullYear()} Ludo Arena. Built with fun in mind.</p>
+      </section>
+      <footer>
+        <div className="text">
+          <a href="#" target="_blank" rel="noopener noreferrer">
+            Made with ❤️ by @username
+          </a>
+          <span>Copyright &copy; {new Date().getFullYear()} LibreLudo</span>
+        </div>
+        <div className="links">
+          <a href="#" target="_blank" rel="noopener noreferrer">
+            <GitHubLogo />
+            Repository
+          </a>
+          <a href="#" target="_blank" rel="noopener noreferrer">
+            License
+          </a>
+        </div>
       </footer>
-    </div>
+    </main>
   );
   return <div>Hi</div>;
 }

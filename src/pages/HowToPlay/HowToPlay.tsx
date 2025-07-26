@@ -27,7 +27,7 @@ function HowToPlay() {
             <li>Game board with cross-shaped track</li>
             <li>4 Colors: 🔵 Blue, 🔴 Red, 🟢 Green, 🟡 Yellow</li>
             <li>Each player has 4 tokens of the same color</li>
-            <li>1x Six-sided dice (1-6)</li>
+            <li>Each player gets 1 six-sided die 🎲 (numbers 1-6)</li>
           </ul>
         </div>
 
@@ -46,7 +46,6 @@ function HowToPlay() {
           <h3>🎬 Starting the Game</h3>
           <ul>
             <li>Each player rolls the dice once.</li>
-            <li>The player with the highest roll starts.</li>
             <li>Turns move clockwise.</li>
           </ul>
 
@@ -56,16 +55,14 @@ function HowToPlay() {
               Roll a <strong>6</strong> to move a token from Base to the Start Square.
             </li>
             <li>You can only move a token from the base with a roll of 6.</li>
-            <li>
-              <strong>Bonus:</strong> Rolling a 6 gives you an extra turn.
-            </li>
+            <strong>⭐ Bonus:</strong> Rolling a 6 gives you an extra turn.
           </ul>
 
           <h3>🔁 Moving Tokens</h3>
           <ul>
             <li>Move tokens forward the number of dice spaces rolled.</li>
-            <li>Tokens follow a clockwise path.</li>
-            <li>Multiple 6s let you split or chain moves across tokens.</li>
+            <strong>⚠️ Important: </strong>If you roll three sixes in a row in Ludo, your third roll
+            is canceled and you lose your turn.
           </ul>
         </div>
 
@@ -75,10 +72,7 @@ function HowToPlay() {
           <h3>👥 Landing on Your Own Token</h3>
           <ul>
             <li>You can land on or stack with your own tokens.</li>
-            <li>
-              Stacked tokens <strong>do not block</strong> others and can still be captured.
-            </li>
-            <li>If captured, only one of the stacked tokens is sent back.</li>
+            {/* <li>If captured, only one of the stacked tokens is sent back.</li> */}
           </ul>
 
           <h3>❌ Capturing Your Own Token</h3>
@@ -104,7 +98,7 @@ function HowToPlay() {
         <div className="section">
           <h2>⭐ Safe Zones</h2>
           <ul>
-            <li>Special marked squares (⭐ or colored outlines).</li>
+            <li>Special marked squares (⭐ or colored tiles).</li>
             <li>
               Tokens here are safe and <strong>cannot be captured</strong>.
             </li>
@@ -149,7 +143,7 @@ function HowToPlay() {
         </div>
       </div>
       <Link className="play-now-btn" type="button" to="/">
-        🔥 Play Now
+        🔥 PLAY
       </Link>
     </div>
   );

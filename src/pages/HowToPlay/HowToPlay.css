@@ -86,8 +86,9 @@ code {
   color: white;
   font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   border: none;
-  font-size: 1.5em;
-  padding: 0.7em;
+  font-size: 1.8em;
+  padding-inline: 0.7em;
+  padding-block: 0.5em;
   border-radius: 0.5em;
   margin-top: 1em;
   margin-bottom: 4em;
