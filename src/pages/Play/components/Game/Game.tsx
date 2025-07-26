@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { registerNewPlayer, setPlayerSequence } from '../../../../state/slices/playersSlice';
 import { type TPlayerColour } from '../../../../types';
 import Board from '../Board/Board';
@@ -11,6 +11,7 @@ import GameFinishedScreen from '../GameFinishedScreen/GameFinishedScreen';
 import { changeTurnThunk } from '../../../../state/thunks/changeTurnThunk';
 import { useMoveAndCaptureToken } from '../../../../hooks/useMoveAndCaptureToken';
 import type { TPlayerInitData } from '../../../../types';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   initData: TPlayerInitData[];
@@ -22,6 +23,7 @@ function Game({ initData }: Props) {
   const { playerSequence, isGameEnded, playerFinishOrder, currentPlayerColour, players } =
     useSelector((state: RootState) => state.players);
   const [playersRegisteredInitially, setPlayersRegisteredInitially] = useState(true);
+  const navigate = useNavigate();
   const moveAndCapture = useMoveAndCaptureToken();
   useEffect(() => {
     if (initData.length === 0) return;
@@ -54,6 +56,12 @@ function Game({ initData }: Props) {
     dispatch(handlePostDiceRollThunk(colour, diceNumber, moveAndCapture));
   };
 
+  const handleExitBtnClick = () => {
+    const shouldExit = confirm('Are you sure you want to exit? Any progress made will be lost.');
+    if (!shouldExit) return;
+    navigate('/');
+  };
+
   return (
     <div
       className="game"
@@ -63,18 +71,16 @@ function Game({ initData }: Props) {
         } as React.CSSProperties
       }
     >
+      <button
+        type="button"
+        aria-label="Exit button"
+        className="exit-btn"
+        onClick={handleExitBtnClick}
+      >
+        &times;
+      </button>
       <Board onDiceClick={handleDiceRoll} />
       {isGameEnded && <GameFinishedScreen playerFinishOrder={playerFinishOrder} />}
-      {/* {!isGameEnded && (
-        <GameFinishedScreen
-          playerFinishOrder={[
-            { name: 'Player 1', colour: 'blue' },
-            { name: 'Player 2', colour: 'red' },
-            { name: 'Player 3', colour: 'green' },
-            { name: 'Player 4', colour: 'yellow' },
-          ]}
-        />
-      )} */}
     </div>
   );
 }

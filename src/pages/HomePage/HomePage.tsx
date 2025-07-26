@@ -1,27 +1,18 @@
 import { Link } from 'react-router-dom';
-import './HomePage.css';
 import { useEffect } from 'react';
 import { useCleanup } from '../../hooks/useCleanup';
 import GitHubLogo from '../../assets/icons/github-mark-white.svg?react';
-import { useWindowSize } from 'react-use';
+import './HomePage.css';
 
 function HomePage() {
   const cleanup = useCleanup();
-  const { height } = useWindowSize();
   useEffect(() => {
     document.title = 'LibreLudo';
     cleanup();
   }, [cleanup]);
   return (
     <div className="page-container">
-      <main
-        className="home-page"
-        style={
-          {
-            '--window-height': `${0}px`,
-          } as React.CSSProperties
-        }
-      >
+      <main className="home-page">
         <section className="welcome">
           <h1>
             <span>Welcome to</span> LibreLudo

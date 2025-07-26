@@ -65,7 +65,7 @@
 .cta-buttons .how-to-play-btn {
   background-color: transparent;
   color: #4f46e5;
-  border: 2px solid #4f46e5;
+  border: 1px solid #4f46e5;
 }
 
 .cta-buttons .how-to-play-btn:hover,
@@ -152,11 +152,11 @@ footer .links {
 footer .links a {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.5em;
   color: #ffffff;
   text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+  padding: 0.5em 1em;
+  border-radius: 0.65em;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;

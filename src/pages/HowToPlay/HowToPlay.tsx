@@ -72,7 +72,6 @@ function HowToPlay() {
           <h3>👥 Landing on Your Own Token</h3>
           <ul>
             <li>You can land on or stack with your own tokens.</li>
-            {/* <li>If captured, only one of the stacked tokens is sent back.</li> */}
           </ul>
 
           <h3>❌ Capturing Your Own Token</h3>
@@ -142,7 +141,7 @@ function HowToPlay() {
           </ul>
         </div>
       </div>
-      <Link className="play-now-btn" type="button" to="/">
+      <Link className="play-now-btn" type="button" to="/setup">
         🔥 PLAY
       </Link>
     </div>

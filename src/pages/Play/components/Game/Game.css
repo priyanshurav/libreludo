@@ -1,8 +1,30 @@
 .game {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100vw;
   height: 100vh;
   background-image: url('../../../../assets/bg.jpg');
+}
+.exit-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: red;
+  color: white;
+  border: none;
+  aspect-ratio: 1 / 1;
+  height: 1.6rem;
+  width: auto;
+  font-size: 1.9rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+.exit-btn:hover,
+.exit-btn:focus {
+  background-color: #dc0000;
 }
