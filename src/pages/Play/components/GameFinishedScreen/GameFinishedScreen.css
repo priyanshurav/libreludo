@@ -45,8 +45,8 @@
   color: white;
   font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   border: none;
-  font-size: calc(var(--board-block-size) * 0.5);
-  padding: calc(var(--board-block-size) * 0.4);
+  font-size: calc(var(--board-block-size) * 0.65);
+  padding: calc(var(--board-block-size) * 0.45);
   border-radius: calc(var(--board-block-size) * 0.2);
   text-decoration: none;
   transition: background-color 0.2s ease, transform 0.2s ease;

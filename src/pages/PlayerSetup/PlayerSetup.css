@@ -76,7 +76,7 @@
   border: none;
   font-size: calc(var(--dialog-width) / 17);
   margin-top: calc(var(--dialog-width) / 35);
-  margin-bottom: calc(var(--dialog-width) / 60);
+  margin-bottom: calc(var(--dialog-width) / 25);
   padding-block: calc(var(--dialog-width) / 40);
   padding-inline: calc(var(--dialog-width) / 20);
   border-radius: calc(var(--dialog-width) / 45);
@@ -88,15 +88,7 @@
   background-color: #4338ca; /* Indigo-700 */
   transform: scale(1.05);
 }
-.license-terms {
-  font-size: calc(var(--dialog-width) / 35);
-  color: #444;
-  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  padding-block: calc(var(--dialog-width) / 60);
-}
-.license-terms > a {
-  color: #7a3cdd;
-}
+
 @media only screen and (max-width: calc(50vh + 15vw)) {
   .player-setup-dialog {
     height: auto;
