@@ -28,10 +28,11 @@ export const tokensWithCoord = (coord: TCoordinate, allTokens: TToken[]) => {
   return allTokens.filter((t) => areCoordsEqual(t.coordinates, coord));
 };
 
+export function getAvailableSteps(token: TToken): number {
+  return getDistanceFromCurrentCoord(token, getHomeCoordForColour(token.colour));
+}
+
 export function isTokenMovable(token: TToken, diceNumber: number): boolean {
-  const areSufficientStepsAvailable =
-    getDistanceFromCurrentCoord(token, getHomeCoordForColour(token.colour)) >= diceNumber;
-  if (token.id === 0 && token.colour === 'blue')
-    console.log(token, diceNumber, areSufficientStepsAvailable);
+  const areSufficientStepsAvailable = getAvailableSteps(token) >= diceNumber;
   return !token.isLocked && !token.hasTokenReachedHome && areSufficientStepsAvailable;
 }

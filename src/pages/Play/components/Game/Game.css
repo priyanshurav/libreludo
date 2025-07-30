@@ -15,9 +15,9 @@
   color: white;
   border: none;
   aspect-ratio: 1 / 1;
-  height: 1.6rem;
+  height: calc(var(--board-block-size) * 0.6);
   width: auto;
-  font-size: 1.9rem;
+  font-size: calc(var(--board-block-size) * 0.7);
   display: flex;
   justify-content: center;
   align-items: center;

@@ -11,7 +11,11 @@ import { changeTurnThunk } from './changeTurnThunk';
 import type { useMoveAndCaptureToken } from '../../hooks/useMoveAndCaptureToken';
 import type { TMoveData } from '../../types/tokens';
 import { sleep } from '../../utils/sleep';
-import { getOnlyTokenMovable, isAnyTokenActiveOfColour } from '../../game/tokens/logic';
+import {
+  getOnlyTokenMovable,
+  isAnyTokenActiveOfColour,
+  isTokenMovable,
+} from '../../game/tokens/logic';
 
 export const handlePostDiceRollThunk = (
   colour: TPlayerColour,
@@ -43,27 +47,27 @@ export const handlePostDiceRollThunk = (
 
     if (areUnlockableTokensPresent) return { shouldContinue: true, moveData: null };
 
-    const unlockedTokens = player.tokens.filter((t) => !t.isLocked);
+    const movableTokens = player.tokens.filter((t) => isTokenMovable(t, diceNumber));
 
     const areAllTokensInSameCoord =
-      unlockedTokens.length === 0
+      movableTokens.length === 0
         ? false
-        : unlockedTokens.every((t) => areCoordsEqual(unlockedTokens[0].coordinates, t.coordinates));
+        : movableTokens.every((t) => areCoordsEqual(movableTokens[0].coordinates, t.coordinates));
 
-    const onlyTokenActive = getOnlyTokenMovable(colour, diceNumber, players);
+    const onlyTokenMovable = getOnlyTokenMovable(colour, diceNumber, players);
 
-    if (onlyTokenActive || areAllTokensInSameCoord) {
-      const token = onlyTokenActive ? onlyTokenActive : unlockedTokens[0];
+    if (onlyTokenMovable || areAllTokensInSameCoord) {
+      const token = onlyTokenMovable ? onlyTokenMovable : movableTokens[0];
       const moveData = await moveAndCapture(token, diceNumber);
       if (!moveData) {
         if (player.isBot) await sleep(500);
         dispatch(changeTurnThunk(moveAndCapture));
-
         return { shouldContinue: false, moveData };
       }
       const { hasTokenReachedHome, isCancelled } = moveData;
       if (!hasTokenReachedHome && !isCancelled && diceNumber !== 6 && !player.isBot) {
         dispatch(changeTurnThunk(moveAndCapture));
+        return { shouldContinue: false, moveData: null };
       }
       return { shouldContinue: true, moveData };
     }

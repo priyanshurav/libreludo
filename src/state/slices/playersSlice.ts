@@ -3,7 +3,7 @@ import { genLockedTokens } from '../../game/tokens/factory';
 import { ERRORS } from '../../utils/errors';
 import { TOKEN_START_COORDINATES } from '../../game/tokens/constants';
 import { setTokenTransitionTime } from '../../utils/setTokenTransitionTime';
-import { isTokenMovable } from '../../game/tokens/logic';
+import { getAvailableSteps, isTokenMovable } from '../../game/tokens/logic';
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../../game/players/constants';
 import type {
   TPlayer,
@@ -106,7 +106,8 @@ const reducers = {
     const player = getPlayer(state, action.payload.colour);
     if (action.payload.all)
       return player.tokens.forEach((t) => {
-        if (!t.hasTokenReachedHome) t.isActive = true;
+        if (!t.hasTokenReachedHome && getAvailableSteps(t) >= action.payload.diceNumber)
+          t.isActive = true;
       });
     player.tokens.forEach((t) => {
       if (isTokenMovable(t, action.payload.diceNumber)) t.isActive = true;

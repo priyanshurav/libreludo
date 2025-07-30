@@ -88,16 +88,17 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
 
   return (
     <div className={`dice-container ${colour}`}>
-      <div
+      <button
         className={`dice ${isDiceDisabled ? 'disabled' : ''} ${isCurrentPlayer ? 'current' : ''}`}
         style={{ '--active-border-colour': playerColours[colour] } as React.CSSProperties}
+        type="button"
         onClick={isDiceDisabled ? undefined : handleDiceClick}
       >
         <img
           src={isPlaceholderShowing ? dicePlaceholder : getDiceImage(diceNumber)}
           alt="Dice image"
         />
-      </div>
+      </button>
       <span className="player-name">{playerName}</span>
     </div>
   );

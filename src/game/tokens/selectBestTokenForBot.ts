@@ -108,6 +108,10 @@ export function selectBestTokenForBot(
     })
     .filter(Boolean) as { byWhichBotToken: TToken; opponentToken: TToken }[];
 
+  // If there exists a token that can be unlocked, unlock it and grant a second turn.
+  const unlockableTokens = botTokens.filter((t) => t.isLocked && !t.hasTokenReachedHome);
+  if (unlockableTokens.length > 0 && diceNumber === 6) return unlockableTokens[0];
+
   const nearestOpponentTokenToHome = capturableTokens.reduce((prev, curr) => {
     if (!prev) return curr;
     const { opponentToken: prevOppToken } = prev;
@@ -139,10 +143,6 @@ export function selectBestTokenForBot(
   });
 
   if (botTokensAtRisk.length > 0) return nearestTokenToHome(botTokensAtRisk, botPlayerColour);
-
-  // If there exists a token that can be unlocked, unlock it and grant a second turn.
-  const unlockableTokens = botTokens.filter((t) => t.isLocked && !t.hasTokenReachedHome);
-  if (unlockableTokens.length > 0 && diceNumber === 6) return unlockableTokens[0];
 
   // Prioritize tokens that can enter or progress inside their Home Entry Path (safe, irreversible progress).
   // Select the one closest to Home and move it (no second chance granted).

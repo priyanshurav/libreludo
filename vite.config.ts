@@ -19,6 +19,6 @@ export default defineConfig({
     svgr(),
     checker({ typescript: { tsconfigPath: './tsconfig.app.json' } }),
     ViteImageOptimizer(),
-    fullReloadAlways,
+    // fullReloadAlways,
   ],
 });
