@@ -1,7 +1,7 @@
 import { changeCoordsOfToken, setTokenAlignmentData } from '../slices/playersSlice';
 import { type TPlayerColour, type TCoordinate } from '../../types';
 import type { AppDispatch, RootState } from '../../gameStateStore';
-import { areCoordsEqual } from '../../utils/areCoordsEqual';
+import { areCoordsEqual } from '../../game/coords/logic';
 import { getTokenAlignmentData } from '../../game/tokens/alignment';
 import { tokensWithCoord } from '../../game/tokens/logic';
 import { tokenPaths } from '../../game/tokens/paths';

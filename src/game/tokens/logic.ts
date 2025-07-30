@@ -1,6 +1,6 @@
 import type { TPlayerColour, TPlayer, TCoordinate } from '../../types';
 import type { TToken } from '../../types';
-import { areCoordsEqual } from '../../utils/areCoordsEqual';
+import { areCoordsEqual } from '../coords/logic';
 import { ERRORS } from '../../utils/errors';
 import { getDistanceFromCurrentCoord, getHomeCoordForColour } from '../coords/logic';
 

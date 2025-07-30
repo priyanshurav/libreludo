@@ -9,7 +9,7 @@ import { type TCoordinate } from '../types';
 import { type TToken } from '../types';
 import { ERRORS } from '../utils/errors';
 import type { AppDispatch } from '../gameStateStore';
-import { areCoordsEqual } from '../utils/areCoordsEqual';
+import { areCoordsEqual } from '../game/coords/logic';
 import { updateTokenPositionAndAlignmentThunk } from '../state/thunks/updateTokenPositionAndAlignmentThunk';
 import { setTokenTransitionTime } from '../utils/setTokenTransitionTime';
 import { useCallback } from 'react';

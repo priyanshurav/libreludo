@@ -1,5 +1,4 @@
 import type { TToken, TCoordinate, TPlayerColour } from '../../types';
-import { areCoordsEqual } from '../../utils/areCoordsEqual';
 import { TOKEN_SAFE_COORDINATES } from '../tokens/constants';
 import { tokenPaths, expandedGeneralTokenPath, expandedTokenHomeEntryPath } from '../tokens/paths';
 
@@ -46,4 +45,8 @@ export function isCoordASafeSpot(coord: TCoordinate): boolean {
 export function getHomeCoordForColour(colour: TPlayerColour): TCoordinate {
   const tokenPath = tokenPaths[colour];
   return tokenPath[tokenPath.length - 1];
+}
+
+export function areCoordsEqual(coord1: TCoordinate, coord2: TCoordinate): boolean {
+  return coord1.x === coord2.x && coord1.y === coord2.y;
 }

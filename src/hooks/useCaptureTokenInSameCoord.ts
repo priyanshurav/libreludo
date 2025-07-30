@@ -9,7 +9,7 @@ import {
 import { type TCoordinate } from '../types';
 import { type TToken } from '../types';
 import { ERRORS } from '../utils/errors';
-import { areCoordsEqual } from '../utils/areCoordsEqual';
+import { areCoordsEqual } from '../game/coords/logic';
 import { useCoordsToPosition } from './useCoordsToPosition';
 import type { RootState } from '../gameStateStore';
 import { setTokenTransitionTime } from '../utils/setTokenTransitionTime';

@@ -6,7 +6,7 @@ import {
 } from '../slices/playersSlice';
 import { type TPlayerColour } from '../../types';
 import type { AppDispatch, RootState } from '../../gameStateStore';
-import { areCoordsEqual } from '../../utils/areCoordsEqual';
+import { areCoordsEqual } from '../../game/coords/logic';
 import { changeTurnThunk } from './changeTurnThunk';
 import type { useMoveAndCaptureToken } from '../../hooks/useMoveAndCaptureToken';
 import type { TMoveData } from '../../types/tokens';

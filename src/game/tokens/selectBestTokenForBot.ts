@@ -1,6 +1,6 @@
 import type { TCoordinate, TPlayerColour } from '../../types';
 import type { TToken } from '../../types';
-import { areCoordsEqual } from '../../utils/areCoordsEqual';
+import { areCoordsEqual } from '../coords/logic';
 import { TOKEN_SAFE_COORDINATES } from './constants';
 import { isTokenMovable } from './logic';
 import {
