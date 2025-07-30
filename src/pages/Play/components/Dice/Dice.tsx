@@ -5,7 +5,7 @@ import dice4 from '../../../../assets/dice/4.svg';
 import dice5 from '../../../../assets/dice/5.svg';
 import dice6 from '../../../../assets/dice/6.svg';
 import dicePlaceholder from '../../../../assets/dice/dice_placeholder.gif';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { type TPlayerColour } from '../../../../types';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../../../../gameStateStore';
@@ -21,7 +21,7 @@ type Props = {
   onDiceClick: (colour: TPlayerColour, diceNumber: number) => void;
 };
 
-function getDiceImage(diceNumber: number): string {
+function getDiceImage(diceNumber: number | undefined): string {
   switch (diceNumber) {
     case 1:
       return dice1;
@@ -36,7 +36,7 @@ function getDiceImage(diceNumber: number): string {
     case 6:
       return dice6;
     default:
-      throw new Error(ERRORS.invalidDiceNumber(diceNumber));
+      throw new Error(ERRORS.invalidDiceNumber(diceNumber as never));
   }
 }
 
@@ -48,15 +48,14 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
     currentPlayerColour: currentPlayer,
     players,
   } = useSelector((state: RootState) => state.players);
-  const { diceNumber, isPlaceholderShowing } = useSelector((state: RootState) =>
-    state.dice.find((d) => d.colour === colour)
-  );
+  const { diceNumber, isPlaceholderShowing } =
+    useSelector((state: RootState) => state.dice.find((d) => d.colour === colour)) ?? {};
 
   const anyTokenActive = useMemo(
     () => isAnyTokenActiveOfColour(colour, players),
     [colour, players]
   );
-  const isBot = players.find((p) => p.colour === colour).isBot;
+  const isBot = players.find((p) => p.colour === colour)?.isBot;
   const isCurrentPlayer = currentPlayer === colour;
   const isDiceDisabled =
     !isCurrentPlayer ||
@@ -65,22 +64,6 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
     isGameEnded ||
     isPlaceholderShowing ||
     isBot;
-
-  useEffect(() => {
-    const a = (e) => {
-      if (e.key === 'l')
-        console.log({
-          anyTokenActive,
-          isAnyTokenMoving,
-          isGameEnded,
-          isPlaceholderShowing,
-          currentPlayer,
-          colour,
-        });
-    };
-    document.addEventListener('keypress', a);
-    return () => document.removeEventListener('keypress', a);
-  }, [anyTokenActive, colour, currentPlayer, isAnyTokenMoving, isGameEnded, isPlaceholderShowing]);
 
   const handleDiceClick = () => {
     dispatch(rollDiceThunk(colour, (diceNumber) => onDiceClick(colour, diceNumber)));

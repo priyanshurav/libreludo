@@ -48,7 +48,7 @@ function GameFinishPlayerItem({ colour, isLast, name, rank }: Props) {
           <span />
         ) : (
           <img
-            src={rankImage === '' ? null : rankImage}
+            src={rankImage === '' ? undefined : rankImage}
             alt="Rank image"
             height={boardBlockSize * 1.2}
           />

@@ -10,7 +10,7 @@ export function useMoveAndCaptureToken() {
   const moveToken = useMoveTokenForward();
   const captureToken = useCaptureTokenInSameCoord();
   const dispatch = useDispatch();
-  return async (token: TToken, diceNumber: number): Promise<TMoveData> => {
+  return async (token: TToken, diceNumber: number): Promise<TMoveData | null> => {
     if (getDistanceFromCurrentCoord(token, getHomeCoordForColour(token.colour)) < diceNumber) {
       dispatch(deactivateAllTokens(token.colour));
       console.log(new Error('Invalid move'));

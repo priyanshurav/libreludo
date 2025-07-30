@@ -9,7 +9,7 @@ export const ERRORS = {
   invalidPlayerColour: (playerColour: string) => `${playerColour} is not a valid player colour`,
   diceDoesNotExist: (playerColour: string) =>
     `Dice associated with player of player colour ${playerColour} does not exist`,
-  invalidDiceNumber: (diceNumber: number) => `${diceNumber} is not a valid dice number`,
+  invalidDiceNumber: (diceNumber: string) => `${diceNumber} is not a valid dice number`,
   lockedToken: (playerColour: string, id: number) =>
     `Token with colour ${playerColour} and ID ${id} is locked`,
   tokenAlreadyLocked: (playerColour: string, id: number) =>

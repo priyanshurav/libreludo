@@ -3,7 +3,6 @@ import { selectBestTokenForBot } from '../../game/tokens/selectBestTokenForBot';
 import type { AppDispatch, RootState } from '../../gameStateStore';
 import type { useMoveAndCaptureToken } from '../../hooks/useMoveAndCaptureToken';
 import { setTokenTransitionTime } from '../../utils/setTokenTransitionTime';
-import { sleep } from '../../utils/sleep';
 import { changeTurn, deactivateAllTokens } from '../slices/playersSlice';
 import { handlePostDiceRollThunk } from './handlePostDiceRollThunk';
 import { rollDiceThunk } from './rollDiceThunk';
@@ -16,14 +15,13 @@ export function changeTurnThunk(moveAndCapture: ReturnType<typeof useMoveAndCapt
     dispatch(changeTurn());
     const { currentPlayerColour, players } = getState().players;
 
-    const { colour, isBot } = players.find((p) => p.colour === currentPlayerColour);
+    const { colour, isBot } = players.find((p) => p.colour === currentPlayerColour) ?? {};
 
-    if (!isBot) return;
+    if (!isBot || !colour) return;
 
     const handleDiceRoll = async (diceNumber: number) => {
-      const { shouldContinue, moveData: autoMoveData } = await dispatch(
-        handlePostDiceRollThunk(colour, diceNumber, moveAndCapture)
-      );
+      const { shouldContinue, moveData: autoMoveData } =
+        (await dispatch(handlePostDiceRollThunk(colour, diceNumber, moveAndCapture))) ?? {};
       dispatch(deactivateAllTokens(colour));
 
       const { players } = getState().players;
@@ -40,7 +38,7 @@ export function changeTurnThunk(moveAndCapture: ReturnType<typeof useMoveAndCapt
       }
 
       const bestToken = selectBestTokenForBot(colour, diceNumber, allTokens);
-      // console.log(bestToken);
+      if (!bestToken) return;
 
       setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME);
 

@@ -18,7 +18,7 @@ import { getPlayerSequence } from '../../game/players/logic';
 type TPlayerState = {
   players: TPlayer[];
   playerInitData: TPlayerInitData[];
-  currentPlayerColour: TPlayerColour;
+  currentPlayerColour: TPlayerColour | null;
   playerSequence: TPlayerColour[];
   isAnyTokenMoving: boolean;
   isGameEnded: boolean;

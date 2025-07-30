@@ -25,16 +25,17 @@ export const handlePostDiceRollThunk = (
   return async (
     dispatch: AppDispatch,
     getState: () => RootState
-  ): Promise<{ shouldContinue: boolean; moveData: TMoveData }> => {
-    if (getState().players.isGameEnded) return;
+  ): Promise<{ shouldContinue: boolean; moveData: TMoveData | null } | null> => {
+    if (getState().players.isGameEnded) return null;
     if (diceNumber === 6) dispatch(incrementNumberOfConsecutiveSix(colour));
     else dispatch(resetNumberOfConsecutiveSix(colour));
 
     dispatch(activateTokens({ all: diceNumber === 6, colour, diceNumber }));
     const players = getState().players.players;
     const player = players.find((p) => p.colour === colour);
+    if (!player) return null;
 
-    if (player?.numberOfConsecutiveSix === 3) {
+    if (player.numberOfConsecutiveSix === 3) {
       dispatch(resetNumberOfConsecutiveSix(colour));
       dispatch(deactivateAllTokens(colour));
       if (player.isBot) await sleep(500);

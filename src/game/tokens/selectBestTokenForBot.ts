@@ -13,6 +13,8 @@ import { getDistanceFromCurrentCoord } from '../coords/logic';
 import { tokenPaths } from './paths';
 import { getHomeCoordForColour } from '../coords/logic';
 
+type TTokenCaptureInfo = { byWhichBotToken: TToken; opponentToken: TToken };
+
 function getFinalCoord(token: TToken, diceNumber: number): TCoordinate {
   const tokenPath = tokenPaths[token.colour];
   const currentCoordIndex = tokenPath.findIndex((c) => areCoordsEqual(token.coordinates, c));
@@ -20,9 +22,9 @@ function getFinalCoord(token: TToken, diceNumber: number): TCoordinate {
   return finalCoord;
 }
 
-function nearestTokenToHome(tokens: TToken[], colour: TPlayerColour): TToken {
+function nearestTokenToHome(tokens: TToken[], colour: TPlayerColour): TToken | null {
   const playerHomeCoord = getHomeCoordForColour(colour);
-  return tokens.reduce((nearest, token) => {
+  return tokens.reduce<TToken | null>((nearest, token) => {
     if (!nearest) return token;
     const nearestDistance = getDistanceFromCurrentCoord(nearest, playerHomeCoord);
     const tokenDistance = getDistanceFromCurrentCoord(token, playerHomeCoord);
@@ -85,7 +87,7 @@ export function selectBestTokenForBot(
   botPlayerColour: TPlayerColour,
   diceNumber: number,
   allTokens: TToken[]
-): TToken {
+): TToken | null {
   const botTokens = allTokens.filter((t) => t.colour === botPlayerColour);
   const movableBotTokens = botTokens.filter((t) => isTokenMovable(t, diceNumber));
   const movableOpponentTokens = allTokens.filter(
@@ -106,22 +108,27 @@ export function selectBestTokenForBot(
       if (capturableToken) return { byWhichBotToken: t, opponentToken: capturableToken };
       return null;
     })
-    .filter(Boolean) as { byWhichBotToken: TToken; opponentToken: TToken }[];
+    .filter(Boolean) as TTokenCaptureInfo[];
 
   // If there exists a token that can be unlocked, unlock it and grant a second turn.
   const unlockableTokens = botTokens.filter((t) => t.isLocked && !t.hasTokenReachedHome);
   if (unlockableTokens.length > 0 && diceNumber === 6) return unlockableTokens[0];
 
-  const nearestOpponentTokenToHome = capturableTokens.reduce((prev, curr) => {
-    if (!prev) return curr;
-    const { opponentToken: prevOppToken } = prev;
-    const { opponentToken: currOppToken } = curr;
-    return getDistanceFromCurrentCoord(prevOppToken, getHomeCoordForColour(prevOppToken.colour)) <
-      getDistanceFromCurrentCoord(currOppToken, getHomeCoordForColour(currOppToken.colour))
-      ? prev
-      : curr;
-  }, null);
-  if (capturableTokens.length > 0) return nearestOpponentTokenToHome.byWhichBotToken;
+  const nearestOpponentTokenToHome = capturableTokens.reduce<TTokenCaptureInfo | null>(
+    (prev, curr) => {
+      if (!prev) return curr;
+      const { opponentToken: prevOppToken } = prev;
+      const { opponentToken: currOppToken } = curr;
+      return getDistanceFromCurrentCoord(prevOppToken, getHomeCoordForColour(prevOppToken.colour)) <
+        getDistanceFromCurrentCoord(currOppToken, getHomeCoordForColour(currOppToken.colour))
+        ? prev
+        : curr;
+    },
+    null
+  );
+
+  if (capturableTokens.length > 0 && nearestOpponentTokenToHome)
+    return nearestOpponentTokenToHome.byWhichBotToken;
 
   // Identify bot tokens that are at risk of being captured by an opponent's token.
   // A token is considered at risk if:

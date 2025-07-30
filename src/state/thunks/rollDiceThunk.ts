@@ -12,7 +12,7 @@ export function rollDiceThunk(colour: TPlayerColour, onDiceRoll: (diceNumber: nu
       dispatch(setIsPlaceholderShowing({ colour, isPlaceholderShowing: false }));
       dispatch(rollDice({ colour }));
       const dice = getState().dice.find((d) => d.colour === colour);
-      onDiceRoll(dice.diceNumber);
+      if (dice) onDiceRoll(dice.diceNumber);
     }, DICE_PLACEHOLDER_DELAY);
   };
 }
