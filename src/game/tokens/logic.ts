@@ -17,10 +17,7 @@ export const getOnlyTokenMovable = (
 ) => {
   const player = players.find((p) => p.colour === colour);
   if (!player) throw new Error(ERRORS.playerDoesNotExist(colour));
-  const movableTokens: TToken[] = [];
-  player.tokens.forEach((t) => {
-    if (isTokenMovable(t, diceNumber)) movableTokens.push(t);
-  });
+  const movableTokens = player.tokens.filter((t) => isTokenMovable(t, diceNumber));
   return movableTokens.length === 1 ? movableTokens[0] : null;
 };
 

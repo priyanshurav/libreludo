@@ -15,7 +15,11 @@ import type { RootState } from '../gameStateStore';
 import { setTokenTransitionTime } from '../utils/setTokenTransitionTime';
 import { useCallback, useRef } from 'react';
 import { BACKWARD_TOKEN_TRANSITION_TIME } from '../game/players/constants';
-import { defaultTokenAlignmentData } from '../game/tokens/alignment';
+import {
+  applyAlignmentData,
+  defaultTokenAlignmentData,
+  getTokenAlignmentData,
+} from '../game/tokens/alignment';
 import { TOKEN_SAFE_COORDINATES } from '../game/tokens/constants';
 import { tokensWithCoord } from '../game/tokens/logic';
 import { tokenPaths } from '../game/tokens/paths';
@@ -27,62 +31,67 @@ export function useCaptureTokenInSameCoord() {
   const playersRef = useRef(players);
   playersRef.current = players;
   return useCallback(
-    (token: TToken, latestCoord: TCoordinate): Promise<boolean> => {
+    (capturingToken: TToken, latestCoord: TCoordinate): Promise<boolean> => {
       return new Promise((resolve) => {
-        if (token.isLocked) throw new Error(ERRORS.lockedToken(token.colour, token.id));
+        if (capturingToken.isLocked)
+          throw new Error(ERRORS.lockedToken(capturingToken.colour, capturingToken.id));
         const allTokens = playersRef.current.flatMap((p) => p.tokens);
 
         if (TOKEN_SAFE_COORDINATES.find((c) => areCoordsEqual(c, latestCoord)))
           return resolve(false);
 
-        const capturableToken = tokensWithCoord(latestCoord, allTokens).filter(
-          (t) => t.colour !== token.colour
-        )[0];
-        if (!capturableToken) return resolve(false);
+        const capturableTokens = tokensWithCoord(latestCoord, allTokens).filter(
+          (t) => t.colour !== capturingToken.colour
+        );
 
+        if (capturableTokens.length === 0) return resolve(false);
+
+        const alignmentData = getTokenAlignmentData(capturableTokens.length);
+        applyAlignmentData(capturableTokens, dispatch);
         dispatch(
           setTokenAlignmentData({
-            colour: capturableToken.colour,
-            id: capturableToken.id,
+            colour: capturingToken.colour,
+            id: capturingToken.id,
             newAlignmentData: defaultTokenAlignmentData,
           })
         );
-        dispatch(
-          setTokenAlignmentData({
-            colour: token.colour,
-            id: token.id,
-            newAlignmentData: defaultTokenAlignmentData,
-          })
-        );
-        dispatch(deactivateAllTokens(token.colour));
-        const { colour, id, coordinates } = capturableToken;
-        dispatch(setTokenDirection({ colour, id, isForward: false }));
+        dispatch(deactivateAllTokens(capturingToken.colour));
         setTokenTransitionTime(BACKWARD_TOKEN_TRANSITION_TIME);
         dispatch(setIsAnyTokenMoving(true));
 
-        const tokenPath = tokenPaths[colour];
-        const tokenEl = document.getElementById(`${colour}_${id}`);
-        if (!tokenEl) throw new Error(ERRORS.tokenDoesNotExist(colour, id));
-        const initialCoordinateIndex = tokenPath.findIndex((v) => areCoordsEqual(v, coordinates));
-        let i = initialCoordinateIndex;
+        capturableTokens.forEach((t, i) => {
+          const { colour, id, coordinates } = t;
+          dispatch(setTokenDirection({ colour, id, isForward: false }));
 
-        const handleTransitionEnd = () => {
-          i--;
-          if (i < 0) {
-            dispatch(setIsAnyTokenMoving(false));
-            dispatch(lockToken({ colour, id }));
-            resolve(true);
-            return tokenEl.removeEventListener('transitionend', handleTransitionEnd);
-          }
-          const { x, y } = getPosition(tokenPath[i], defaultTokenAlignmentData);
+          const tokenPath = tokenPaths[colour];
+          const tokenEl = document.getElementById(`${colour}_${id}`);
+          if (!tokenEl) throw new Error(ERRORS.tokenDoesNotExist(colour, id));
+          const initialCoordinateIndex = tokenPath.findIndex((v) => areCoordsEqual(v, coordinates));
+          let index = initialCoordinateIndex;
+
+          const handleTransitionEnd = () => {
+            index--;
+            if (index < 0) {
+              dispatch(setIsAnyTokenMoving(false));
+              dispatch(lockToken({ colour, id }));
+              capturableTokens.forEach(({ colour, id }) => {
+                dispatch(
+                  setTokenAlignmentData({ colour, id, newAlignmentData: defaultTokenAlignmentData })
+                );
+              });
+              tokenEl.removeEventListener('transitionend', handleTransitionEnd);
+              return resolve(true);
+            }
+            const { x, y } = getPosition(tokenPath[index], alignmentData[i]);
+            tokenEl.style.transform = `translate(${x}, ${y})`;
+          };
+          // Trigger the first transition
+          index--;
+          const { x, y } = getPosition(tokenPath[index], alignmentData[i]);
           tokenEl.style.transform = `translate(${x}, ${y})`;
-        };
-        // Trigger the first transition
-        i--;
-        const { x, y } = getPosition(tokenPath[i], defaultTokenAlignmentData);
-        tokenEl.style.transform = `translate(${x}, ${y})`;
 
-        tokenEl.addEventListener('transitionend', handleTransitionEnd);
+          tokenEl.addEventListener('transitionend', handleTransitionEnd);
+        });
       });
     },
     [dispatch, getPosition]

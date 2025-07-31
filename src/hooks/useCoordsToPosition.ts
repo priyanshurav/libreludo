@@ -12,24 +12,9 @@ export const useCoordsToPosition = (): ((
   const boardDataRef = useRef(boardData);
   boardDataRef.current = boardData;
   return useCallback((coords: TCoordinate, tokenAlignmentData: TTokenAlignmentData) => {
-    const { xOffset, yOffset, scaleFactor } = tokenAlignmentData;
+    const { xOffset, yOffset } = tokenAlignmentData;
     const { boardBlockSize, boardSideLength, tokenHeight, tokenWidth } = boardDataRef.current;
-    // console.log(boardBlockSize, boardSideLength, tokenHeight, tokenWidth);
 
-    // const x = `${
-    //   coords.x * boardBlockSize +
-    //   boardBlockSize / 2 -
-    //   (tokenWidth * scaleFactor) / 2 +
-    //   boardBlockSize * xOffset
-    // }px`;
-
-    // const y = `${
-    //   boardSideLength -
-    //   ((coords.y + 1) * boardBlockSize -
-    //     boardBlockSize / 2 +
-    //     (tokenHeight * scaleFactor) / 2 +
-    //     boardBlockSize * yOffset)
-    // }px`;
     const tileCenterX = coords.x * boardBlockSize + boardBlockSize / 2;
     const tileCenterY = boardSideLength - ((coords.y + 1) * boardBlockSize - boardBlockSize / 2);
 

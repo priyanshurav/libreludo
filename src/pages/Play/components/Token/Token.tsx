@@ -61,15 +61,12 @@ function Token({ colour, id }: Props) {
       return;
     }
 
-    // const { hasTokenReachedHome, lastTokenCoord, moved } = await moveToken(diceNumber, token);
-    // if (!moved) return;
-    // const isCancelled = await captureTokenInSameCoord(token, lastTokenCoord);
     const moveData = await moveAndCapture(token, diceNumber);
     if (!moveData) return;
-    const { hasTokenReachedHome, isCancelled } = moveData;
+    const { hasTokenReachedHome, isCaptured } = moveData;
     if (
       (diceNumber !== 6 || player?.numberOfConsecutiveSix >= 3) &&
-      !isCancelled &&
+      !isCaptured &&
       !hasTokenReachedHome
     ) {
       console.log('hi', 'token');

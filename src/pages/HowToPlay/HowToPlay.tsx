@@ -42,45 +42,38 @@ function HowToPlay() {
 
         <div className="section">
           <h2>🎮 Gameplay Overview</h2>
-
           <h3>🎬 Starting the Game</h3>
           <ul>
             <li>Each player rolls the dice once.</li>
             <li>Turns move clockwise.</li>
           </ul>
-
           <h3>🚪 Getting Tokens Out</h3>
           <ul>
             <li>
               Roll a <strong>6</strong> to move a token from Base to the Start Square.
             </li>
             <li>You can only move a token from the base with a roll of 6.</li>
-            <strong>⭐ Bonus:</strong> Rolling a 6 gives you an extra turn.
           </ul>
-
+          <strong>⭐ Bonus:</strong> Rolling a 6 gives you an extra turn.
           <h3>🔁 Moving Tokens</h3>
           <ul>
             <li>Move tokens forward the number of dice spaces rolled.</li>
-            <strong>⚠️ Important: </strong>If you roll three sixes in a row in Ludo, your third roll
-            is canceled and you lose your turn.
           </ul>
+          <strong>⚠️ Important: </strong>If you roll three sixes in a row in Ludo, your third roll
+          is canceled and you lose your turn.
         </div>
-
         <div className="section">
           <h2>🧍 Token Rules</h2>
-
           <h3>👥 Landing on Your Own Token</h3>
           <ul>
             <li>You can land on or stack with your own tokens.</li>
           </ul>
-
           <h3>❌ Capturing Your Own Token</h3>
           <ul>
             <li>
               You <strong>cannot capture</strong> your own tokens.
             </li>
           </ul>
-
           <h3>🎯 Capturing Opponents</h3>
           <ul>
             <li>
@@ -90,10 +83,10 @@ function HowToPlay() {
             <li>
               You <strong>cannot</strong> capture tokens in safe zones.
             </li>
-            <li>Multiple players can share the same safe zone.</li>
           </ul>
+          <strong>⚠️ Important: </strong> Landing on a <strong>non-safe square</strong> occupied by
+          multiple tokens of the same color will <strong>capture all of them</strong>.
         </div>
-
         <div className="section">
           <h2>⭐ Safe Zones</h2>
           <ul>
@@ -101,7 +94,7 @@ function HowToPlay() {
             <li>
               Tokens here are safe and <strong>cannot be captured</strong>.
             </li>
-            <li>Multiple tokens (even from different players) can share the space.</li>
+            <li>Multiple tokens (even from different players) can share the same safe zone.</li>
           </ul>
         </div>
 
@@ -132,7 +125,7 @@ function HowToPlay() {
           <h2>💡 Quick Tips</h2>
           <ul>
             <li>🚀 Activate tokens early - More options to move</li>
-            <li>↔️ Spread them out - Stacking doesn't protect you</li>
+            <li>↔️ Spread Out Your Tokens - Stacking offers no protection on non-safe squares.</li>
             <li>🛑 Use safe zones - Only place where you're safe</li>
             <li>👀 Watch your landings - Avoid capture range</li>
             <li>🎯 Capture wisely - Delay opponents' progress</li>

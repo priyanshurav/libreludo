@@ -29,8 +29,8 @@ export function changeTurnThunk(moveAndCapture: ReturnType<typeof useMoveAndCapt
       const allTokens = players.flatMap((p) => p.tokens);
       if (!shouldContinue) return;
       if (autoMoveData) {
-        const { hasTokenReachedHome, isCancelled } = autoMoveData;
-        if (!isCancelled && !hasTokenReachedHome && diceNumber !== 6) {
+        const { hasTokenReachedHome, isCaptured } = autoMoveData;
+        if (!isCaptured && !hasTokenReachedHome && diceNumber !== 6) {
           return setTimeout(() => dispatch(changeTurnThunk(moveAndCapture)), 1000);
         } else {
           return setTimeout(() => dispatch(rollDiceThunk(colour, handleDiceRoll)), 1000);
@@ -48,8 +48,8 @@ export function changeTurnThunk(moveAndCapture: ReturnType<typeof useMoveAndCapt
       }
       const moveData = await moveAndCapture(bestToken, diceNumber);
       if (!moveData) return dispatch(changeTurnThunk(moveAndCapture));
-      const { hasTokenReachedHome, isCancelled } = moveData;
-      if (!isCancelled && !hasTokenReachedHome && diceNumber !== 6) {
+      const { hasTokenReachedHome, isCaptured } = moveData;
+      if (!isCaptured && !hasTokenReachedHome && diceNumber !== 6) {
         return setTimeout(() => dispatch(changeTurnThunk(moveAndCapture)), 1000);
       } else {
         return setTimeout(() => dispatch(rollDiceThunk(colour, handleDiceRoll)), 1000);

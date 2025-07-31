@@ -71,6 +71,7 @@ function Game({ initData }: Props) {
         } as React.CSSProperties
       }
     >
+      <input type="text" id="dice-input" style={{ position: 'absolute', top: 0, left: 0 }} />
       <button
         type="button"
         aria-label="Exit button"

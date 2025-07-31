@@ -3,12 +3,12 @@ import type { TPlayerColour } from '../../types';
 import { ERRORS } from '../../utils/errors';
 import type { TDice } from '../../types';
 
-// const blue = [6, 6, 6, 6, 3];
-// const red = [6, 5, 5, 5, 5, 5, 5, 5, 5];
-const blue = [6, 6, 5, 6, 6].concat(Array(100).fill(4));
-const red = Array(100).fill(5);
-let i1 = 0;
-let i2 = 0;
+// const blue = [6, 5, 5, 5];
+// const red = [6, 6, 1, 1];
+// const blue = [6, 6, 5, 6, 6].concat(Array(100).fill(4));
+// const red = Array(100).fill(5);
+// let i1 = 0;
+// let i2 = 0;
 const initialState: TDice[] = [];
 
 function getDice(state: TDice[], colour: TPlayerColour): TDice {
@@ -54,9 +54,13 @@ const reducers = {
     //   diceNumber = blue[i1];
     //   i1++;
     // }
-    // if (action.payload.colour === 'green') {
+    // if (action.payload.colour === 'red') {
     //   diceNumber = red[i2];
     //   i2++;
+    // }
+    // if (action.payload.colour === 'green') {
+    //   diceNumber = red[i2];
+    //   // i2++;
     // }
     const dice = getDice(state, action.payload.colour);
     dice.diceNumber = diceNumber;

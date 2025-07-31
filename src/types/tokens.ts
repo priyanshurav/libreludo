@@ -32,4 +32,4 @@ export type TTokenTriggerCoordinates = {
   newPathTriggerCoord: TCoordinate;
   winningCoord: TCoordinate;
 };
-export type TMoveData = { isCancelled: boolean; hasTokenReachedHome: boolean };
+export type TMoveData = { isCaptured: boolean; hasTokenReachedHome: boolean };

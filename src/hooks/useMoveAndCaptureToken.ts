@@ -19,7 +19,7 @@ export function useMoveAndCaptureToken() {
 
     const { hasTokenReachedHome, lastTokenCoord, moved } = await moveToken(diceNumber, token);
     if (!moved) return null;
-    const isCancelled = await captureToken(token, lastTokenCoord);
-    return { isCancelled, hasTokenReachedHome };
+    const isCaptured = await captureToken(token, lastTokenCoord);
+    return { isCaptured, hasTokenReachedHome };
   };
 }

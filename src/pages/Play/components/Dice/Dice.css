@@ -64,7 +64,7 @@
   padding: 0 var(--player-name-padding) 0 var(--player-name-padding);
   white-space: nowrap;
   font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 400;
+  font-weight: bold;
   font-size: calc(var(--board-block-size) * 0.45);
   cursor: default;
 }
@@ -76,7 +76,7 @@
       var(--active-border-colour);
   }
   50% {
-    transform: scale(1.05);
+    transform: scale(1.07);
     box-shadow: 0 0 calc(var(--board-block-size) / 4) calc(var(--board-block-size) / 10)
       var(--active-border-colour);
   }

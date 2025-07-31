@@ -1,4 +1,7 @@
-import type { TTokenAlignmentData } from '../../types';
+import type { Dispatch, UnknownAction } from '@reduxjs/toolkit';
+import type { TToken, TTokenAlignmentData } from '../../types';
+import { setTokenAlignmentData } from '../../state/slices/playersSlice';
+import { areCoordsEqual } from '../coords/logic';
 
 export const defaultTokenAlignmentData = { xOffset: 0, yOffset: 0, scaleFactor: 1 };
 
@@ -714,4 +717,22 @@ const tokenAlignmentData: Record<number, TTokenAlignmentData[]> = {
 export function getTokenAlignmentData(numberOfTokensInOneTile: number): TTokenAlignmentData[] {
   if (numberOfTokensInOneTile > 16) throw new Error('One tile cannot contain more than 16 tokens');
   return tokenAlignmentData[numberOfTokensInOneTile];
+}
+
+export function applyAlignmentData(tokens: TToken[], dispatch: Dispatch<UnknownAction>) {
+  if (!tokens.every((t) => areCoordsEqual(t.coordinates, tokens[0].coordinates)))
+    throw new Error('All tokens must have the same coordinate');
+
+  const alignmentData = getTokenAlignmentData(tokens.length);
+
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
+    dispatch(
+      setTokenAlignmentData({
+        colour: token.colour,
+        id: token.id,
+        newAlignmentData: alignmentData[i],
+      })
+    );
+  }
 }
