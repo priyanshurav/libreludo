@@ -1,6 +1,9 @@
 import type { TPlayerColour, TCoordinate } from '../../types';
 import type { TTokenPath } from '../../types/tokens';
 
+export const FORWARD_TOKEN_TRANSITION_TIME = 500;
+export const BACKWARD_TOKEN_TRANSITION_TIME = 100;
+
 export const GENERAL_TOKEN_PATH: TTokenPath[] = [
   {
     startCoords: { x: 6, y: 1 },
@@ -84,77 +87,78 @@ export const TOKEN_SAFE_COORDINATES: TCoordinate[] = [
   { x: 6, y: 12 },
   { x: 12, y: 8 },
 ];
-export const blueTokensLockedCoords: TCoordinate[] = [
-  {
-    x: 1.5,
-    y: 1.8,
-  },
-  {
-    x: 3.5,
-    y: 1.8,
-  },
-  {
-    x: 3.5,
-    y: 3.8,
-  },
-  {
-    x: 1.5,
-    y: 3.8,
-  },
-];
-export const redTokensLockedCoords: TCoordinate[] = [
-  {
-    x: 1.5,
-    y: 12.8,
-  },
-  {
-    x: 3.5,
-    y: 12.8,
-  },
-  {
-    x: 1.5,
-    y: 10.8,
-  },
-  {
-    x: 3.5,
-    y: 10.8,
-  },
-];
-export const greenTokensLockedCoords: TCoordinate[] = [
-  {
-    x: 10.5,
-    y: 12.8,
-  },
-  {
-    x: 12.5,
-    y: 12.8,
-  },
-  {
-    x: 10.5,
-    y: 10.8,
-  },
-  {
-    x: 12.5,
-    y: 10.8,
-  },
-];
-export const yellowTokensLockedCoords: TCoordinate[] = [
-  {
-    x: 10.5,
-    y: 3.8,
-  },
-  {
-    x: 12.5,
-    y: 3.8,
-  },
-  {
-    x: 10.5,
-    y: 1.8,
-  },
-  {
-    x: 12.5,
-    y: 1.8,
-  },
-];
-export const FORWARD_TOKEN_TRANSITION_TIME = 500;
-export const BACKWARD_TOKEN_TRANSITION_TIME = 100;
+
+export const TOKEN_LOCKED_COORDINATES: Record<TPlayerColour, TCoordinate[]> = {
+  blue: [
+    {
+      x: 1.5,
+      y: 1.8,
+    },
+    {
+      x: 3.5,
+      y: 1.8,
+    },
+    {
+      x: 3.5,
+      y: 3.8,
+    },
+    {
+      x: 1.5,
+      y: 3.8,
+    },
+  ],
+  red: [
+    {
+      x: 1.5,
+      y: 12.8,
+    },
+    {
+      x: 3.5,
+      y: 12.8,
+    },
+    {
+      x: 1.5,
+      y: 10.8,
+    },
+    {
+      x: 3.5,
+      y: 10.8,
+    },
+  ],
+  green: [
+    {
+      x: 10.5,
+      y: 12.8,
+    },
+    {
+      x: 12.5,
+      y: 12.8,
+    },
+    {
+      x: 10.5,
+      y: 10.8,
+    },
+    {
+      x: 12.5,
+      y: 10.8,
+    },
+  ],
+  yellow: [
+    {
+      x: 10.5,
+      y: 3.8,
+    },
+    {
+      x: 12.5,
+      y: 3.8,
+    },
+    {
+      x: 10.5,
+      y: 1.8,
+    },
+    {
+      x: 12.5,
+      y: 1.8,
+    },
+  ],
+};
