@@ -16,7 +16,8 @@ import { setTokenTransitionTime } from '../../../../utils/setTokenTransitionTime
 import { changeTurnThunk } from '../../../../state/thunks/changeTurnThunk';
 import { useMoveAndCaptureToken } from '../../../../hooks/useMoveAndCaptureToken';
 import { unlockAndAlignTokens } from '../../../../state/thunks/unlockAndAlignTokens';
-import { FORWARD_TOKEN_TRANSITION_TIME, playerColours } from '../../../../game/players/constants';
+import { playerColours } from '../../../../game/players/constants';
+import { FORWARD_TOKEN_TRANSITION_TIME } from '../../../../game/tokens/constants';
 import { TOKEN_START_COORDINATES } from '../../../../game/tokens/constants';
 
 type Props = {
@@ -69,8 +70,6 @@ function Token({ colour, id }: Props) {
       !isCaptured &&
       !hasTokenReachedHome
     ) {
-      console.log('hi', 'token');
-
       return dispatch(changeTurnThunk(moveAndCapture));
     }
   };
@@ -85,14 +84,7 @@ function Token({ colour, id }: Props) {
         })
       );
     }
-  }, [isTokenUnlockedInitially, isLocked, dispatch, colour, id, coordinates]);
-
-  useEffect(() => {
-    const handleBtnClick = () => {};
-
-    document.getElementById('btn')?.addEventListener('click', handleBtnClick);
-    return () => document.getElementById('btn')?.removeEventListener('click', handleBtnClick);
-  }, [dispatch, token]);
+  }, [colour, dispatch, id, isLocked, isTokenUnlockedInitially]);
 
   useEffect(() => {
     // dispatch(unlockAndAlignTokens({ id: 0, colour: 'blue' }));

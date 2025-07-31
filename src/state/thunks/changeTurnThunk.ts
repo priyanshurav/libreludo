@@ -1,4 +1,4 @@
-import { FORWARD_TOKEN_TRANSITION_TIME } from '../../game/players/constants';
+import { FORWARD_TOKEN_TRANSITION_TIME } from '../../game/tokens/constants';
 import { selectBestTokenForBot } from '../../game/tokens/selectBestTokenForBot';
 import type { AppDispatch, RootState } from '../../gameStateStore';
 import type { useMoveAndCaptureToken } from '../../hooks/useMoveAndCaptureToken';

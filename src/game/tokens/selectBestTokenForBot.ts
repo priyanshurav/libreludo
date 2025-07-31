@@ -1,17 +1,17 @@
 import type { TCoordinate, TPlayerColour } from '../../types';
 import type { TToken } from '../../types';
-import { areCoordsEqual } from '../coords/logic';
 import { TOKEN_SAFE_COORDINATES } from './constants';
 import { isTokenMovable } from './logic';
 import {
   isCoordASafeSpot,
   isCoordInHomeEntryPathForColour,
   isAheadInTokenPath,
+  getDistanceBetweenTokens,
+  getDistanceInTokenPath,
+  getHomeCoordForColour,
+  areCoordsEqual,
 } from '../coords/logic';
-import { getMinDistanceBetweenCoordsInGeneralTokenPath } from '../coords/logic';
-import { getDistanceFromCurrentCoord } from '../coords/logic';
 import { tokenPaths } from './paths';
-import { getHomeCoordForColour } from '../coords/logic';
 
 type TTokenCaptureInfo = { byWhichBotToken: TToken; opponentToken: TToken };
 
@@ -26,8 +26,16 @@ function nearestTokenToHome(tokens: TToken[], colour: TPlayerColour): TToken | n
   const playerHomeCoord = getHomeCoordForColour(colour);
   return tokens.reduce<TToken | null>((nearest, token) => {
     if (!nearest) return token;
-    const nearestDistance = getDistanceFromCurrentCoord(nearest, playerHomeCoord);
-    const tokenDistance = getDistanceFromCurrentCoord(token, playerHomeCoord);
+    const nearestDistance = getDistanceInTokenPath(
+      nearest.colour,
+      nearest.coordinates,
+      playerHomeCoord
+    );
+    const tokenDistance = getDistanceInTokenPath(
+      token.colour,
+      nearest.coordinates,
+      playerHomeCoord
+    );
     return tokenDistance < nearestDistance ? token : nearest;
   }, null);
 }
@@ -45,10 +53,7 @@ function canTokenBeCaptured(
       isAheadInTokenPath(oppToken.coordinates, tokenFinalCoord)
     )
       continue;
-    const dist = getMinDistanceBetweenCoordsInGeneralTokenPath(
-      tokenFinalCoord,
-      oppToken.coordinates
-    );
+    const dist = getDistanceBetweenTokens({ ...botToken, coordinates: tokenFinalCoord }, oppToken);
     if (dist >= 1 && dist <= 6) return true;
   }
   return false;
@@ -64,10 +69,7 @@ function countNearbyActiveOpponents(
   for (let i = 0; i < opponentTokens.length; i++) {
     const oppToken = opponentTokens[i];
     if (isCoordInHomeEntryPathForColour(oppToken.coordinates, oppToken.colour)) continue;
-    const dist = getMinDistanceBetweenCoordsInGeneralTokenPath(
-      tokenFinalCoord,
-      oppToken.coordinates
-    );
+    const dist = getDistanceBetweenTokens({ ...botToken, coordinates: tokenFinalCoord }, oppToken);
     if (dist >= 1 && dist <= 6) threats++;
   }
   return threats;
@@ -75,13 +77,47 @@ function countNearbyActiveOpponents(
 
 function computeDistanceToNearestSafeSpot(botToken: TToken, tokenFinalCoord: TCoordinate): number {
   if (isCoordInHomeEntryPathForColour(tokenFinalCoord, botToken.colour)) return 0;
-  const nearestSafeSpot = TOKEN_SAFE_COORDINATES.reduce((nearest, curr) => {
-    const nearestDist = getMinDistanceBetweenCoordsInGeneralTokenPath(tokenFinalCoord, nearest);
-    const currDist = getMinDistanceBetweenCoordsInGeneralTokenPath(tokenFinalCoord, curr);
+  const nearestSafeSpot = TOKEN_SAFE_COORDINATES.filter((c) =>
+    isAheadInTokenPath(c, botToken.coordinates)
+  ).reduce<TCoordinate | null>((nearest, curr) => {
+    if (!nearest) return curr;
+    const nearestDist = getDistanceInTokenPath(botToken.colour, tokenFinalCoord, nearest);
+    const currDist = getDistanceInTokenPath(botToken.colour, tokenFinalCoord, curr);
     return nearestDist < currDist ? nearest : curr;
-  });
-  return getMinDistanceBetweenCoordsInGeneralTokenPath(tokenFinalCoord, nearestSafeSpot);
+  }, null);
+
+  return nearestSafeSpot
+    ? getDistanceInTokenPath(botToken.colour, tokenFinalCoord, nearestSafeSpot)
+    : -1;
 }
+
+// console.log(
+//   getDistanceBetweenTokens(
+//     {
+//       colour: 'blue',
+//       coordinates: { x: 6, y: 14 },
+//       hasTokenReachedHome: false,
+//       id: 0,
+//       initialCoords: { x: 0, y: 0 },
+//       isActive: true,
+//       isDirectionForward: true,
+//       isLocked: false,
+//       tokenAlignmentData: defaultTokenAlignmentData,
+//     },
+//     {
+//       colour: 'green',
+//       coordinates: { x: 8, y: 13 },
+//       hasTokenReachedHome: false,
+//       id: 0,
+//       initialCoords: { x: 0, y: 0 },
+//       isActive: true,
+//       isDirectionForward: true,
+//       isLocked: false,
+//       tokenAlignmentData: defaultTokenAlignmentData,
+//     }
+//   ),
+//   isAheadInTokenPath({ x: 8, y: 13 }, { x: 6, y: 14 })
+// );
 
 export function selectBestTokenForBot(
   botPlayerColour: TPlayerColour,
@@ -119,8 +155,16 @@ export function selectBestTokenForBot(
       if (!prev) return curr;
       const { opponentToken: prevOppToken } = prev;
       const { opponentToken: currOppToken } = curr;
-      return getDistanceFromCurrentCoord(prevOppToken, getHomeCoordForColour(prevOppToken.colour)) <
-        getDistanceFromCurrentCoord(currOppToken, getHomeCoordForColour(currOppToken.colour))
+      return getDistanceInTokenPath(
+        prevOppToken.colour,
+        prevOppToken.coordinates,
+        getHomeCoordForColour(prevOppToken.colour)
+      ) <
+        getDistanceInTokenPath(
+          currOppToken.colour,
+          currOppToken.coordinates,
+          getHomeCoordForColour(currOppToken.colour)
+        )
         ? prev
         : curr;
     },
@@ -140,10 +184,7 @@ export function selectBestTokenForBot(
     for (let i = 0; i < movableOpponentTokens.length; i++) {
       const oppToken = movableOpponentTokens[i];
       const isBotTokenAheadOfOppToken = isAheadInTokenPath(t.coordinates, oppToken.coordinates);
-      const dist = getMinDistanceBetweenCoordsInGeneralTokenPath(
-        t.coordinates,
-        oppToken.coordinates
-      );
+      const dist = getDistanceBetweenTokens(t, oppToken);
       if (dist >= 1 && dist <= 6 && isBotTokenAheadOfOppToken) return true;
     }
     return false;
@@ -178,7 +219,8 @@ export function selectBestTokenForBot(
 
   // Move the token into Home if the dice number allows it to reach exactly
   const tokenThatCanReachHome = movableBotTokens.find(
-    (t) => getDistanceFromCurrentCoord(t, botTokenHomeCoord) === diceNumber
+    ({ colour, coordinates }) =>
+      getDistanceInTokenPath(colour, coordinates, botTokenHomeCoord) === diceNumber
   );
   if (tokenThatCanReachHome) return tokenThatCanReachHome;
 
@@ -198,11 +240,10 @@ export function selectBestTokenForBot(
 
       // Encourage moving towards safe spots only when there are nearby threats
       const distanceToSafeSpot = computeDistanceToNearestSafeSpot(t, finalCoord);
-      if (nearbyThreats > 0) riskScore -= distanceToSafeSpot * 1;
+      if (nearbyThreats > 0) riskScore -= distanceToSafeSpot === -1 ? 0 : distanceToSafeSpot * 1;
 
-      // Slightly prioritize moves that progress towards Home
-      // const progressToHome = computeProgressTowardHome(t);
-      // riskScore -= progressToHome * 0.5;
+      // Reduce risk score if the token is on a safe spot, since it cannot be captured there
+      if (isCoordASafeSpot(t.coordinates)) riskScore -= 5;
 
       // Store the risk score along with the token for later comparison
       return { token: t, riskScore };

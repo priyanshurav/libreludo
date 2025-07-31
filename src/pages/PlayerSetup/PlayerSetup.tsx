@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import './PlayerSetup.css';
 import PlayerInput from './components/PlayerInput/PlayerInput';
-import { getPlayerSequence } from '../../game/players/logic';
 import { Link, useNavigate } from 'react-router-dom';
 import type { TPlayerInitData } from '../../types';
 import { ToastContainer, toast } from 'react-toastify';
@@ -9,6 +8,8 @@ import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
 import { useDispatch } from 'react-redux';
 import { setPlayerInitData } from '../../state/slices/playersSlice';
 import { useCleanup } from '../../hooks/useCleanup';
+import { playerCountToWord } from '../../game/players/logic';
+import { playerSequences } from '../../game/players/constants';
 
 const INITIAL_PLAYER_DATA: TPlayerInitData[] = [
   {
@@ -29,8 +30,6 @@ const INITIAL_PLAYER_DATA: TPlayerInitData[] = [
   },
 ];
 
-const LICENSE_URL = 'about:blank';
-
 function PlayerSetup() {
   const [playerCount, setPlayerCount] = useState(2);
   const [dialogWidth, setDialogWidth] = useState(0);
@@ -40,7 +39,10 @@ function PlayerSetup() {
   const navigate = useNavigate();
   const dialogRef = useRef<HTMLDivElement>(null);
   const cleanup = useCleanup();
-  const playerSequence = useMemo(() => getPlayerSequence(playerCount), [playerCount]);
+  const playerSequence = useMemo(
+    () => playerSequences[playerCountToWord(playerCount)],
+    [playerCount]
+  );
 
   useEffect(() => {
     document.title = 'LibreLudo - Player Setup';

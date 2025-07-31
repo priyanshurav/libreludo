@@ -13,7 +13,7 @@ import { areCoordsEqual } from '../game/coords/logic';
 import { updateTokenPositionAndAlignmentThunk } from '../state/thunks/updateTokenPositionAndAlignmentThunk';
 import { setTokenTransitionTime } from '../utils/setTokenTransitionTime';
 import { useCallback } from 'react';
-import { FORWARD_TOKEN_TRANSITION_TIME } from '../game/players/constants';
+import { FORWARD_TOKEN_TRANSITION_TIME } from '../game/tokens/constants';
 import { tokenPaths } from '../game/tokens/paths';
 
 export type TMoveTokenCompletionData = {

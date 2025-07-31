@@ -2,7 +2,7 @@ import type { TPlayerColour, TPlayer, TCoordinate } from '../../types';
 import type { TToken } from '../../types';
 import { areCoordsEqual } from '../coords/logic';
 import { ERRORS } from '../../utils/errors';
-import { getDistanceFromCurrentCoord, getHomeCoordForColour } from '../coords/logic';
+import { getDistanceInTokenPath, getHomeCoordForColour } from '../coords/logic';
 
 export function isAnyTokenActiveOfColour(colour: TPlayerColour, players: TPlayer[]): boolean {
   const player = players.find((p) => p.colour === colour);
@@ -25,8 +25,8 @@ export const tokensWithCoord = (coord: TCoordinate, allTokens: TToken[]) => {
   return allTokens.filter((t) => areCoordsEqual(t.coordinates, coord));
 };
 
-export function getAvailableSteps(token: TToken): number {
-  return getDistanceFromCurrentCoord(token, getHomeCoordForColour(token.colour));
+export function getAvailableSteps({ colour, coordinates }: TToken): number {
+  return getDistanceInTokenPath(colour, coordinates, getHomeCoordForColour(colour));
 }
 
 export function isTokenMovable(token: TToken, diceNumber: number): boolean {

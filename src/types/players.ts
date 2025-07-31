@@ -19,7 +19,10 @@ export type TCoordinate = {
   x: number;
   y: number;
 };
+
 export type TPlayerInitData = {
   isBot: boolean;
   name: string;
 };
+
+export type TPlayerCount = 'two' | 'three' | 'four';

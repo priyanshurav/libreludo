@@ -12,6 +12,7 @@ import { changeTurnThunk } from '../../../../state/thunks/changeTurnThunk';
 import { useMoveAndCaptureToken } from '../../../../hooks/useMoveAndCaptureToken';
 import type { TPlayerInitData } from '../../../../types';
 import { useNavigate } from 'react-router-dom';
+import { playerCountToWord } from '../../../../game/players/logic';
 
 type Props = {
   initData: TPlayerInitData[];
@@ -27,7 +28,7 @@ function Game({ initData }: Props) {
   const moveAndCapture = useMoveAndCaptureToken();
   useEffect(() => {
     if (initData.length === 0) return;
-    dispatch(setPlayerSequence({ noOfPlayers: initData.length }));
+    dispatch(setPlayerSequence({ playerCount: playerCountToWord(initData.length) }));
   }, [dispatch, initData.length]);
 
   useEffect(() => {
@@ -71,7 +72,6 @@ function Game({ initData }: Props) {
         } as React.CSSProperties
       }
     >
-      <input type="text" id="dice-input" style={{ position: 'absolute', top: 0, left: 0 }} />
       <button
         type="button"
         aria-label="Exit button"

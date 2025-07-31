@@ -14,7 +14,7 @@ import { useCoordsToPosition } from './useCoordsToPosition';
 import type { RootState } from '../gameStateStore';
 import { setTokenTransitionTime } from '../utils/setTokenTransitionTime';
 import { useCallback, useRef } from 'react';
-import { BACKWARD_TOKEN_TRANSITION_TIME } from '../game/players/constants';
+import { BACKWARD_TOKEN_TRANSITION_TIME } from '../game/tokens/constants';
 import {
   applyAlignmentData,
   defaultTokenAlignmentData,

@@ -1,4 +1,4 @@
-import type { TPlayerColour } from '../../types';
+import type { TPlayerColour, TPlayerCount } from '../../types';
 
 export const playerColours = {
   blue: '#1295e7ff',
@@ -7,9 +7,9 @@ export const playerColours = {
   yellow: '#ffde15ff',
 };
 
-export const FORWARD_TOKEN_TRANSITION_TIME = 500;
-export const BACKWARD_TOKEN_TRANSITION_TIME = 100;
-export const playerSequenceForFourPlayers: TPlayerColour[] = ['blue', 'red', 'green', 'yellow'];
-export const playerSequenceForThreePlayers: TPlayerColour[] = ['blue', 'red', 'green'];
-export const playerSequenceForTwoPlayers: TPlayerColour[] = ['blue', 'green'];
 export const MAX_PLAYER_NAME_LENGTH = 15;
+export const playerSequences: Record<TPlayerCount, TPlayerColour[]> = {
+  two: ['blue', 'green'],
+  three: ['blue', 'red', 'green'],
+  four: ['blue', 'red', 'green', 'yellow'],
+};

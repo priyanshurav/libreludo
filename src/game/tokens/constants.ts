@@ -156,3 +156,5 @@ export const yellowTokensLockedCoords: TCoordinate[] = [
     y: 1.8,
   },
 ];
+export const FORWARD_TOKEN_TRANSITION_TIME = 500;
+export const BACKWARD_TOKEN_TRANSITION_TIME = 100;

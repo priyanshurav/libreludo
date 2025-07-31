@@ -4,16 +4,17 @@ import { ERRORS } from '../../utils/errors';
 import { TOKEN_START_COORDINATES } from '../../game/tokens/constants';
 import { setTokenTransitionTime } from '../../utils/setTokenTransitionTime';
 import { getAvailableSteps, isTokenMovable } from '../../game/tokens/logic';
-import { FORWARD_TOKEN_TRANSITION_TIME } from '../../game/players/constants';
+import { FORWARD_TOKEN_TRANSITION_TIME } from '../../game/tokens/constants';
 import type {
   TPlayer,
   TPlayerColour,
   TPlayerNameAndColour,
   TCoordinate,
   TPlayerInitData,
+  TPlayerCount,
 } from '../../types';
 import type { TToken, TTokenColourAndId, TTokenAlignmentData } from '../../types';
-import { getPlayerSequence } from '../../game/players/logic';
+import { playerSequences } from '../../game/players/constants';
 
 type TPlayerState = {
   players: TPlayer[];
@@ -95,8 +96,11 @@ const reducers = {
     state.currentPlayerColour = playerSequence[nextPlayerIndex];
   },
 
-  setPlayerSequence: (state: TPlayerState, action: PayloadAction<{ noOfPlayers: number }>) => {
-    state.playerSequence = getPlayerSequence(action.payload.noOfPlayers);
+  setPlayerSequence: (
+    state: TPlayerState,
+    action: PayloadAction<{ playerCount: TPlayerCount }>
+  ) => {
+    state.playerSequence = playerSequences[action.payload.playerCount];
   },
 
   activateTokens: (
