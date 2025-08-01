@@ -8,7 +8,7 @@ import dicePlaceholder from '../../../../assets/dice/dice_placeholder.gif';
 import { useMemo } from 'react';
 import { type TPlayerColour } from '../../../../types';
 import { useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch, RootState } from '../../../../gameStateStore';
+import type { AppDispatch, RootState } from '../../../../state/store';
 import { ERRORS } from '../../../../utils/errors';
 import { rollDiceThunk } from '../../../../state/thunks/rollDiceThunk';
 import { playerColours } from '../../../../game/players/constants';

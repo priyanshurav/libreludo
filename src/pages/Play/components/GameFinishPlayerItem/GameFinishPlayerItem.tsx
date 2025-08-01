@@ -1,6 +1,6 @@
 import { type TPlayerColour } from '../../../../types';
 import { useSelector } from 'react-redux';
-import type { RootState } from '../../../../gameStateStore';
+import type { RootState } from '../../../../state/store';
 import { useEffect, useState } from 'react';
 import rank1Image from '../../../../assets/player_rank_images/1.png';
 import rank2Image from '../../../../assets/player_rank_images/2.png';

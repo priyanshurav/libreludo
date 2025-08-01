@@ -2,7 +2,7 @@ import './Board.css';
 import BoardImage from '../../../../assets/board.svg?react';
 import Token from '../Token/Token';
 import { useDispatch, useSelector } from 'react-redux';
-import type { RootState } from '../../../../gameStateStore';
+import type { RootState } from '../../../../state/store';
 import { useEffect, useRef } from 'react';
 import { setBoardSideLength } from '../../../../state/slices/boardSlice';
 import { ERRORS } from '../../../../utils/errors';

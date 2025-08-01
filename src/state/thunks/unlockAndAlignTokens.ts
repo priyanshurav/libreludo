@@ -1,4 +1,4 @@
-import type { AppDispatch, RootState } from '../../gameStateStore';
+import type { AppDispatch, RootState } from '../store';
 import { unlockToken } from '../slices/playersSlice';
 import { type TTokenColourAndId } from '../../types';
 import { TOKEN_START_COORDINATES } from '../../game/tokens/constants';

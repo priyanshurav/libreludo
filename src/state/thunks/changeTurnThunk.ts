@@ -1,6 +1,6 @@
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../../game/tokens/constants';
 import { selectBestTokenForBot } from '../../game/tokens/selectBestTokenForBot';
-import type { AppDispatch, RootState } from '../../gameStateStore';
+import type { AppDispatch, RootState } from '../store';
 import type { useMoveAndCaptureToken } from '../../hooks/useMoveAndCaptureToken';
 import { setTokenTransitionTime } from '../../utils/setTokenTransitionTime';
 import { changeTurn, deactivateAllTokens } from '../slices/playersSlice';

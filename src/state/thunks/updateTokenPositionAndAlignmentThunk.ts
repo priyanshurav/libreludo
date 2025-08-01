@@ -1,6 +1,6 @@
 import { changeCoordsOfToken } from '../slices/playersSlice';
 import { type TPlayerColour, type TCoordinate } from '../../types';
-import type { AppDispatch, RootState } from '../../gameStateStore';
+import type { AppDispatch, RootState } from '../store';
 import { areCoordsEqual } from '../../game/coords/logic';
 import { tokensWithCoord } from '../../game/tokens/logic';
 import { tokenPaths } from '../../game/tokens/paths';

@@ -8,7 +8,7 @@ import {
 import { type TCoordinate } from '../types';
 import { type TToken } from '../types';
 import { ERRORS } from '../utils/errors';
-import type { AppDispatch } from '../gameStateStore';
+import type { AppDispatch } from '../state/store';
 import { areCoordsEqual } from '../game/coords/logic';
 import { updateTokenPositionAndAlignmentThunk } from '../state/thunks/updateTokenPositionAndAlignmentThunk';
 import { setTokenTransitionTime } from '../utils/setTokenTransitionTime';

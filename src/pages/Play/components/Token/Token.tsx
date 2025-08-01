@@ -7,7 +7,7 @@ import {
 import { type TPlayer, type TPlayerColour } from '../../../../types';
 import { type TToken } from '../../../../types';
 import { useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch, RootState } from '../../../../gameStateStore';
+import type { AppDispatch, RootState } from '../../../../state/store';
 import TokenImage from '../../../../assets/token.svg?react';
 import './Token.css';
 import { useCoordsToPosition } from '../../../../hooks/useCoordsToPosition';

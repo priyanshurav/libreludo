@@ -4,7 +4,7 @@ import { type TPlayerColour } from '../../../../types';
 import Board from '../Board/Board';
 import './Game.css';
 import { useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch, RootState } from '../../../../gameStateStore';
+import type { AppDispatch, RootState } from '../../../../state/store';
 import { registerDice } from '../../../../state/slices/diceSlice';
 import { handlePostDiceRollThunk } from '../../../../state/thunks/handlePostDiceRollThunk';
 import GameFinishedScreen from '../GameFinishedScreen/GameFinishedScreen';

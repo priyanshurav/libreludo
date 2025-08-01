@@ -1,6 +1,6 @@
 import { rollDice, setIsPlaceholderShowing } from '../slices/diceSlice';
 import type { TPlayerColour } from '../../types';
-import type { AppDispatch, RootState } from '../../gameStateStore';
+import type { AppDispatch, RootState } from '../store';
 
 const DICE_PLACEHOLDER_DELAY = 1000;
 

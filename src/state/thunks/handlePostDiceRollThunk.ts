@@ -5,7 +5,7 @@ import {
   resetNumberOfConsecutiveSix,
 } from '../slices/playersSlice';
 import { type TPlayerColour } from '../../types';
-import type { AppDispatch, RootState } from '../../gameStateStore';
+import type { AppDispatch, RootState } from '../store';
 import { areCoordsEqual } from '../../game/coords/logic';
 import { changeTurnThunk } from './changeTurnThunk';
 import type { useMoveAndCaptureToken } from '../../hooks/useMoveAndCaptureToken';

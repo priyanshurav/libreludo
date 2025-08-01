@@ -40,6 +40,24 @@ function nearestTokenToHome(tokens: TToken[], colour: TPlayerColour): TToken | n
   }, null);
 }
 
+function farthestTokenToHome(tokens: TToken[], colour: TPlayerColour): TToken | null {
+  const playerHomeCoord = getHomeCoordForColour(colour);
+  return tokens.reduce<TToken | null>((nearest, token) => {
+    if (!nearest) return token;
+    const nearestDistance = getDistanceInTokenPath(
+      nearest.colour,
+      nearest.coordinates,
+      playerHomeCoord
+    );
+    const tokenDistance = getDistanceInTokenPath(
+      token.colour,
+      nearest.coordinates,
+      playerHomeCoord
+    );
+    return tokenDistance > nearestDistance ? token : nearest;
+  }, null);
+}
+
 function canTokenBeCaptured(
   botToken: TToken,
   tokenFinalCoord: TCoordinate,
@@ -206,12 +224,12 @@ export function selectBestTokenForBot(
 
       // Encourage moving towards safe spots only when there are nearby threats
       const distanceToSafeSpot = computeDistanceToNearestSafeSpot(t, finalCoord);
-      if (nearbyThreats > 0) riskScore -= distanceToSafeSpot === -1 ? 0 : distanceToSafeSpot * 1;
+      if (nearbyThreats > 0) {
+        // Increase risk score if the current coordinate is a safe spot
+        if (isCoordASafeSpot(t.coordinates)) riskScore += 5;
+        riskScore -= distanceToSafeSpot === -1 ? 0 : distanceToSafeSpot * 1;
+      }
 
-      // Increase risk score if the current coordinate is a safe spot
-      if (isCoordASafeSpot(t.coordinates)) riskScore += 5;
-
-      // Store the risk score along with the token for later comparison
       return { token: t, riskScore };
     })
     .filter(Boolean) as { token: TToken; riskScore: number }[];
@@ -222,5 +240,5 @@ export function selectBestTokenForBot(
     .filter((e) => e.riskScore === minRiskScore)
     .map((e) => e.token);
 
-  return nearestTokenToHome(tokensWithMinRiskScore, botPlayerColour);
+  return farthestTokenToHome(tokensWithMinRiskScore, botPlayerColour);
 }

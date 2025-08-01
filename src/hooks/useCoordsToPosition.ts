@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import type { TCoordinate } from '../types';
 import type { TTokenAlignmentData } from '../types';
-import type { RootState } from '../gameStateStore';
+import type { RootState } from '../state/store';
 import { useCallback, useRef } from 'react';
 
 export const useCoordsToPosition = (): ((
