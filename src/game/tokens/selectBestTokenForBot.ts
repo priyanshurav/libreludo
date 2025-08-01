@@ -91,34 +91,6 @@ function computeDistanceToNearestSafeSpot(botToken: TToken, tokenFinalCoord: TCo
     : -1;
 }
 
-// console.log(
-//   getDistanceBetweenTokens(
-//     {
-//       colour: 'blue',
-//       coordinates: { x: 6, y: 14 },
-//       hasTokenReachedHome: false,
-//       id: 0,
-//       initialCoords: { x: 0, y: 0 },
-//       isActive: true,
-//       isDirectionForward: true,
-//       isLocked: false,
-//       tokenAlignmentData: defaultTokenAlignmentData,
-//     },
-//     {
-//       colour: 'green',
-//       coordinates: { x: 8, y: 13 },
-//       hasTokenReachedHome: false,
-//       id: 0,
-//       initialCoords: { x: 0, y: 0 },
-//       isActive: true,
-//       isDirectionForward: true,
-//       isLocked: false,
-//       tokenAlignmentData: defaultTokenAlignmentData,
-//     }
-//   ),
-//   isAheadInTokenPath({ x: 8, y: 13 }, { x: 6, y: 14 })
-// );
-
 export function selectBestTokenForBot(
   botPlayerColour: TPlayerColour,
   diceNumber: number,
@@ -134,45 +106,41 @@ export function selectBestTokenForBot(
   // Find all bot tokens that can capture an opponent token with the current dice roll.
   // Among the possible captures, choose the one that targets the opponent token nearest to its Home (i.e., hardest for opponent to recover).
   // Return the bot token that should perform the capture, along with the flag indicating a second chance (as capturing grants another turn in Ludo).
-  const capturableTokens = movableBotTokens
-    .map((t) => {
-      const finalCoord = getFinalCoord(t, diceNumber);
-      if (!finalCoord) return null;
-      const capturableToken = allTokens.find(
-        (t) => t.colour !== botPlayerColour && areCoordsEqual(finalCoord, t.coordinates)
-      );
-      if (capturableToken) return { byWhichBotToken: t, opponentToken: capturableToken };
-      return null;
-    })
-    .filter(Boolean) as TTokenCaptureInfo[];
+  const nearestOpponentTokenToHome = (
+    movableBotTokens
+      .map((t) => {
+        const finalCoord = getFinalCoord(t, diceNumber);
+        if (!finalCoord) return null;
+        const capturableToken = allTokens.find(
+          (t) => t.colour !== botPlayerColour && areCoordsEqual(finalCoord, t.coordinates)
+        );
+        if (capturableToken) return { byWhichBotToken: t, opponentToken: capturableToken };
+        return null;
+      })
+      .filter(Boolean) as TTokenCaptureInfo[]
+  ).reduce<TTokenCaptureInfo | null>((prev, curr) => {
+    if (!prev) return curr;
+    const { opponentToken: prevOppToken } = prev;
+    const { opponentToken: currOppToken } = curr;
+    return getDistanceInTokenPath(
+      prevOppToken.colour,
+      prevOppToken.coordinates,
+      getHomeCoordForColour(prevOppToken.colour)
+    ) <
+      getDistanceInTokenPath(
+        currOppToken.colour,
+        currOppToken.coordinates,
+        getHomeCoordForColour(currOppToken.colour)
+      )
+      ? prev
+      : curr;
+  }, null);
+
+  if (nearestOpponentTokenToHome) return nearestOpponentTokenToHome.byWhichBotToken;
 
   // If there exists a token that can be unlocked, unlock it and grant a second turn.
   const unlockableTokens = botTokens.filter((t) => t.isLocked && !t.hasTokenReachedHome);
   if (unlockableTokens.length > 0 && diceNumber === 6) return unlockableTokens[0];
-
-  const nearestOpponentTokenToHome = capturableTokens.reduce<TTokenCaptureInfo | null>(
-    (prev, curr) => {
-      if (!prev) return curr;
-      const { opponentToken: prevOppToken } = prev;
-      const { opponentToken: currOppToken } = curr;
-      return getDistanceInTokenPath(
-        prevOppToken.colour,
-        prevOppToken.coordinates,
-        getHomeCoordForColour(prevOppToken.colour)
-      ) <
-        getDistanceInTokenPath(
-          currOppToken.colour,
-          currOppToken.coordinates,
-          getHomeCoordForColour(currOppToken.colour)
-        )
-        ? prev
-        : curr;
-    },
-    null
-  );
-
-  if (capturableTokens.length > 0 && nearestOpponentTokenToHome)
-    return nearestOpponentTokenToHome.byWhichBotToken;
 
   // Identify bot tokens that are at risk of being captured by an opponent's token.
   // A token is considered at risk if:
@@ -195,8 +163,6 @@ export function selectBestTokenForBot(
   // Prioritize tokens that can enter or progress inside their Home Entry Path (safe, irreversible progress).
   // Select the one closest to Home and move it (no second chance granted).
   const tokensInOrEnteringHomePath = movableBotTokens.filter((t) => {
-    // const currentCoordIndex = botTokenPath.findIndex((c) => areCoordsEqual(t.coordinates, c));
-    // const finalCoord = botTokenPath[currentCoordIndex + diceNumber];
     const finalCoord = getFinalCoord(t, diceNumber);
     if (!finalCoord) return false;
     const willTokenBeInHomeEntryPath = isCoordInHomeEntryPathForColour(finalCoord, t.colour);
@@ -242,6 +208,9 @@ export function selectBestTokenForBot(
       const distanceToSafeSpot = computeDistanceToNearestSafeSpot(t, finalCoord);
       if (nearbyThreats > 0) riskScore -= distanceToSafeSpot === -1 ? 0 : distanceToSafeSpot * 1;
 
+      // Increase risk score if the current coordinate is a safe spot
+      if (isCoordASafeSpot(t.coordinates)) riskScore += 5;
+
       // Store the risk score along with the token for later comparison
       return { token: t, riskScore };
     })
@@ -252,5 +221,6 @@ export function selectBestTokenForBot(
   const tokensWithMinRiskScore = tokenRisks
     .filter((e) => e.riskScore === minRiskScore)
     .map((e) => e.token);
+
   return nearestTokenToHome(tokensWithMinRiskScore, botPlayerColour);
 }
