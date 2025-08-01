@@ -50,7 +50,7 @@ function canTokenBeCaptured(
     const oppToken = opponentTokens[i];
     if (
       isCoordInHomeEntryPathForColour(oppToken.coordinates, oppToken.colour) ||
-      isAheadInTokenPath(oppToken.coordinates, tokenFinalCoord)
+      isAheadInTokenPath(oppToken, { ...botToken, coordinates: tokenFinalCoord })
     )
       continue;
     const dist = getDistanceBetweenTokens({ ...botToken, coordinates: tokenFinalCoord }, oppToken);
@@ -78,7 +78,7 @@ function countNearbyActiveOpponents(
 function computeDistanceToNearestSafeSpot(botToken: TToken, tokenFinalCoord: TCoordinate): number {
   if (isCoordInHomeEntryPathForColour(tokenFinalCoord, botToken.colour)) return 0;
   const nearestSafeSpot = TOKEN_SAFE_COORDINATES.filter((c) =>
-    isAheadInTokenPath(c, botToken.coordinates)
+    isAheadInTokenPath({ ...botToken, coordinates: c }, botToken)
   ).reduce<TCoordinate | null>((nearest, curr) => {
     if (!nearest) return curr;
     const nearestDist = getDistanceInTokenPath(botToken.colour, tokenFinalCoord, nearest);
@@ -183,7 +183,7 @@ export function selectBestTokenForBot(
     if (isCoordASafeSpot(t.coordinates)) return false;
     for (let i = 0; i < movableOpponentTokens.length; i++) {
       const oppToken = movableOpponentTokens[i];
-      const isBotTokenAheadOfOppToken = isAheadInTokenPath(t.coordinates, oppToken.coordinates);
+      const isBotTokenAheadOfOppToken = isAheadInTokenPath(t, oppToken);
       const dist = getDistanceBetweenTokens(t, oppToken);
       if (dist >= 1 && dist <= 6 && isBotTokenAheadOfOppToken) return true;
     }
@@ -232,7 +232,7 @@ export function selectBestTokenForBot(
       let riskScore = 0;
 
       // Heavy penalty if the token can be captured immediately by opponents
-      if (canTokenBeCaptured(t, finalCoord, movableOpponentTokens)) riskScore += 10;
+      if (canTokenBeCaptured(t, finalCoord, movableOpponentTokens)) riskScore += 15;
 
       // Add risk based on number of nearby active opponent tokens within dice range
       const nearbyThreats = countNearbyActiveOpponents(t, finalCoord, movableOpponentTokens);
@@ -241,9 +241,6 @@ export function selectBestTokenForBot(
       // Encourage moving towards safe spots only when there are nearby threats
       const distanceToSafeSpot = computeDistanceToNearestSafeSpot(t, finalCoord);
       if (nearbyThreats > 0) riskScore -= distanceToSafeSpot === -1 ? 0 : distanceToSafeSpot * 1;
-
-      // Reduce risk score if the token is on a safe spot, since it cannot be captured there
-      if (isCoordASafeSpot(t.coordinates)) riskScore -= 5;
 
       // Store the risk score along with the token for later comparison
       return { token: t, riskScore };

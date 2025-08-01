@@ -10,6 +10,7 @@ import { setPlayerInitData } from '../../state/slices/playersSlice';
 import { useCleanup } from '../../hooks/useCleanup';
 import { playerCountToWord } from '../../game/players/logic';
 import { playerSequences } from '../../game/players/constants';
+import bg from '../../assets/bg.jpg';
 
 const INITIAL_PLAYER_DATA: TPlayerInitData[] = [
   {
@@ -76,7 +77,7 @@ function PlayerSetup() {
   return isLoading ? (
     <LoadingScreen />
   ) : (
-    <div className="player-setup">
+    <div className="player-setup" style={{ backgroundImage: `url(${bg})` }}>
       <div
         className="player-setup-dialog"
         ref={dialogRef}

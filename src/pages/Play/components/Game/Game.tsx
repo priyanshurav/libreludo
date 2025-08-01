@@ -13,6 +13,7 @@ import { useMoveAndCaptureToken } from '../../../../hooks/useMoveAndCaptureToken
 import type { TPlayerInitData } from '../../../../types';
 import { useNavigate } from 'react-router-dom';
 import { playerCountToWord } from '../../../../game/players/logic';
+import bg from '../../../../assets/bg.jpg';
 
 type Props = {
   initData: TPlayerInitData[];
@@ -69,6 +70,7 @@ function Game({ initData }: Props) {
       style={
         {
           '--board-block-size': `${boardBlockSize}px`,
+          backgroundImage: `url(${bg})`,
         } as React.CSSProperties
       }
     >

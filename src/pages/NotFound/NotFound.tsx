@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
 import './NotFound.css';
+import { useEffect } from 'react';
 
 function NotFound() {
+  useEffect(() => {
+    document.title = '404 Not Found';
+  }, []);
   return (
     <div className="not-found-container">
       <div className="not-found-dialog">

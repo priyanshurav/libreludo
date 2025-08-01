@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import './HowToPlay.css';
 
 function HowToPlay() {
+  useEffect(() => {
+    document.title = 'LibreLudo - How to Play';
+  }, []);
   return (
     <div className="how-to-play-container">
       <div className="how-to-play">

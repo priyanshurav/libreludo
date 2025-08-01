@@ -39,11 +39,28 @@ export function isCoordInHomeEntryPathForColour(
 }
 
 /**
- * Returns true if coord1 is ahead of coord2 in general token path
+ * Returns true if token1 is ahead of token2
  */
-export function isAheadInTokenPath(coord1: TCoordinate, coord2: TCoordinate): boolean {
-  const coord1Index = expandedGeneralTokenPath.findIndex((c) => areCoordsEqual(coord1, c));
-  const coord2Index = expandedGeneralTokenPath.findIndex((c) => areCoordsEqual(coord2, c));
+export function isAheadInTokenPath(token1: TToken, token2: TToken): boolean {
+  const coord1 = token1.coordinates;
+  const coord2 = token2.coordinates;
+
+  const tokenPath1 = tokenPaths[token1.colour];
+  const tokenPath2 = tokenPaths[token2.colour];
+
+  const areCoordsOverlapping =
+    tokenPath1.find((c) => areCoordsEqual(c, coord2)) &&
+    tokenPath2.find((c) => areCoordsEqual(c, coord1));
+
+  if (!areCoordsOverlapping) return false;
+
+  const coord1Index = expandedGeneralTokenPath.findIndex((c) =>
+    areCoordsEqual(token1.coordinates, c)
+  );
+  const coord2Index = expandedGeneralTokenPath.findIndex((c) =>
+    areCoordsEqual(token2.coordinates, c)
+  );
+
   return coord1Index > coord2Index;
 }
 
