@@ -40,24 +40,6 @@ function nearestTokenToHome(tokens: TToken[], colour: TPlayerColour): TToken | n
   }, null);
 }
 
-function farthestTokenToHome(tokens: TToken[], colour: TPlayerColour): TToken | null {
-  const playerHomeCoord = getHomeCoordForColour(colour);
-  return tokens.reduce<TToken | null>((nearest, token) => {
-    if (!nearest) return token;
-    const nearestDistance = getDistanceInTokenPath(
-      nearest.colour,
-      nearest.coordinates,
-      playerHomeCoord
-    );
-    const tokenDistance = getDistanceInTokenPath(
-      token.colour,
-      nearest.coordinates,
-      playerHomeCoord
-    );
-    return tokenDistance > nearestDistance ? token : nearest;
-  }, null);
-}
-
 function canTokenBeCaptured(
   botToken: TToken,
   tokenFinalCoord: TCoordinate,
@@ -240,5 +222,5 @@ export function selectBestTokenForBot(
     .filter((e) => e.riskScore === minRiskScore)
     .map((e) => e.token);
 
-  return farthestTokenToHome(tokensWithMinRiskScore, botPlayerColour);
+  return nearestTokenToHome(tokensWithMinRiskScore, botPlayerColour);
 }

@@ -110,9 +110,13 @@ const reducers = {
     const player = getPlayer(state, action.payload.colour);
     if (action.payload.all)
       return player.tokens.forEach((t) => {
-        if (!t.hasTokenReachedHome && getAvailableSteps(t) >= action.payload.diceNumber)
+        if (
+          (!t.hasTokenReachedHome && t.isLocked) ||
+          (!t.isLocked && getAvailableSteps(t) >= action.payload.diceNumber)
+        )
           t.isActive = true;
       });
+
     player.tokens.forEach((t) => {
       if (isTokenMovable(t, action.payload.diceNumber)) t.isActive = true;
     });

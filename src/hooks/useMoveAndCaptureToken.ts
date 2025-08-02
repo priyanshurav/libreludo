@@ -4,17 +4,14 @@ import { type TToken } from '../types';
 import { useCaptureTokenInSameCoord } from './useCaptureTokenInSameCoord';
 import { useMoveTokenForward } from './useMoveTokenForward';
 import type { TMoveData } from '../types/tokens';
-import { getDistanceInTokenPath, getHomeCoordForColour } from '../game/coords/logic';
+import { getAvailableSteps } from '../game/tokens/logic';
 
 export function useMoveAndCaptureToken() {
   const moveToken = useMoveTokenForward();
   const captureToken = useCaptureTokenInSameCoord();
   const dispatch = useDispatch();
   return async (token: TToken, diceNumber: number): Promise<TMoveData | null> => {
-    if (
-      getDistanceInTokenPath(token.colour, token.coordinates, getHomeCoordForColour(token.colour)) <
-      diceNumber
-    ) {
+    if (getAvailableSteps(token) < diceNumber) {
       dispatch(deactivateAllTokens(token.colour));
       console.log(new Error('Invalid move'));
       return null;

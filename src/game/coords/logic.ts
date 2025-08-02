@@ -4,23 +4,40 @@ import { tokenPaths, expandedGeneralTokenPath, expandedTokenHomeEntryPath } from
 
 export function getDistanceInTokenPath(
   colour: TPlayerColour,
-  initialCoords: TCoordinate,
+  initialCoord: TCoordinate,
   targetCoord: TCoordinate
-) {
-  const currentCoordIndex = tokenPaths[colour].findIndex((v) => areCoordsEqual(v, initialCoords));
-  const startCoordIndex = tokenPaths[colour].findIndex((v) => areCoordsEqual(v, targetCoord));
-  return Math.abs(currentCoordIndex - startCoordIndex);
+): number {
+  const initialCoordIndex = tokenPaths[colour].findIndex((v) => areCoordsEqual(v, initialCoord));
+  const targetCoordIndex = tokenPaths[colour].findIndex((v) => areCoordsEqual(v, targetCoord));
+  if (initialCoordIndex === -1 || targetCoordIndex === -1) return -1;
+  return Math.abs(initialCoordIndex - targetCoordIndex);
+}
+
+export function areTokensOnOverlappingPaths(token1: TToken, token2: TToken): boolean {
+  const coord1 = token1.coordinates;
+  const coord2 = token2.coordinates;
+
+  const tokenPath1 = tokenPaths[token1.colour];
+  const tokenPath2 = tokenPaths[token2.colour];
+
+  const tokenPath1CoordIndex = tokenPath1.findIndex((c) => areCoordsEqual(c, coord1));
+  const tokenPath2CoordIndex = tokenPath2.findIndex((c) => areCoordsEqual(c, coord2));
+
+  const areCoordsOverlapping =
+    tokenPath1
+      .slice(tokenPath1CoordIndex, tokenPath1.length)
+      .find((c) => areCoordsEqual(c, coord2)) ||
+    tokenPath2
+      .slice(tokenPath2CoordIndex, tokenPath2.length)
+      .find((c) => areCoordsEqual(c, coord1));
+
+  return !!areCoordsOverlapping;
 }
 
 export function getDistanceBetweenTokens(token1: TToken, token2: TToken): number {
   const { coordinates: coord1 } = token1;
   const { coordinates: coord2 } = token2;
-  const tokenPath1 = tokenPaths[token1.colour];
-  const tokenPath2 = tokenPaths[token2.colour];
-  const areCoordsOverlapping =
-    tokenPath1.find((c) => areCoordsEqual(c, coord2)) &&
-    tokenPath2.find((c) => areCoordsEqual(c, coord1));
-  if (!areCoordsOverlapping) return -1;
+  if (!areTokensOnOverlappingPaths(token1, token2)) return -1;
   const index1 = expandedGeneralTokenPath.findIndex((c) => areCoordsEqual(c, coord1));
   const index2 = expandedGeneralTokenPath.findIndex((c) => areCoordsEqual(c, coord2));
   const pathLength = expandedGeneralTokenPath.length;
@@ -42,17 +59,7 @@ export function isCoordInHomeEntryPathForColour(
  * Returns true if token1 is ahead of token2
  */
 export function isAheadInTokenPath(token1: TToken, token2: TToken): boolean {
-  const coord1 = token1.coordinates;
-  const coord2 = token2.coordinates;
-
-  const tokenPath1 = tokenPaths[token1.colour];
-  const tokenPath2 = tokenPaths[token2.colour];
-
-  const areCoordsOverlapping =
-    tokenPath1.find((c) => areCoordsEqual(c, coord2)) &&
-    tokenPath2.find((c) => areCoordsEqual(c, coord1));
-
-  if (!areCoordsOverlapping) return false;
+  if (!areTokensOnOverlappingPaths(token1, token2)) return false;
 
   const coord1Index = expandedGeneralTokenPath.findIndex((c) =>
     areCoordsEqual(token1.coordinates, c)

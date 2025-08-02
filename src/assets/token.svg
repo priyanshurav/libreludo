@@ -77,7 +77,7 @@
         fill: #c4c4c4;
         fill-opacity: 1;
         stroke: #000000;
-        stroke-width: 0.35;
+        stroke-width: 0.38;
         stroke-linecap: round;
         stroke-linejoin: round;
         stroke-dasharray: none;
