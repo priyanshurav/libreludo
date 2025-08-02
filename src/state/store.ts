@@ -9,6 +9,7 @@ export const store = configureStore({
     board: boardReducer,
     dice: diceReducer,
   },
+  devTools: import.meta.env.DEV,
 });
 
 export type RootState = ReturnType<typeof store.getState>;

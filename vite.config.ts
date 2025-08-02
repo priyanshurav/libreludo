@@ -14,10 +14,17 @@ import { VitePWA } from 'vite-plugin-pwa';
 // } as PluginOption;
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
-    svgr(),
+    svgr({
+      svgrOptions: {
+        plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx'],
+        svgoConfig: {
+          plugins: ['preset-default'],
+        },
+      },
+    }),
     checker({ typescript: { tsconfigPath: './tsconfig.app.json' } }),
     ViteImageOptimizer(),
     VitePWA({
@@ -51,6 +58,7 @@ export default defineConfig({
           'icons/**/*.{png,svg,ico}',
           '_redirects',
         ],
+        sourcemap: mode === 'development',
         globIgnores: ['icons/**/web*'],
         navigateFallback: '/index.html',
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
@@ -93,4 +101,4 @@ export default defineConfig({
     }),
     // fullReloadAlways,
   ],
-});
+}));
