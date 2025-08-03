@@ -17,14 +17,14 @@ export function updateTokenPositionAndAlignmentThunk({
 }) {
   return (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(changeCoordsOfToken({ colour, id, newCoords }));
-    const allTokens = getState().players.players.flatMap((p) => p.tokens);
+    const players = getState().players.players;
     const tokenPath = tokenPaths[colour];
     const currentCoordIndex = tokenPath.findIndex((c) => areCoordsEqual(c, newCoords));
     const previousCoord =
       currentCoordIndex === 0 ? { x: -1, y: -1 } : tokenPath[currentCoordIndex - 1];
-    const tokensInCurrentCoord = tokensWithCoord(newCoords, allTokens);
-    const tokensInPrevCoord = tokensWithCoord(previousCoord, allTokens);
-    applyAlignmentData(tokensInCurrentCoord, dispatch);
-    applyAlignmentData(tokensInPrevCoord, dispatch);
+    const tokensInCurrentCoord = tokensWithCoord(newCoords, players);
+    const tokensInPrevCoord = tokensWithCoord(previousCoord, players);
+    if (tokensInCurrentCoord.length !== 0) applyAlignmentData(tokensInCurrentCoord, dispatch);
+    if (tokensInPrevCoord.length !== 0) applyAlignmentData(tokensInPrevCoord, dispatch);
   };
 }

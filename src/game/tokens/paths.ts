@@ -1,7 +1,9 @@
 import type { TCoordinate, TPlayerColour } from '../../types';
 import type { TTokenPath } from '../../types';
 import { TOKEN_HOME_ENTRY_PATH, GENERAL_TOKEN_PATH } from './constants';
-function getIntegersBetween(a: number, b: number) {
+
+export function getIntegersBetween(a: number, b: number): number[] {
+  if (a === b) return [a];
   let result = [];
   const start = Math.min(a, b) + 1;
   const end = Math.max(a, b);
@@ -15,7 +17,7 @@ function getIntegersBetween(a: number, b: number) {
   return [a, ...result, b];
 }
 
-function expandTokenPath(tokenPaths: TTokenPath[]): TCoordinate[] {
+export function expandTokenPath(tokenPaths: TTokenPath[]): TCoordinate[] {
   const expandedPath: TCoordinate[] = [];
   for (let i = 0; i < tokenPaths.length; i++) {
     const path = tokenPaths[i] as TTokenPath;

@@ -10,20 +10,21 @@ export function isAnyTokenActiveOfColour(colour: TPlayerColour, players: TPlayer
   return player.tokens.some((t) => t.isActive);
 }
 
-export const getOnlyTokenMovable = (
+export function getOnlyTokenMovable(
   colour: TPlayerColour,
   diceNumber: number,
   players: TPlayer[]
-) => {
+): TToken | null {
   const player = players.find((p) => p.colour === colour);
   if (!player) throw new Error(ERRORS.playerDoesNotExist(colour));
   const movableTokens = player.tokens.filter((t) => isTokenMovable(t, diceNumber));
   return movableTokens.length === 1 ? movableTokens[0] : null;
-};
+}
 
-export const tokensWithCoord = (coord: TCoordinate, allTokens: TToken[]) => {
+export function tokensWithCoord(coord: TCoordinate, players: TPlayer[]): TToken[] {
+  const allTokens = players.flatMap((p) => p.tokens);
   return allTokens.filter((t) => areCoordsEqual(t.coordinates, coord));
-};
+}
 
 export function getAvailableSteps({ colour, coordinates }: TToken): number {
   return getDistanceInTokenPath(colour, coordinates, getHomeCoordForColour(colour));

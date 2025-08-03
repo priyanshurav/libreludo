@@ -715,7 +715,8 @@ const tokenAlignmentData: Record<number, TTokenAlignmentData[]> = {
 };
 
 export function getTokenAlignmentData(numberOfTokensInOneTile: number): TTokenAlignmentData[] {
-  if (numberOfTokensInOneTile > 16) throw new Error('One tile cannot contain more than 16 tokens');
+  if (numberOfTokensInOneTile > 16 || numberOfTokensInOneTile <= 0)
+    throw new Error('Invalid numberOfTokensInOneTile');
   return tokenAlignmentData[numberOfTokensInOneTile];
 }
 

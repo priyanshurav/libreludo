@@ -27,7 +27,7 @@ describe('coords/logic', () => {
   describe('getHomeCoordForColour', () => {
     it.each(playerSequences.four)('returns correct home coordinate for %s player', (colour) => {
       const tokenPath = tokenPaths[colour];
-      expect(getHomeCoordForColour(colour)).to.deep.equal(tokenPath[tokenPath.length - 1]);
+      expect(getHomeCoordForColour(colour)).toEqual(tokenPath[tokenPath.length - 1]);
     });
     it('throws an error for invalid player colour', () => {
       expect(() => getHomeCoordForColour('black' as never)).toThrowError();

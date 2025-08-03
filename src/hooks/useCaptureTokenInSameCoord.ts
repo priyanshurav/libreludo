@@ -35,12 +35,12 @@ export function useCaptureTokenInSameCoord() {
       return new Promise((resolve) => {
         if (capturingToken.isLocked)
           throw new Error(ERRORS.lockedToken(capturingToken.colour, capturingToken.id));
-        const allTokens = playersRef.current.flatMap((p) => p.tokens);
+        const players = playersRef.current;
 
         if (TOKEN_SAFE_COORDINATES.find((c) => areCoordsEqual(c, latestCoord)))
           return resolve(false);
 
-        const capturableTokens = tokensWithCoord(latestCoord, allTokens).filter(
+        const capturableTokens = tokensWithCoord(latestCoord, players).filter(
           (t) => t.colour !== capturingToken.colour
         );
 

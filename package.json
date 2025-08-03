@@ -10,12 +10,15 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "host": "vite --host",
-    "test": "vitest",
+    "test": "vitest run --reporter verbose",
+    "test:watch": "vitest --reporter verbose",
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
+    "@types/lodash": "^4.17.20",
     "framer-motion": "^12.23.0",
+    "lodash": "^4.17.21",
     "react": "^19.1.0",
     "react-confetti": "^6.4.0",
     "react-dom": "^19.1.0",

@@ -1,6 +1,7 @@
 import type { TPlayerColour, TCoordinate } from '../../types';
 import type { TToken } from '../../types';
 import { ERRORS } from '../../utils/errors';
+import { defaultTokenAlignmentData } from './alignment';
 import { TOKEN_LOCKED_COORDINATES } from './constants';
 
 export function genLockedTokens(colour: TPlayerColour): TToken[] {
@@ -19,11 +20,7 @@ export function genLockedTokens(colour: TPlayerColour): TToken[] {
       isDirectionForward: true,
       hasTokenReachedHome: false,
       initialCoords: coordinateList[i],
-      tokenAlignmentData: {
-        xOffset: 0,
-        yOffset: 0,
-        scaleFactor: 1,
-      },
+      tokenAlignmentData: defaultTokenAlignmentData,
     });
   }
 

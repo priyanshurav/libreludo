@@ -31,7 +31,7 @@ export function areTokensOnOverlappingPaths(token1: TToken, token2: TToken): boo
       .slice(tokenPath2CoordIndex, tokenPath2.length)
       .find((c) => areCoordsEqual(c, coord1));
 
-  return !!areCoordsOverlapping;
+  return Boolean(areCoordsOverlapping);
 }
 
 export function getDistanceBetweenTokens(token1: TToken, token2: TToken): number {

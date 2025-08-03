@@ -36,7 +36,7 @@ const initialState: TPlayerState = {
   playerFinishOrder: [],
 };
 
-function getPlayer(state: TPlayerState, colour: TPlayerColour) {
+export function getPlayer(state: TPlayerState, colour: TPlayerColour) {
   const playerIndex = state.players.findIndex((p) => p.colour === colour);
   const player = state.players[playerIndex];
   if (!player) throw new Error(ERRORS.playerDoesNotExist(colour));
