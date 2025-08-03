@@ -4,7 +4,7 @@ import Token from '../Token/Token';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../../../state/store';
 import { useEffect, useRef } from 'react';
-import { setBoardSideLength } from '../../../../state/slices/boardSlice';
+import { resizeBoard } from '../../../../state/slices/boardSlice';
 import { ERRORS } from '../../../../utils/errors';
 import Dice from '../Dice/Dice';
 import type { TPlayerColour } from '../../../../types';
@@ -24,7 +24,7 @@ function Board({ onDiceClick: onDiceRoll }: Props) {
     if (!boardNode) throw new Error(ERRORS.boardDoesNotExist());
     const resizeObserver = new ResizeObserver(() => {
       const boardSideLength = boardNode.getBoundingClientRect().width;
-      dispatch(setBoardSideLength(boardSideLength));
+      dispatch(resizeBoard(boardSideLength));
     });
     resizeObserver.observe(boardNode);
     return () => {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { playerCountToWord } from '../../src/game/players/logic';
 
-describe('players/logic', () => {
+describe('Test players/logic', () => {
   describe('playerCountToWord', () => {
     it('should return correct word for player counts 2, 3, and 4', () => {
       expect(playerCountToWord(2)).toBe('two');

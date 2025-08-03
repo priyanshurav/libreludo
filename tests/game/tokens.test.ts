@@ -17,7 +17,7 @@ import { cloneDeep } from 'lodash';
 import { DUMMY_TOKEN } from '../fixtures/token.dummy';
 import { getHomeCoordForColour } from '../../src/game/coords/logic';
 
-describe('tokens/paths', () => {
+describe('Test tokens/paths', () => {
   describe('getIntegersBetween', () => {
     it('should return inclusive range from a to b when a < b', () => {
       expect(getIntegersBetween(2, 5)).toEqual([2, 3, 4, 5]);
@@ -97,7 +97,7 @@ describe('tokens/paths', () => {
   });
 });
 
-describe('tokens/factory', () => {
+describe('Test tokens/factory', () => {
   describe('genLockedTokens', () => {
     it.each(playerSequences.four)('should generate locked tokens for %s player', (colour) => {
       const lockedTokens = genLockedTokens(colour);
@@ -122,7 +122,7 @@ describe('tokens/factory', () => {
   });
 });
 
-describe('tokens/alignment', () => {
+describe('Test tokens/alignment', () => {
   describe('getTokenAlignmentData', () => {
     it('returns alignment data array matching the number of tokens requested', () => {
       expect(getTokenAlignmentData(3)).toHaveLength(3);
@@ -137,7 +137,7 @@ describe('tokens/alignment', () => {
   });
 });
 
-describe('tokens/logic', () => {
+describe('Test tokens/logic', () => {
   describe('isAnyTokenActiveOfColour', () => {
     it('returns true if any player has an active token of the specified colour', () => {
       const players = cloneDeep(DUMMY_PLAYERS);

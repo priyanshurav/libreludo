@@ -15,7 +15,7 @@ import { TOKEN_SAFE_COORDINATES } from '../../src/game/tokens/constants';
 import { DUMMY_TOKEN } from '../fixtures/token.dummy';
 import type { TToken } from '../../src/types';
 
-describe('coords/logic', () => {
+describe('Test coords/logic', () => {
   describe('areCoordsEqual', () => {
     it('returns true when coordinates are equal', () => {
       expect(areCoordsEqual({ x: 3, y: 5 }, { x: 3, y: 5 })).toBe(true);

@@ -7,18 +7,18 @@ type TBoardState = {
   tokenWidth: number;
 };
 
-const initialState: TBoardState = {
+export const initialState: TBoardState = {
   boardSideLength: 0,
   boardBlockSize: 0,
   tokenHeight: 0,
   tokenWidth: 0,
 };
 
-const NUMBER_OF_BLOCKS_IN_ONE_ROW = 15;
-const TOKEN_WIDTH_HEIGHT_RATIO = 0.625;
+export const NUMBER_OF_BLOCKS_IN_ONE_ROW = 15;
+export const TOKEN_WIDTH_HEIGHT_RATIO = 0.625;
 
 const reducers = {
-  setBoardSideLength: (state: TBoardState, action: PayloadAction<number>) => {
+  resizeBoard: (state: TBoardState, action: PayloadAction<number>) => {
     state.boardSideLength = action.payload;
     state.boardBlockSize = action.payload / NUMBER_OF_BLOCKS_IN_ONE_ROW;
     state.tokenHeight = (action.payload / NUMBER_OF_BLOCKS_IN_ONE_ROW) * 0.8;
@@ -34,6 +34,6 @@ const boardSlice = createSlice({
   reducers,
 });
 
-export const { setBoardSideLength, clearBoardState } = boardSlice.actions;
+export const { resizeBoard, clearBoardState } = boardSlice.actions;
 
 export default boardSlice.reducer;

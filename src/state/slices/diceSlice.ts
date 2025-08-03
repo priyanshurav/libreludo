@@ -2,6 +2,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { TPlayerColour } from '../../types';
 import { ERRORS } from '../../utils/errors';
 import type { TDice } from '../../types';
+import { getRandomNumberBetweenOneAndSix } from '../../utils/getRandomNumberBetweenOneAndSix';
 
 // const blue = [6, 5, 5, 5];
 // const red = [6, 6, 1, 1];
@@ -9,23 +10,12 @@ import type { TDice } from '../../types';
 // const red = Array(100).fill(5);
 // let i1 = 0;
 // let i2 = 0;
-const initialState: TDice[] = [];
+export const initialState: TDice[] = [];
 
-function getDice(state: TDice[], colour: TPlayerColour): TDice {
+export function getDice(state: TDice[], colour: TPlayerColour): TDice {
   const dice = state.find((d) => d.colour === colour);
   if (!dice) throw new Error(ERRORS.diceDoesNotExist(colour));
   return dice;
-}
-
-function getRandomNumberBetweenOneAndSix(): number {
-  if (window.crypto?.getRandomValues) {
-    const array = new Uint32Array(1);
-    window.crypto.getRandomValues(array);
-    return (array[0] % 6) + 1;
-  } else {
-    // Fallback
-    return Math.floor(Math.random() * 6) + 1;
-  }
 }
 
 const reducers = {
@@ -44,7 +34,7 @@ const reducers = {
     dice.isPlaceholderShowing = action.payload.isPlaceholderShowing;
   },
   rollDice: (state: TDice[], action: PayloadAction<{ colour: TPlayerColour }>) => {
-    // const diceNumber = parseInt(
+    // let diceNumber = parseInt(
     //   document.querySelector<HTMLInputElement>('#dice-input')?.value as string
     // );
     const diceNumber = getRandomNumberBetweenOneAndSix();
@@ -62,6 +52,10 @@ const reducers = {
     //   diceNumber = red[i2];
     //   // i2++;
     // }
+    // if (action.payload.colour === 'green')
+    //   diceNumber = parseInt(
+    //     document.querySelector<HTMLInputElement>('#dice-input-bot')?.value as string
+    //   );
     const dice = getDice(state, action.payload.colour);
     dice.diceNumber = diceNumber;
   },
