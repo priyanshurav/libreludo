@@ -26,7 +26,7 @@ type TPlayerState = {
   playerFinishOrder: TPlayerNameAndColour[];
 };
 
-const initialState: TPlayerState = {
+export const initialState: TPlayerState = {
   players: [],
   playerInitData: [],
   currentPlayerColour: null,
@@ -108,7 +108,7 @@ const reducers = {
     action: PayloadAction<{ all: boolean; colour: TPlayerColour; diceNumber: number }>
   ) => {
     const player = getPlayer(state, action.payload.colour);
-    if (action.payload.all)
+    if (action.payload.all) {
       return player.tokens.forEach((t) => {
         if (
           (!t.hasTokenReachedHome && t.isLocked) ||
@@ -116,7 +116,7 @@ const reducers = {
         )
           t.isActive = true;
       });
-
+    }
     player.tokens.forEach((t) => {
       if (isTokenMovable(t, action.payload.diceNumber)) t.isActive = true;
     });
@@ -129,11 +129,10 @@ const reducers = {
 
   unlockToken: (state: TPlayerState, action: PayloadAction<TTokenColourAndId>) => {
     const token = getToken(state, action.payload.colour, action.payload.id);
-    // if (!token.isLocked)
-    // throw new Error(ERRORS.tokenAlreadyUnlocked(action.payload.colour, action.payload.id));
+    if (!token.isLocked)
+      throw new Error(ERRORS.tokenAlreadyUnlocked(action.payload.colour, action.payload.id));
     token.isLocked = false;
     token.coordinates = TOKEN_START_COORDINATES[action.payload.colour];
-    // token.coordinates = TOKEN_START_COORDINATES['blue'];
   },
   lockToken: (state: TPlayerState, action: PayloadAction<TTokenColourAndId>) => {
     const token = getToken(state, action.payload.colour, action.payload.id);
