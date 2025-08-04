@@ -90,6 +90,7 @@ const pwaConfig: Partial<VitePWAOptions> = {
 // https://vite.dev/config/
 export default defineConfig({
   test: {
+    environment: 'jsdom',
     coverage: {
       provider: 'istanbul',
       reporter: ['text', 'json', 'html'],
