@@ -18,19 +18,17 @@
 
 ## ▶️ Play LibreLudo
 
-🟢 **[Click here to play the full game now](https://libreludo.netlify.app)** — no download needed. Just roll the dice and start playing!
+🟢 <a href="https://libreludo.netlify.app" target="_blank" rel="noopener noreferrer">Click here to play the full game now</a> — no download needed. Just roll the dice and start playing!
 
 ---
 
 ## ✨ Features
 
-- 🤖 **Bot Opponents** – Challenge computer players with basic strategy
 - 🎮 **2–4 Player Local Matches** – Mix human and bot players on one device
+- 🤖 **Bot Opponents** – Challenge computer players with basic strategy
 - ⚛️ **React + Redux Toolkit** – Predictable and scalable game state
-- 🗺️ **Multi-Page App** – Navigate between game, settings, and about pages with React Router
 - 🚀 **Fast & Lightweight** – Built with Vite for high performance
 - 📱 **Responsive** – Optimized for mobile, tablet, and desktop
-- 💡 **Modular Architecture** – Easy to extend and customize
 
 ---
 
