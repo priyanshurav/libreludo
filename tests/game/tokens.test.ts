@@ -1,9 +1,14 @@
-import { describe, it, expect, assert } from 'vitest';
+import { describe, it, expect, assert, vi } from 'vitest';
 import { expandTokenPath, getIntegersBetween } from '../../src/game/tokens/paths';
 import type { TCoordinate, TPlayer, TToken, TTokenPath } from '../../src/types';
 import { playerSequences } from '../../src/game/players/constants';
 import { genLockedTokens } from '../../src/game/tokens/factory';
-import { defaultTokenAlignmentData, getTokenAlignmentData } from '../../src/game/tokens/alignment';
+import {
+  applyAlignmentData,
+  defaultTokenAlignmentData,
+  getTokenAlignmentData,
+  tokenAlignmentData,
+} from '../../src/game/tokens/alignment';
 import { TOKEN_LOCKED_COORDINATES, TOKEN_START_COORDINATES } from '../../src/game/tokens/constants';
 import { DUMMY_PLAYERS } from '../fixtures/players.dummy';
 import {
@@ -125,14 +130,24 @@ describe('Test tokens/factory', () => {
 describe('Test tokens/alignment', () => {
   describe('getTokenAlignmentData', () => {
     it('returns alignment data array matching the number of tokens requested', () => {
-      expect(getTokenAlignmentData(3)).toHaveLength(3);
-      expect(getTokenAlignmentData(7)).toHaveLength(7);
-      expect(getTokenAlignmentData(16)).toHaveLength(16);
+      expect(getTokenAlignmentData(3)).toEqual(tokenAlignmentData[3]);
+      expect(getTokenAlignmentData(7)).toEqual(tokenAlignmentData[7]);
+      expect(getTokenAlignmentData(16)).toEqual(tokenAlignmentData[16]);
     });
     it('throws error for invalid token count', () => {
       expect(() => getTokenAlignmentData(17)).toThrowError();
       expect(() => getTokenAlignmentData(0)).toThrowError();
       expect(() => getTokenAlignmentData(-1)).toThrowError();
+    });
+  });
+  describe('applyAlignmentData', () => {
+    it('should throw an error if not all tokens have the same coordinate', () => {
+      const tokens: TToken[] = [
+        { ...DUMMY_TOKEN, colour: 'blue', id: 0, coordinates: { x: 6, y: 3 } },
+        { ...DUMMY_TOKEN, colour: 'blue', id: 1, coordinates: { x: 8, y: 1 } },
+        { ...DUMMY_TOKEN, colour: 'green', id: 0, coordinates: { x: 11, y: 6 } },
+      ];
+      expect(() => applyAlignmentData(tokens, vi.fn())).toThrowError();
     });
   });
 });

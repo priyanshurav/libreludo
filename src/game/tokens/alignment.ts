@@ -5,7 +5,7 @@ import { areCoordsEqual } from '../coords/logic';
 
 export const defaultTokenAlignmentData = { xOffset: 0, yOffset: 0, scaleFactor: 1 };
 
-const tokenAlignmentData: Record<number, TTokenAlignmentData[]> = {
+export const tokenAlignmentData: Record<number, TTokenAlignmentData[]> = {
   1: [defaultTokenAlignmentData],
   2: [
     {
@@ -725,6 +725,7 @@ export function applyAlignmentData(tokens: TToken[], dispatch: Dispatch<UnknownA
     throw new Error('All tokens must have the same coordinate');
 
   const alignmentData = getTokenAlignmentData(tokens.length);
+  console.log(setTokenAlignmentData);
 
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i];
