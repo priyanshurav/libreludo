@@ -1,54 +1,62 @@
-# React + TypeScript + Vite
+<p align="center">
+  <img src="./public/logo.png" alt="LibreLudo Logo" width="180" />
+</p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<h1 align="center">🎲 LibreLudo</h1>
 
-Currently, two official plugins are available:
+<p align="center">
+  A modern, open-source Ludo game built with React, Redux, Vite, and React Router — with a clean UI, local multiplayer, and bot opponents.
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<p align="center">
+  <a href="https://libreludo.netlify.app" target="_blank">
+    <img src="https://img.shields.io/badge/Play-Now-brightgreen?style=for-the-badge&logo=netlify" alt="Play LibreLudo" />
+  </a>
+</p>
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ▶️ Play LibreLudo
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+🟢 **[Click here to play the full game now](https://libreludo.netlify.app)** — no download needed. Just roll the dice and start playing!
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## ✨ Features
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+- 🤖 **Bot Opponents** – Challenge computer players with basic strategy
+- 🎮 **2–4 Player Local Matches** – Mix human and bot players on one device
+- ⚛️ **React + Redux Toolkit** – Predictable and scalable game state
+- 🗺️ **Multi-Page App** – Navigate between game, settings, and about pages with React Router
+- 🚀 **Fast & Lightweight** – Built with Vite for high performance
+- 📱 **Responsive** – Optimized for mobile, tablet, and desktop
+- 💡 **Modular Architecture** – Easy to extend and customize
+
+---
+
+## ⚙️ Tech Stack
+
+- **React** + **Vite**
+- **Redux Toolkit** for state
+- **React Router DOM** for routing
+- **TypeScript**
+- **Vitest + React Testing Library** for testing
+- **Netlify** for hosting
+
+---
+
+## 🗺️ Routes
+
+| Path           | Description             |
+| -------------- | ----------------------- |
+| `/`            | Home Page               |
+| `/setup`       | Player setup            |
+| `/play`        | Start and play the game |
+| `/how-to-play` | How to Play Guide       |
+| `*`            | 404 Not Found           |
+
+---
+
+## License
+
+This software is licensed under the MIT License. See the LICENSE for more info
