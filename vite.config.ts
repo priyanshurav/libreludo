@@ -5,14 +5,6 @@ import checker from 'vite-plugin-checker';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import { VitePWA, type VitePWAOptions } from 'vite-plugin-pwa';
 
-// const fullReloadAlways: PluginOption = {
-//   name: 'full-reload-always',
-//   handleHotUpdate({ server }) {
-//     server.ws.send({ type: 'full-reload' });
-//     return [];
-//   },
-// } as PluginOption;
-
 const pwaConfig: Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
   manifest: {
@@ -109,6 +101,5 @@ export default defineConfig({
     checker({ typescript: { tsconfigPath: './tsconfig.app.json' } }),
     ViteImageOptimizer(),
     VitePWA(pwaConfig),
-    // fullReloadAlways,
   ],
 });
