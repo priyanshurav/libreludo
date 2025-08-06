@@ -208,7 +208,7 @@ export function selectBestTokenForBot(
       const distanceToSafeSpot = computeDistanceToNearestSafeSpot(t, finalCoord);
       if (nearbyThreats > 0) {
         // Increase risk score if the current coordinate is a safe spot
-        if (isCoordASafeSpot(t.coordinates)) riskScore += 5;
+        if (isCoordASafeSpot(t.coordinates)) riskScore += 10;
         riskScore -= distanceToSafeSpot === -1 ? 0 : distanceToSafeSpot * 1;
       }
 
