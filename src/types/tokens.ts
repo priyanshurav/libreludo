@@ -22,7 +22,8 @@ export type TToken = {
   isActive: boolean;
   isDirectionForward: boolean;
   hasTokenReachedHome: boolean;
-}; // import { getMinDistanceBetweenCoordsInGeneralTokenPath } from './logic';
+};
+
 export type TTokenPath = {
   startCoords: TCoordinate;
   endCoords: TCoordinate;
@@ -32,5 +33,7 @@ export type TTokenTriggerCoordinates = {
   newPathTriggerCoord: TCoordinate;
   winningCoord: TCoordinate;
 };
+
 export type TMoveData = { isCaptured: boolean; hasTokenReachedHome: boolean };
-export type TTokenClickData = { id: number; colour: TPlayerColour; coords: TCoordinate };
+
+export type TTokenClickData = { timestamp: number; id: number; colour: TPlayerColour };

@@ -60,9 +60,9 @@ function Board({ onDiceClick: onDiceRoll }: Props) {
     if (!tokenToMove || tokenToMove.isLocked) return;
 
     setTokenClickData({
+      timestamp: Date.now(),
       colour: tokenToMove.colour,
       id: tokenToMove.id,
-      coords,
     });
   };
 

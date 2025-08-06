@@ -19,8 +19,6 @@ import { unlockAndAlignTokens } from '../../../../state/thunks/unlockAndAlignTok
 import { playerColours } from '../../../../game/players/constants';
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../../../../game/tokens/constants';
 import { TOKEN_START_COORDINATES } from '../../../../game/tokens/constants';
-import { isEqual } from 'lodash';
-import { areCoordsEqual } from '../../../../game/coords/logic';
 
 type Props = {
   colour: TPlayerColour;
@@ -84,16 +82,11 @@ function Token({ colour, id, tokenClickData }: Props) {
     const prevClickData = tokenClickDataRef.current;
     const newTokenClickData = tokenClickData;
 
-    if (!newTokenClickData || isEqual(prevClickData, newTokenClickData)) return;
+    if (!newTokenClickData || prevClickData?.timestamp === newTokenClickData.timestamp) return;
     tokenClickDataRef.current = newTokenClickData;
 
-    if (
-      newTokenClickData.colour === colour &&
-      newTokenClickData.id === id &&
-      areCoordsEqual(newTokenClickData.coords, coordinates)
-    )
-      executeTokenMove();
-  }, [colour, coordinates, executeTokenMove, id, tokenClickData]);
+    if (newTokenClickData.colour === colour && newTokenClickData.id === id) executeTokenMove();
+  }, [colour, executeTokenMove, id, tokenClickData]);
 
   useEffect(() => {
     if (!isLocked && isTokenUnlockedInitially) {
