@@ -17,7 +17,7 @@ type Props = {
 
 function Board({ onDiceClick: onDiceRoll }: Props) {
   const { players, currentPlayerColour } = useSelector((state: RootState) => state.players);
-  const boardBlockSize = useSelector((state: RootState) => state.board.boardBlockSize);
+  const boardTileSize = useSelector((state: RootState) => state.board.boardTileSize);
   const dice = useSelector((state: RootState) => state.dice);
   const [tokenClickData, setTokenClickData] = useState<TTokenClickData | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
@@ -46,7 +46,7 @@ function Board({ onDiceClick: onDiceRoll }: Props) {
     const boardY = bottom - e.clientY;
     const tileStartCoords = Array(NUMBER_OF_BLOCKS_IN_ONE_ROW)
       .fill(null)
-      .map((_, i) => (i + 1) * boardBlockSize);
+      .map((_, i) => (i + 1) * boardTileSize);
 
     const coordX = tileStartCoords.findIndex((v) => boardX < v);
     const coordY = tileStartCoords.findIndex((v) => boardY < v);

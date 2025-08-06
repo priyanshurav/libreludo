@@ -18,7 +18,7 @@ type Props = {
 
 function GameFinishPlayerItem({ colour, isLast, name, rank }: Props) {
   const [rankImage, setRankImage] = useState('');
-  const { boardBlockSize } = useSelector((state: RootState) => state.board);
+  const { boardTileSize } = useSelector((state: RootState) => state.board);
   useEffect(() => {
     if (rank === 4) return;
     switch (rank) {
@@ -50,7 +50,7 @@ function GameFinishPlayerItem({ colour, isLast, name, rank }: Props) {
           <img
             src={rankImage === '' ? undefined : rankImage}
             alt="Rank image"
-            height={boardBlockSize * 1.2}
+            height={boardTileSize * 1.2}
           />
         )}
         <span

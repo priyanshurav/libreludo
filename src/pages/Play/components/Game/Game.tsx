@@ -21,7 +21,7 @@ type Props = {
 
 function Game({ initData }: Props) {
   const dispatch = useDispatch<AppDispatch>();
-  const boardBlockSize = useSelector((state: RootState) => state.board.boardBlockSize);
+  const boardTileSize = useSelector((state: RootState) => state.board.boardTileSize);
   const { playerSequence, isGameEnded, playerFinishOrder, currentPlayerColour, players } =
     useSelector((state: RootState) => state.players);
   const [playersRegisteredInitially, setPlayersRegisteredInitially] = useState(true);
@@ -69,7 +69,7 @@ function Game({ initData }: Props) {
       className="game"
       style={
         {
-          '--board-tile-size': `${boardBlockSize}px`,
+          '--board-tile-size': `${boardTileSize}px`,
           backgroundImage: `url(${bg})`,
         } as React.CSSProperties
       }

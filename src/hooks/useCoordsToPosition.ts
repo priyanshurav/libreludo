@@ -13,13 +13,13 @@ export const useCoordsToPosition = (): ((
   boardDataRef.current = boardData;
   return useCallback((coords: TCoordinate, tokenAlignmentData: TTokenAlignmentData) => {
     const { xOffset, yOffset } = tokenAlignmentData;
-    const { boardBlockSize, boardSideLength, tokenHeight, tokenWidth } = boardDataRef.current;
+    const { boardTileSize, boardSideLength, tokenHeight, tokenWidth } = boardDataRef.current;
 
-    const tileCenterX = coords.x * boardBlockSize + boardBlockSize / 2;
-    const tileCenterY = boardSideLength - ((coords.y + 1) * boardBlockSize - boardBlockSize / 2);
+    const tileCenterX = coords.x * boardTileSize + boardTileSize / 2;
+    const tileCenterY = boardSideLength - ((coords.y + 1) * boardTileSize - boardTileSize / 2);
 
-    const x = `${tileCenterX - tokenWidth / 2 + xOffset * boardBlockSize}px`;
-    const y = `${tileCenterY - tokenHeight / 2 + yOffset * boardBlockSize}px`;
+    const x = `${tileCenterX - tokenWidth / 2 + xOffset * boardTileSize}px`;
+    const y = `${tileCenterY - tokenHeight / 2 + yOffset * boardTileSize}px`;
     return { x, y };
   }, []);
 };

@@ -17,7 +17,7 @@ describe('Test board slice reducers', () => {
       const newState = boardReducer(initialState, resizeBoard(newBoardSideLength));
 
       expect(newState.boardSideLength).toBe(newBoardSideLength);
-      expect(newState.boardBlockSize).toBe(newBoardBlockSize);
+      expect(newState.boardTileSize).toBe(newBoardBlockSize);
       expect(newState.tokenHeight).toBe(newTokenHeight);
       expect(newState.tokenWidth).toBe(newTokenWidth);
     });
