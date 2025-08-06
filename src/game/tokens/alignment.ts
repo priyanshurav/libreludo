@@ -725,7 +725,6 @@ export function applyAlignmentData(tokens: TToken[], dispatch: Dispatch<UnknownA
     throw new Error('All tokens must have the same coordinate');
 
   const alignmentData = getTokenAlignmentData(tokens.length);
-  console.log(setTokenAlignmentData);
 
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i];

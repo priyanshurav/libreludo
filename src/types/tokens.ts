@@ -33,3 +33,4 @@ export type TTokenTriggerCoordinates = {
   winningCoord: TCoordinate;
 };
 export type TMoveData = { isCaptured: boolean; hasTokenReachedHome: boolean };
+export type TTokenClickData = { id: number; colour: TPlayerColour; coords: TCoordinate };

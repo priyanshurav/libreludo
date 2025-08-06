@@ -1,10 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   deactivateAllTokens,
   setIsAnyTokenMoving,
   setTokenDirection,
 } from '../../../../state/slices/playersSlice';
-import { type TPlayer, type TPlayerColour } from '../../../../types';
+import { type TPlayer, type TPlayerColour, type TTokenClickData } from '../../../../types';
 import { type TToken } from '../../../../types';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../../../../state/store';
@@ -19,17 +19,21 @@ import { unlockAndAlignTokens } from '../../../../state/thunks/unlockAndAlignTok
 import { playerColours } from '../../../../game/players/constants';
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../../../../game/tokens/constants';
 import { TOKEN_START_COORDINATES } from '../../../../game/tokens/constants';
+import { isEqual } from 'lodash';
+import { areCoordsEqual } from '../../../../game/coords/logic';
 
 type Props = {
   colour: TPlayerColour;
   id: number;
+  tokenClickData: TTokenClickData | null;
 };
 
-function Token({ colour, id }: Props) {
+function Token({ colour, id, tokenClickData }: Props) {
   const [isTokenUnlockedInitially, setTokenUnlockedInitially] = useState(true);
   const dispatch = useDispatch<AppDispatch>();
   const { tokenHeight, tokenWidth } = useSelector((state: RootState) => state.board);
   const { players } = useSelector((state: RootState) => state.players);
+  const tokenClickDataRef = useRef(tokenClickData);
   const player = useMemo(
     () => players.find((v) => v.colour === colour),
     [players, colour]
@@ -48,19 +52,21 @@ function Token({ colour, id }: Props) {
     state.dice.find((d) => d.colour === colour)
   )?.diceNumber;
   const moveAndCapture = useMoveAndCaptureToken();
-  const handleTokenClick = async () => {
+
+  const unlock = () => {
+    if (!isLocked || !isActive || diceNumber === -1 || !diceNumber) return;
+    dispatch(setIsAnyTokenMoving(true));
+    dispatch(setTokenDirection({ colour, id, isForward: true }));
+    setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME);
+    dispatch(unlockAndAlignTokens({ colour, id }));
+    dispatch(deactivateAllTokens(colour));
+    setTimeout(() => {
+      dispatch(setIsAnyTokenMoving(false));
+    }, FORWARD_TOKEN_TRANSITION_TIME);
+  };
+
+  const executeTokenMove = useCallback(async () => {
     if (!isActive || diceNumber === -1 || !diceNumber) return;
-    if (isLocked) {
-      dispatch(setIsAnyTokenMoving(true));
-      dispatch(setTokenDirection({ colour, id, isForward: true }));
-      setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME);
-      dispatch(unlockAndAlignTokens({ colour, id }));
-      dispatch(deactivateAllTokens(colour));
-      setTimeout(() => {
-        dispatch(setIsAnyTokenMoving(false));
-      }, FORWARD_TOKEN_TRANSITION_TIME);
-      return;
-    }
 
     const moveData = await moveAndCapture(token, diceNumber);
     if (!moveData) return;
@@ -72,7 +78,23 @@ function Token({ colour, id }: Props) {
     ) {
       return dispatch(changeTurnThunk(moveAndCapture));
     }
-  };
+  }, [diceNumber, dispatch, isActive, moveAndCapture, player?.numberOfConsecutiveSix, token]);
+
+  useEffect(() => {
+    const prevClickData = tokenClickDataRef.current;
+    const newTokenClickData = tokenClickData;
+
+    if (!newTokenClickData || isEqual(prevClickData, newTokenClickData)) return;
+    tokenClickDataRef.current = newTokenClickData;
+
+    if (
+      newTokenClickData.colour === colour &&
+      newTokenClickData.id === id &&
+      areCoordsEqual(newTokenClickData.coords, coordinates)
+    )
+      executeTokenMove();
+  }, [colour, coordinates, executeTokenMove, id, tokenClickData]);
+
   useEffect(() => {
     if (!isLocked && isTokenUnlockedInitially) {
       setTokenUnlockedInitially(false);
@@ -90,7 +112,7 @@ function Token({ colour, id }: Props) {
     <div
       id={`${colour}_${id}`}
       className={`token ${isDirectionForward ? '' : 'backward'} `}
-      onClick={handleTokenClick}
+      onClick={unlock}
       style={
         {
           '--token-height': `${tokenHeight}px`,
