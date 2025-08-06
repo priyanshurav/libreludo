@@ -17,20 +17,20 @@
 }
 .game-finished-dialog {
   position: relative;
-  height: calc(var(--board-block-size) * 12);
-  width: calc(var(--board-block-size) * 14);
+  height: calc(var(--board-tile-size) * 12);
+  width: calc(var(--board-tile-size) * 14);
   background-color: white;
   z-index: 25;
-  border-radius: var(--board-block-size);
+  border-radius: var(--board-tile-size);
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: calc(var(--board-block-size) * 0.5);
-  border-radius: calc(var(--board-block-size) * 0.5);
+  padding: calc(var(--board-tile-size) * 0.5);
+  border-radius: calc(var(--board-tile-size) * 0.5);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 .game-finished-text {
-  font-size: var(--board-block-size);
+  font-size: var(--board-tile-size);
   font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-weight: 600;
 }
@@ -48,10 +48,10 @@
   color: white;
   font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   border: none;
-  font-size: calc(var(--board-block-size) * 0.65);
-  padding: calc(var(--board-block-size) * 0.45);
-  margin-top: calc(var(--board-block-size) * 0.45);
-  border-radius: calc(var(--board-block-size) * 0.2);
+  font-size: calc(var(--board-tile-size) * 0.65);
+  padding: calc(var(--board-tile-size) * 0.45);
+  margin-top: calc(var(--board-tile-size) * 0.45);
+  border-radius: calc(var(--board-tile-size) * 0.2);
   text-decoration: none;
   transition: background-color 0.2s ease, transform 0.2s ease;
   cursor: pointer;

@@ -1,7 +1,7 @@
 .board {
   position: relative;
   --board-side-length: 80vh;
-  --player-name-spacing: calc(var(--board-block-size) * 0.25);
+  --player-name-spacing: calc(var(--board-tile-size) * 0.25);
   height: var(--board-side-length);
   width: var(--board-side-length);
 }

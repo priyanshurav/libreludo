@@ -69,7 +69,7 @@ function Game({ initData }: Props) {
       className="game"
       style={
         {
-          '--board-block-size': `${boardBlockSize}px`,
+          '--board-tile-size': `${boardBlockSize}px`,
           backgroundImage: `url(${bg})`,
         } as React.CSSProperties
       }
