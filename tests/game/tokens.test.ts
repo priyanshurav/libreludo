@@ -43,56 +43,56 @@ describe('Test tokens/paths', () => {
   describe('expandTokenPath', () => {
     it('should expand a horizontal path into coordinates with the same y value', () => {
       const expected: TCoordinate[] = [
-        { x: 5, y: 1 },
-        { x: 4, y: 1 },
-        { x: 3, y: 1 },
-        { x: 2, y: 1 },
-        { x: 1, y: 1 },
+        { x: 5, y: 13 },
+        { x: 4, y: 13 },
+        { x: 3, y: 13 },
+        { x: 2, y: 13 },
+        { x: 1, y: 13 },
       ];
-      expect(expandTokenPath([{ startCoords: { x: 5, y: 1 }, endCoords: { x: 1, y: 1 } }])).toEqual(
-        expected
-      );
-      expect(expandTokenPath([{ startCoords: { x: 1, y: 1 }, endCoords: { x: 5, y: 1 } }])).toEqual(
-        [...expected].reverse()
-      );
+      expect(
+        expandTokenPath([{ startCoords: { x: 5, y: 13 }, endCoords: { x: 1, y: 13 } }])
+      ).toEqual(expected);
+      expect(
+        expandTokenPath([{ startCoords: { x: 1, y: 13 }, endCoords: { x: 5, y: 13 } }])
+      ).toEqual([...expected].reverse());
     });
     it('should expand a vertical path into coordinates with the same x value', () => {
       const expected: TCoordinate[] = [
-        { x: 1, y: 5 },
-        { x: 1, y: 4 },
-        { x: 1, y: 3 },
-        { x: 1, y: 2 },
-        { x: 1, y: 1 },
+        { x: 1, y: 9 },
+        { x: 1, y: 10 },
+        { x: 1, y: 11 },
+        { x: 1, y: 12 },
+        { x: 1, y: 13 },
       ];
-      expect(expandTokenPath([{ startCoords: { x: 1, y: 5 }, endCoords: { x: 1, y: 1 } }])).toEqual(
-        expected
-      );
-      expect(expandTokenPath([{ startCoords: { x: 1, y: 1 }, endCoords: { x: 1, y: 5 } }])).toEqual(
-        [...expected].reverse()
-      );
+      expect(
+        expandTokenPath([{ startCoords: { x: 1, y: 9 }, endCoords: { x: 1, y: 13 } }])
+      ).toEqual(expected);
+      expect(
+        expandTokenPath([{ startCoords: { x: 1, y: 13 }, endCoords: { x: 1, y: 9 } }])
+      ).toEqual([...expected].reverse());
     });
     it('should handle multiple token paths and concatenate the results', () => {
       const tokenPaths: TTokenPath[] = [
         {
-          startCoords: { x: 6, y: 1 },
-          endCoords: { x: 6, y: 5 },
+          startCoords: { x: 6, y: 13 },
+          endCoords: { x: 6, y: 9 },
         },
         {
-          startCoords: { x: 5, y: 6 },
-          endCoords: { x: 1, y: 6 },
+          startCoords: { x: 5, y: 8 },
+          endCoords: { x: 1, y: 8 },
         },
       ];
       const expected: TCoordinate[] = [
-        { x: 6, y: 1 },
-        { x: 6, y: 2 },
-        { x: 6, y: 3 },
-        { x: 6, y: 4 },
-        { x: 6, y: 5 },
-        { x: 5, y: 6 },
-        { x: 4, y: 6 },
-        { x: 3, y: 6 },
-        { x: 2, y: 6 },
-        { x: 1, y: 6 },
+        { x: 6, y: 13 },
+        { x: 6, y: 12 },
+        { x: 6, y: 11 },
+        { x: 6, y: 10 },
+        { x: 6, y: 9 },
+        { x: 5, y: 8 },
+        { x: 4, y: 8 },
+        { x: 3, y: 8 },
+        { x: 2, y: 8 },
+        { x: 1, y: 8 },
       ];
       expect(expandTokenPath(tokenPaths)).toEqual(expected);
     });
@@ -143,9 +143,9 @@ describe('Test tokens/alignment', () => {
   describe('applyAlignmentData', () => {
     it('should throw an error if not all tokens have the same coordinate', () => {
       const tokens: TToken[] = [
-        { ...DUMMY_TOKEN, colour: 'blue', id: 0, coordinates: { x: 6, y: 3 } },
-        { ...DUMMY_TOKEN, colour: 'blue', id: 1, coordinates: { x: 8, y: 1 } },
-        { ...DUMMY_TOKEN, colour: 'green', id: 0, coordinates: { x: 11, y: 6 } },
+        { ...DUMMY_TOKEN, colour: 'blue', id: 0, coordinates: { x: 6, y: 11 } },
+        { ...DUMMY_TOKEN, colour: 'blue', id: 1, coordinates: { x: 8, y: 13 } },
+        { ...DUMMY_TOKEN, colour: 'green', id: 0, coordinates: { x: 11, y: 8 } },
       ];
       expect(() => applyAlignmentData(tokens, vi.fn())).toThrowError();
     });
@@ -200,7 +200,7 @@ describe('Test tokens/logic', () => {
       const players = cloneDeep(DUMMY_PLAYERS);
       const bluePlayerTokens = (players.find((p) => p.colour === 'blue') as TPlayer).tokens;
       const greenPlayerTokens = (players.find((p) => p.colour === 'green') as TPlayer).tokens;
-      const commonCoord = { x: 6, y: 3 };
+      const commonCoord = { x: 6, y: 11 };
 
       bluePlayerTokens[0].coordinates = commonCoord;
       bluePlayerTokens[1].coordinates = commonCoord;
@@ -211,15 +211,15 @@ describe('Test tokens/logic', () => {
       assert.sameDeepMembers(tokensWithCoord(commonCoord, players), expected);
     });
     it('returns an empty array if no tokens match the specified coordinate', () => {
-      expect(tokensWithCoord({ x: 7, y: 4 }, DUMMY_PLAYERS)).toEqual([]);
+      expect(tokensWithCoord({ x: 7, y: 10 }, DUMMY_PLAYERS)).toEqual([]);
     });
     it('returns an empty array if players array is empty', () => {
-      expect(tokensWithCoord({ x: 7, y: 4 }, [])).toEqual([]);
+      expect(tokensWithCoord({ x: 7, y: 10 }, [])).toEqual([]);
     });
   });
   describe('getAvailableSteps', () => {
     it('returns the correct number of available steps for a token at a given coordinate and colour', () => {
-      const token: TToken = { ...DUMMY_TOKEN, colour: 'blue', coordinates: { x: 7, y: 1 } };
+      const token: TToken = { ...DUMMY_TOKEN, colour: 'blue', coordinates: { x: 7, y: 13 } };
       expect(getAvailableSteps(token)).toBe(5);
     });
     it('returns zero if the token is at a position with no available moves', () => {
@@ -233,10 +233,10 @@ describe('Test tokens/logic', () => {
   });
   describe('isTokenMovable', () => {
     it.each([
-      [true, false, false, { x: 6, y: 5 }],
-      [false, true, false, { x: 6, y: 5 }],
-      [false, false, true, { x: 6, y: 5 }],
-      [false, false, false, { x: 7, y: 5 }],
+      [true, false, false, { x: 6, y: 9 }],
+      [false, true, false, { x: 6, y: 9 }],
+      [false, false, true, { x: 6, y: 9 }],
+      [false, false, false, { x: 7, y: 9 }],
     ])(
       'return %s if isLocked is %s and hasTokenReachedHome is %s and token is at coordinate %o',
       (expected, isLocked, hasTokenReachedHome, coordinates) => {

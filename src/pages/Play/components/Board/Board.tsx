@@ -41,9 +41,9 @@ function Board({ onDiceClick: onDiceRoll }: Props) {
     if (players.find((p) => p.colour === currentPlayerColour)?.isBot) return;
     const boardNode = boardRef.current;
     if (!boardNode) throw new Error(ERRORS.boardDoesNotExist());
-    const { left, bottom } = boardNode.getBoundingClientRect();
+    const { top, left } = boardNode.getBoundingClientRect();
     const boardX = e.clientX - left;
-    const boardY = bottom - e.clientY;
+    const boardY = e.clientY - top;
     const tileStartCoords = Array(NUMBER_OF_BLOCKS_IN_ONE_ROW)
       .fill(null)
       .map((_, i) => (i + 1) * boardTileSize);
@@ -57,6 +57,7 @@ function Board({ onDiceClick: onDiceRoll }: Props) {
       (t) => t.colour === currentPlayerColour
     )[0];
 
+    console.log(coords);
     if (!tokenToMove || tokenToMove.isLocked) return;
 
     setTokenClickData({

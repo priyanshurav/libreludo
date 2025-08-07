@@ -57,7 +57,7 @@ describe('Test players slice reducers', () => {
     it('should update the coordinates of the specified token for the given player colour', () => {
       const initState = cloneDeep(initialState);
       initState.players = cloneDeep(DUMMY_PLAYERS);
-      const newCoords = { x: 8, y: 3 };
+      const newCoords = { x: 8, y: 11 };
       const tokenColourAndId: TTokenColourAndId = { colour: 'blue', id: 0 };
       const newState = playersReducer(
         initState,
@@ -111,7 +111,7 @@ describe('Test players slice reducers', () => {
       // Should not be activated
       player.tokens[1].isLocked = false;
       player.tokens[1].hasTokenReachedHome = false;
-      player.tokens[1].coordinates = { x: 7, y: 3 };
+      player.tokens[1].coordinates = { x: 7, y: 11 };
 
       // Should be activated
       player.tokens[2].isLocked = true;
@@ -120,7 +120,7 @@ describe('Test players slice reducers', () => {
       // Should be activated
       player.tokens[3].isLocked = false;
       player.tokens[3].hasTokenReachedHome = false;
-      player.tokens[3].coordinates = { x: 6, y: 3 };
+      player.tokens[3].coordinates = { x: 6, y: 11 };
 
       const newState = playersReducer(
         initState,
@@ -146,7 +146,7 @@ describe('Test players slice reducers', () => {
       // Should not be activated
       player.tokens[1].isLocked = false;
       player.tokens[1].hasTokenReachedHome = false;
-      player.tokens[1].coordinates = { x: 7, y: 3 };
+      player.tokens[1].coordinates = { x: 7, y: 11 };
 
       // Should not be activated
       player.tokens[2].isLocked = true;
@@ -155,7 +155,7 @@ describe('Test players slice reducers', () => {
       // Should be activated
       player.tokens[3].isLocked = false;
       player.tokens[3].hasTokenReachedHome = false;
-      player.tokens[3].coordinates = { x: 6, y: 3 };
+      player.tokens[3].coordinates = { x: 6, y: 11 };
 
       const newState = playersReducer(
         initState,
@@ -239,7 +239,7 @@ describe('Test players slice reducers', () => {
       initState.players = cloneDeep(DUMMY_PLAYERS);
       const token = getToken(initState, 'blue', 0);
       token.isLocked = false;
-      token.coordinates = { x: 6, y: 5 };
+      token.coordinates = { x: 6, y: 9 };
       const newState = playersReducer(initState, lockToken({ colour: token.colour, id: token.id }));
       const newToken = getToken(newState, token.colour, token.id);
       expect(newToken.isLocked).toBe(true);
