@@ -60,17 +60,25 @@ function HomePage() {
       </main>
       <footer>
         <div className="text">
-          <a href="#" target="_blank" rel="noopener noreferrer">
-            Made with ❤️ by @username
+          <a href="https://github.com/priyanshurav" target="_blank" rel="noopener noreferrer">
+            Made with ❤️ by @priyanshurav
           </a>
-          <span>Copyright &copy; {new Date().getFullYear()} LibreLudo</span>
+          <span>Copyright &copy; {new Date().getFullYear()} Priyanshu Rav</span>
         </div>
         <div className="links">
-          <a href="#" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://github.com/priyanshurav/libreludo"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <GitHubLogo />
             Repository
           </a>
-          <a href="#" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://github.com/priyanshurav/libreludo/blob/main/LICENSE"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             License
           </a>
         </div>
