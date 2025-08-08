@@ -13,14 +13,16 @@ export const pwaOptions: Partial<VitePWAOptions> = {
     theme_color: '#7C5FFF',
     icons: [
       {
-        src: '/icons/web-app-manifest-192x192.png',
-        sizes: '192x192',
-        type: 'image/png',
-      },
-      {
-        src: '/icons/web-app-manifest-512x512.png',
+        src: '/icons/favicon.png',
         sizes: '512x512',
         type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: '/icons/favicon.svg',
+        sizes: 'any',
+        type: 'image/svg+xml',
+        purpose: 'maskable',
       },
     ],
   },
@@ -31,7 +33,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
       'icons/**/*.{png,svg,ico}',
       '_redirects',
     ],
-    globIgnores: ['icons/**/web*'],
+    globIgnores: ['icons/**/android*'],
     navigateFallback: '/index.html',
     maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
     cleanupOutdatedCaches: true,
