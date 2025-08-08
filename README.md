@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./public/logo.png" alt="LibreLudo Logo" width="180" />
+  <img src="https://libreludo.netlify.app/icons/favicon.png" alt="LibreLudo Logo" width="120" />
 </p>
 
 <h1 align="center">🎲 LibreLudo</h1>
