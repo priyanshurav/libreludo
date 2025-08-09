@@ -28,10 +28,6 @@ jobs:
       - name: Run tests
         run: npm test
 
-      # Build
-      - name: Build
-        run: npm run build
-
       # Publish to Netlify
       - name: Publish to Netlify
         run: npx --yes netlify deploy --prod --dir=dist
