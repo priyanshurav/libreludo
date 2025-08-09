@@ -8,7 +8,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
     name: 'LibreLudo',
     short_name: 'LibreLudo',
     description:
-      'Discover LibreLudo, your go-to open-source site for free Ludo fun. Dive into the classic board game with clever dice strategies and local play-great for players of all ages',
+      'LibreLudo is a free, easy-to-play digital Ludo game with simple gameplay and a clean, user-friendly interface for casual fun.',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
