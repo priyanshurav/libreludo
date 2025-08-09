@@ -68,7 +68,8 @@ function Token({ colour, id, tokenClickData }: Props) {
 
     const moveData = await moveAndCapture(token, diceNumber);
     if (!moveData) return;
-    const { hasTokenReachedHome, isCaptured } = moveData;
+    const { hasTokenReachedHome, isCaptured, hasPlayerWon } = moveData;
+    if (hasPlayerWon) return dispatch(changeTurnThunk(moveAndCapture));
     if (
       (diceNumber !== 6 || player?.numberOfConsecutiveSix >= 3) &&
       !isCaptured &&

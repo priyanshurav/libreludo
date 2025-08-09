@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   deactivateAllTokens,
   markTokenAsReachedHome,
@@ -8,23 +8,26 @@ import {
 import { type TCoordinate } from '../types';
 import { type TToken } from '../types';
 import { ERRORS } from '../utils/errors';
-import type { AppDispatch } from '../state/store';
+import type { AppDispatch, RootState } from '../state/store';
 import { areCoordsEqual } from '../game/coords/logic';
 import { updateTokenPositionAndAlignmentThunk } from '../state/thunks/updateTokenPositionAndAlignmentThunk';
 import { setTokenTransitionTime } from '../utils/setTokenTransitionTime';
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../game/tokens/constants';
 import { tokenPaths } from '../game/tokens/paths';
 
 export type TMoveTokenCompletionData = {
   lastTokenCoord: TCoordinate;
   hasTokenReachedHome: boolean;
+  hasPlayerWon: boolean;
   moved: boolean;
 };
 
 export const useMoveTokenForward = () => {
   const dispatch = useDispatch<AppDispatch>();
-
+  const players = useSelector((state: RootState) => state.players.players);
+  const playersRef = useRef(players);
+  playersRef.current = players;
   return useCallback(
     (diceNumber: number, token: TToken): Promise<TMoveTokenCompletionData> => {
       return new Promise((resolve) => {
@@ -46,9 +49,19 @@ export const useMoveTokenForward = () => {
         const handleTransitionEnd = () => {
           const hasTokenReachedHome = areCoordsEqual(tokenPath[i], tokenPath[tokenPath.length - 1]);
           if (count >= diceNumber || hasTokenReachedHome) {
+            const player = playersRef.current.find((p) => p.colour === colour);
+            if (!player) return;
+            const hasPlayerWon =
+              hasTokenReachedHome &&
+              player.tokens.filter((t) => t.hasTokenReachedHome).length === 3;
             if (hasTokenReachedHome) dispatch(markTokenAsReachedHome({ colour, id }));
             dispatch(setIsAnyTokenMoving(false));
-            resolve({ lastTokenCoord: tokenPath[i], hasTokenReachedHome, moved: true });
+            resolve({
+              lastTokenCoord: tokenPath[i],
+              hasTokenReachedHome,
+              moved: true,
+              hasPlayerWon,
+            });
 
             return tokenEl.removeEventListener('transitionend', handleTransitionEnd);
           }

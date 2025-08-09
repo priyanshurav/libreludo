@@ -48,7 +48,8 @@ export function changeTurnThunk(moveAndCapture: ReturnType<typeof useMoveAndCapt
       }
       const moveData = await moveAndCapture(bestToken, diceNumber);
       if (!moveData) return dispatch(changeTurnThunk(moveAndCapture));
-      const { hasTokenReachedHome, isCaptured } = moveData;
+      const { hasTokenReachedHome, isCaptured, hasPlayerWon } = moveData;
+      if (hasPlayerWon) return setTimeout(() => dispatch(changeTurnThunk(moveAndCapture)), 1000);
       if (!isCaptured && !hasTokenReachedHome && diceNumber !== 6) {
         return setTimeout(() => dispatch(changeTurnThunk(moveAndCapture)), 1000);
       } else {

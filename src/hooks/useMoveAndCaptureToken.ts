@@ -17,9 +17,12 @@ export function useMoveAndCaptureToken() {
       return null;
     }
 
-    const { hasTokenReachedHome, lastTokenCoord, moved } = await moveToken(diceNumber, token);
+    const { hasTokenReachedHome, lastTokenCoord, hasPlayerWon, moved } = await moveToken(
+      diceNumber,
+      token
+    );
     if (!moved) return null;
     const isCaptured = await captureToken(token, lastTokenCoord);
-    return { isCaptured, hasTokenReachedHome };
+    return { isCaptured, hasTokenReachedHome, hasPlayerWon };
   };
 }

@@ -65,7 +65,11 @@ export const handlePostDiceRollThunk = (
         dispatch(changeTurnThunk(moveAndCapture));
         return { shouldContinue: false, moveData };
       }
-      const { hasTokenReachedHome, isCaptured } = moveData;
+      const { hasTokenReachedHome, isCaptured, hasPlayerWon } = moveData;
+      if (hasPlayerWon) {
+        dispatch(changeTurnThunk(moveAndCapture));
+        return { shouldContinue: false, moveData: null };
+      }
       if (!hasTokenReachedHome && !isCaptured && diceNumber !== 6 && !player.isBot) {
         dispatch(changeTurnThunk(moveAndCapture));
         return { shouldContinue: false, moveData: null };
