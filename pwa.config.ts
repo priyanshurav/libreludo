@@ -2,6 +2,8 @@ import type { VitePWAOptions } from 'vite-plugin-pwa';
 
 export const pwaOptions: Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
+  filename: 'sw.js',
+  injectRegister: 'auto',
   manifest: {
     name: 'LibreLudo',
     short_name: 'LibreLudo',
@@ -33,8 +35,9 @@ export const pwaOptions: Partial<VitePWAOptions> = {
       'icons/**/*.{png,svg,ico}',
       '_redirects',
     ],
-    globIgnores: ['icons/**/android*'],
+    globIgnores: ['icons/favicon.png', 'icons/favicon.svg'],
     navigateFallback: '/index.html',
+    mode: process.env.NODE_ENV,
     maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
     cleanupOutdatedCaches: true,
     clientsClaim: true,
