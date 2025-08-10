@@ -5,6 +5,7 @@ import checker from 'vite-plugin-checker';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import { VitePWA } from 'vite-plugin-pwa';
 import { pwaOptions } from './pwa.config';
+import { version } from './package.json';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -14,6 +15,9 @@ export default defineConfig({
       provider: 'istanbul',
       reporter: ['text', 'json', 'html'],
     },
+  },
+  define: {
+    __APP_VERSION__: JSON.stringify(version),
   },
   plugins: [
     react(),
