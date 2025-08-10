@@ -57,4 +57,4 @@
 
 ## License
 
-This software is licensed under the MIT License. See the LICENSE for more info
+This software is licensed under the MIT License. See the <a href="https://github.com/priyanshurav/libreludo/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">LICENSE</a> for more info.
