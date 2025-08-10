@@ -12,6 +12,7 @@ import { playerCountToWord } from '../../game/players/logic';
 import { playerSequences } from '../../game/players/constants';
 import bg from '../../assets/bg.jpg';
 import GitHubButton from 'react-github-btn';
+import GoToButton from '../../components/GoToButton/GoToButton';
 
 const INITIAL_PLAYER_DATA: TPlayerInitData[] = [
   {
@@ -79,7 +80,8 @@ function PlayerSetup() {
     <LoadingScreen />
   ) : (
     <div className="player-setup" style={{ backgroundImage: `url(${bg})` }}>
-      <div style={{ position: 'absolute', top: 0, left: 0 }}>
+      <GoToButton to="/">Go to Home</GoToButton>
+      <div style={{ position: 'absolute', top: 0, right: 0 }}>
         <GitHubButton
           href="https://github.com/priyanshurav"
           data-color-scheme="no-preference: light; light: light; dark: dark;"
