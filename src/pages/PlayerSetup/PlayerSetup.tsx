@@ -89,6 +89,7 @@ function PlayerSetup() {
           Follow @priyanshurav
         </GitHubButton>
       </div>
+      <div className="version">v{__APP_VERSION__}</div>
       <div
         className="player-setup-dialog"
         ref={dialogRef}
