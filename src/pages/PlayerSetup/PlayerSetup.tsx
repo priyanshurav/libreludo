@@ -11,6 +11,7 @@ import { useCleanup } from '../../hooks/useCleanup';
 import { playerCountToWord } from '../../game/players/logic';
 import { playerSequences } from '../../game/players/constants';
 import bg from '../../assets/bg.jpg';
+import GitHubButton from 'react-github-btn';
 
 const INITIAL_PLAYER_DATA: TPlayerInitData[] = [
   {
@@ -78,6 +79,16 @@ function PlayerSetup() {
     <LoadingScreen />
   ) : (
     <div className="player-setup" style={{ backgroundImage: `url(${bg})` }}>
+      <div style={{ position: 'absolute', top: 0, left: 0 }}>
+        <GitHubButton
+          href="https://github.com/priyanshurav"
+          data-color-scheme="no-preference: light; light: light; dark: dark;"
+          data-size="large"
+          aria-label="Follow @priyanshurav on GitHub"
+        >
+          Follow @priyanshurav
+        </GitHubButton>
+      </div>
       <div
         className="player-setup-dialog"
         ref={dialogRef}
