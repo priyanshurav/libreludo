@@ -1,0 +1,19 @@
+.go-to-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #544acf;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.go-to-btn:hover {
+  background-color: #3a30b5;
+}
