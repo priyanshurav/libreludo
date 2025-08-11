@@ -61,14 +61,13 @@ export function isCoordInHomeEntryPathForColour(
 export function isAheadInTokenPath(token1: TToken, token2: TToken): boolean {
   if (!areTokensOnOverlappingPaths(token1, token2)) return false;
 
-  const coord1Index = expandedGeneralTokenPath.findIndex((c) =>
-    areCoordsEqual(token1.coordinates, c)
-  );
-  const coord2Index = expandedGeneralTokenPath.findIndex((c) =>
-    areCoordsEqual(token2.coordinates, c)
-  );
-
-  return coord1Index > coord2Index;
+  const token2Path = tokenPaths[token1.colour];
+  const token2CoordIndex = token2Path.findIndex((c) => areCoordsEqual(c, token2.coordinates));
+  if (token2CoordIndex === -1) return false;
+  for (let i = token2CoordIndex; i < token2CoordIndex + 6; i++) {
+    if (areCoordsEqual(token2Path[i], token1.coordinates)) return true;
+  }
+  return false;
 }
 
 export function isCoordASafeSpot(coord: TCoordinate): boolean {
