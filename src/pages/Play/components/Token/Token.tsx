@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   deactivateAllTokens,
   setIsAnyTokenMoving,
@@ -11,14 +11,12 @@ import type { AppDispatch, RootState } from '../../../../state/store';
 import TokenImage from '../../../../assets/token.svg?react';
 import './Token.css';
 import { useCoordsToPosition } from '../../../../hooks/useCoordsToPosition';
-import { updateTokenPositionAndAlignmentThunk } from '../../../../state/thunks/updateTokenPositionAndAlignmentThunk';
 import { setTokenTransitionTime } from '../../../../utils/setTokenTransitionTime';
 import { changeTurnThunk } from '../../../../state/thunks/changeTurnThunk';
 import { useMoveAndCaptureToken } from '../../../../hooks/useMoveAndCaptureToken';
 import { unlockAndAlignTokens } from '../../../../state/thunks/unlockAndAlignTokens';
 import { playerColours } from '../../../../game/players/constants';
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../../../../game/tokens/constants';
-import { TOKEN_START_COORDINATES } from '../../../../game/tokens/constants';
 
 type Props = {
   colour: TPlayerColour;
@@ -27,7 +25,6 @@ type Props = {
 };
 
 function Token({ colour, id, tokenClickData }: Props) {
-  const [isTokenUnlockedInitially, setTokenUnlockedInitially] = useState(true);
   const dispatch = useDispatch<AppDispatch>();
   const { tokenHeight, tokenWidth } = useSelector((state: RootState) => state.board);
   const { players } = useSelector((state: RootState) => state.players);
@@ -88,19 +85,6 @@ function Token({ colour, id, tokenClickData }: Props) {
 
     if (newTokenClickData.colour === colour && newTokenClickData.id === id) executeTokenMove();
   }, [colour, executeTokenMove, id, tokenClickData]);
-
-  useEffect(() => {
-    if (!isLocked && isTokenUnlockedInitially) {
-      setTokenUnlockedInitially(false);
-      dispatch(
-        updateTokenPositionAndAlignmentThunk({
-          colour,
-          id,
-          newCoords: TOKEN_START_COORDINATES[colour],
-        })
-      );
-    }
-  }, [colour, dispatch, id, isLocked, isTokenUnlockedInitially]);
 
   return (
     <div
