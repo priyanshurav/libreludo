@@ -50,11 +50,17 @@ describe('Test coords/logic', () => {
       const token1: TToken = { ...DUMMY_TOKEN, colour: 'blue', coordinates: { x: 8, y: 13 } };
       const token2: TToken = { ...DUMMY_TOKEN, colour: 'green', coordinates: { x: 12, y: 8 } };
       expect(isAheadInTokenPath(token1, token2)).toBe(true);
+      const token3: TToken = { ...DUMMY_TOKEN, colour: 'blue', coordinates: { x: 6, y: 13 } };
+      const token4: TToken = { ...DUMMY_TOKEN, colour: 'green', coordinates: { x: 8, y: 14 } };
+      expect(isAheadInTokenPath(token3, token4)).toBe(true);
     });
     it('returns false if token1 is behind token2', () => {
       const token1: TToken = { ...DUMMY_TOKEN, colour: 'blue', coordinates: { x: 8, y: 13 } };
       const token2: TToken = { ...DUMMY_TOKEN, colour: 'green', coordinates: { x: 12, y: 8 } };
       expect(isAheadInTokenPath(token2, token1)).toBe(false);
+      const token3: TToken = { ...DUMMY_TOKEN, colour: 'blue', coordinates: { x: 6, y: 13 } };
+      const token4: TToken = { ...DUMMY_TOKEN, colour: 'green', coordinates: { x: 8, y: 14 } };
+      expect(isAheadInTokenPath(token4, token3)).toBe(false);
     });
     it('returns false if token1 is the same as token2', () => {
       const token1: TToken = { ...DUMMY_TOKEN, colour: 'blue', coordinates: { x: 8, y: 13 } };
