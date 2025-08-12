@@ -59,13 +59,24 @@ export function isCoordInHomeEntryPathForColour(
  * Returns true if token1 is ahead of token2
  */
 export function isAheadInTokenPath(token1: TToken, token2: TToken): boolean {
+  if (areCoordsEqual(token1.coordinates, token2.coordinates)) return false;
   if (!areTokensOnOverlappingPaths(token1, token2)) return false;
 
-  const token2Path = tokenPaths[token1.colour];
+  const token1Path = tokenPaths[token1.colour];
+  const token2Path = tokenPaths[token2.colour];
   const token2CoordIndex = token2Path.findIndex((c) => areCoordsEqual(c, token2.coordinates));
-  if (token2CoordIndex === -1) return false;
-  for (let i = token2CoordIndex; i < token2CoordIndex + 6; i++) {
+  const token1CoordIndex = token1Path.findIndex((c) => areCoordsEqual(c, token1.coordinates));
+  const minDist = getDistanceBetweenTokens(token1, token2);
+
+  if (token2CoordIndex === -1 || token1CoordIndex === -1) return false;
+
+  for (let i = token2CoordIndex; i < token2Path.length; i++) {
+    if (i - token2CoordIndex > minDist) break;
     if (areCoordsEqual(token2Path[i], token1.coordinates)) return true;
+  }
+  for (let i = token1CoordIndex; i < token1Path.length; i++) {
+    if (i - token1CoordIndex > minDist) break;
+    if (areCoordsEqual(token1Path[i], token2.coordinates)) return false;
   }
   return false;
 }
