@@ -31,7 +31,7 @@
 }
 .player-name-input {
   padding: calc(var(--dialog-width) / 49) calc(var(--dialog-width) / 35);
-  font-size: calc(var(--dialog-width) / 31);
+  font-size: calc(var(--dialog-width) / 28);
   border: 1px solid #ccc;
   border-radius: calc(var(--dialog-width) / 62);
   outline: none;
