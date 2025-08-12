@@ -44,7 +44,7 @@
 .player-count {
   background: none;
   border: none;
-  font-size: calc(var(--dialog-width) / 25);
+  font-size: calc(var(--dialog-width) / 23);
   font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   transition: background-color 250ms ease-in-out, font-size 100ms ease;
   user-select: none;
@@ -55,7 +55,7 @@
 }
 
 .player-count:active {
-  font-size: calc(var(--dialog-width) / 28);
+  font-size: calc(var(--dialog-width) / 26);
 }
 .player-inputs {
   padding-top: calc(var(--dialog-width) / 20);
@@ -92,8 +92,9 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  padding: 5px;
-  font-size: 1rem;
+  padding: calc(var(--dialog-width) / 60);
+  font-size: calc(var(--dialog-width) / 30);
+  color: rgba(0, 0, 0, 0.65);
   font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
