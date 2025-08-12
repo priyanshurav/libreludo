@@ -91,7 +91,6 @@ function PlayerSetup() {
           Follow @priyanshurav
         </GitHubButton>
       </div>
-      <div className="version">v{__APP_VERSION__}</div>
       <div
         className="player-setup-dialog"
         ref={dialogRef}
@@ -132,6 +131,7 @@ function PlayerSetup() {
         <Link type="button" className="play-btn" to="/play" onClick={handlePlayBtnClick}>
           PLAY
         </Link>
+        <div className="version">v{__APP_VERSION__}</div>
       </div>
       <ToastContainer position="top-center" />
     </div>
