@@ -1,5 +1,5 @@
 .game-finish-player-item {
-  --padding: calc(var(--board-tile-size) * 0.15);
+  --padding: calc(var(--board-tile-size) * 0.3);
   display: grid;
   grid-template-columns: 0.5fr 0.5fr 2fr;
   justify-content: space-evenly;
