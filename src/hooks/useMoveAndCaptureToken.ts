@@ -13,7 +13,6 @@ export function useMoveAndCaptureToken() {
   return async (token: TToken, diceNumber: number): Promise<TMoveData | null> => {
     if (getAvailableSteps(token) < diceNumber) {
       dispatch(deactivateAllTokens(token.colour));
-      console.log(new Error('Invalid move'));
       return null;
     }
 
