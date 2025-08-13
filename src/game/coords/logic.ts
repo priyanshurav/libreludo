@@ -58,7 +58,7 @@ export function isCoordInHomeEntryPathForColour(
 /**
  * Returns true if token1 is ahead of token2
  */
-export function isAheadInTokenPath(token1: TToken, token2: TToken): boolean {
+export function isTokenAhead(token1: TToken, token2: TToken): boolean {
   if (areCoordsEqual(token1.coordinates, token2.coordinates)) return false;
   if (!areTokensOnOverlappingPaths(token1, token2)) return false;
 

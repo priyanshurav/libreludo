@@ -5,7 +5,7 @@ import {
   getDistanceBetweenTokens,
   getDistanceInTokenPath,
   getHomeCoordForColour,
-  isAheadInTokenPath,
+  isTokenAhead,
   isCoordASafeSpot,
   isCoordInHomeEntryPathForColour,
 } from '../../src/game/coords/logic';
@@ -45,30 +45,30 @@ describe('Test coords/logic', () => {
       expect(isCoordASafeSpot(coord)).toBe(false);
     });
   });
-  describe('isAheadInTokenPath', () => {
+  describe('isTokenAhead', () => {
     it('returns true if token1 is ahead of token2', () => {
       const token1: TToken = { ...DUMMY_TOKEN, colour: 'blue', coordinates: { x: 8, y: 13 } };
       const token2: TToken = { ...DUMMY_TOKEN, colour: 'green', coordinates: { x: 12, y: 8 } };
-      expect(isAheadInTokenPath(token1, token2)).toBe(true);
+      expect(isTokenAhead(token1, token2)).toBe(true);
       const token3: TToken = { ...DUMMY_TOKEN, colour: 'blue', coordinates: { x: 6, y: 13 } };
       const token4: TToken = { ...DUMMY_TOKEN, colour: 'green', coordinates: { x: 8, y: 14 } };
-      expect(isAheadInTokenPath(token3, token4)).toBe(true);
+      expect(isTokenAhead(token3, token4)).toBe(true);
     });
     it('returns false if token1 is behind token2', () => {
       const token1: TToken = { ...DUMMY_TOKEN, colour: 'blue', coordinates: { x: 8, y: 13 } };
       const token2: TToken = { ...DUMMY_TOKEN, colour: 'green', coordinates: { x: 12, y: 8 } };
-      expect(isAheadInTokenPath(token2, token1)).toBe(false);
+      expect(isTokenAhead(token2, token1)).toBe(false);
       const token3: TToken = { ...DUMMY_TOKEN, colour: 'blue', coordinates: { x: 6, y: 13 } };
       const token4: TToken = { ...DUMMY_TOKEN, colour: 'green', coordinates: { x: 8, y: 14 } };
-      expect(isAheadInTokenPath(token4, token3)).toBe(false);
+      expect(isTokenAhead(token4, token3)).toBe(false);
     });
     it('returns false if token1 is the same as token2', () => {
       const token1: TToken = { ...DUMMY_TOKEN, colour: 'blue', coordinates: { x: 8, y: 13 } };
-      expect(isAheadInTokenPath(token1, token1)).toBe(false);
+      expect(isTokenAhead(token1, token1)).toBe(false);
     });
     it('returns false when token coordinates do not overlap across token paths', () => {
       expect(
-        isAheadInTokenPath(
+        isTokenAhead(
           { ...DUMMY_TOKEN, colour: 'green', coordinates: { x: 2, y: 6 } },
           { ...DUMMY_TOKEN, colour: 'red', coordinates: { x: 0, y: 8 } }
         )
