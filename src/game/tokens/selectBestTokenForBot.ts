@@ -5,21 +5,42 @@ import { isTokenMovable } from './logic';
 import {
   isCoordASafeSpot,
   isCoordInHomeEntryPathForColour,
-  isAheadInTokenPath,
+  isTokenAhead,
   getDistanceBetweenTokens,
   getDistanceInTokenPath,
   getHomeCoordForColour,
   areCoordsEqual,
 } from '../coords/logic';
 import { tokenPaths } from './paths';
+import { sample } from 'lodash';
 
 type TTokenCaptureInfo = { byWhichBotToken: TToken; opponentToken: TToken };
 
-function getFinalCoord(token: TToken, diceNumber: number): TCoordinate {
+function getFinalCoord(token: TToken, diceNumber: number): TCoordinate | null {
   const tokenPath = tokenPaths[token.colour];
   const currentCoordIndex = tokenPath.findIndex((c) => areCoordsEqual(token.coordinates, c));
-  const finalCoord = tokenPath[currentCoordIndex + diceNumber];
+  if (currentCoordIndex === -1) return null;
+  const finalIndex = currentCoordIndex + diceNumber;
+  if (finalIndex >= tokenPath.length) return null;
+  const finalCoord = tokenPath[finalIndex];
   return finalCoord;
+}
+
+function getTokenProgress(token: TToken): number {
+  const { colour, coordinates, isLocked } = token;
+  if (isLocked) return 0;
+  const tokenPathLength = tokenPaths[colour].length;
+  const dist = getDistanceInTokenPath(colour, coordinates, getHomeCoordForColour(colour));
+  return (tokenPathLength - dist) / tokenPathLength;
+}
+
+function calculateProximityRisk(distance: number, threat: TToken, token: TToken): number {
+  const baseRisk = (7 - distance) * 2.5;
+  const threatProgress = getTokenProgress(threat);
+  const tokenProgress = getTokenProgress(token);
+  const threatMobility = Math.min(1, threatProgress + 0.3);
+
+  return baseRisk * (threatProgress > tokenProgress ? 1.3 : 1) * (1 + threatMobility * 0.2);
 }
 
 function nearestTokenToHome(tokens: TToken[], colour: TPlayerColour): TToken | null {
@@ -31,11 +52,7 @@ function nearestTokenToHome(tokens: TToken[], colour: TPlayerColour): TToken | n
       nearest.coordinates,
       playerHomeCoord
     );
-    const tokenDistance = getDistanceInTokenPath(
-      token.colour,
-      nearest.coordinates,
-      playerHomeCoord
-    );
+    const tokenDistance = getDistanceInTokenPath(token.colour, token.coordinates, playerHomeCoord);
     return tokenDistance < nearestDistance ? token : nearest;
   }, null);
 }
@@ -50,7 +67,7 @@ function canTokenBeCaptured(
     const oppToken = opponentTokens[i];
     if (
       isCoordInHomeEntryPathForColour(oppToken.coordinates, oppToken.colour) ||
-      isAheadInTokenPath(oppToken, { ...botToken, coordinates: tokenFinalCoord })
+      isTokenAhead(oppToken, { ...botToken, coordinates: tokenFinalCoord })
     )
       continue;
     const dist = getDistanceBetweenTokens({ ...botToken, coordinates: tokenFinalCoord }, oppToken);
@@ -59,26 +76,120 @@ function canTokenBeCaptured(
   return false;
 }
 
-function countNearbyActiveOpponents(
+function getNearbyActiveOpponents(
   botToken: TToken,
   tokenFinalCoord: TCoordinate,
   opponentTokens: TToken[]
-): number {
-  if (isCoordInHomeEntryPathForColour(tokenFinalCoord, botToken.colour)) return 0;
-  let threats = 0;
-  for (let i = 0; i < opponentTokens.length; i++) {
-    const oppToken = opponentTokens[i];
-    if (isCoordInHomeEntryPathForColour(oppToken.coordinates, oppToken.colour)) continue;
+): TToken[] {
+  if (isCoordInHomeEntryPathForColour(tokenFinalCoord, botToken.colour)) return [];
+  return opponentTokens.filter((oppToken) => {
+    if (isCoordInHomeEntryPathForColour(oppToken.coordinates, oppToken.colour)) return false;
     const dist = getDistanceBetweenTokens({ ...botToken, coordinates: tokenFinalCoord }, oppToken);
-    if (dist >= 1 && dist <= 6) threats++;
+    if (dist >= 1 && dist <= 6) return true;
+    return false;
+  });
+}
+
+function calculatePositionalBonus(
+  isFinalSafe: boolean,
+  distanceToSafeSpot: number,
+  tokenProgress: number
+): number {
+  let bonus = 0;
+
+  if (isFinalSafe) {
+    bonus += 10;
+  } else if (distanceToSafeSpot !== -1 && distanceToSafeSpot <= 6) {
+    const proximityBonus = Math.max(1, 7 - distanceToSafeSpot);
+    bonus += proximityBonus;
   }
-  return threats;
+
+  const progressBonus = tokenProgress * 3;
+  bonus += progressBonus;
+
+  return bonus;
+}
+
+function assessDefensivePosition(
+  finalCoord: TCoordinate,
+  friendlyTokens: TToken[],
+  nearbyThreats: number
+) {
+  let defensiveValue = 0;
+
+  const friendliesAtPosition = friendlyTokens.filter((token) =>
+    areCoordsEqual(token.coordinates, finalCoord)
+  ).length;
+
+  if (friendliesAtPosition > 0) {
+    defensiveValue += friendliesAtPosition * 2;
+  }
+
+  friendlyTokens.forEach((friendly) => {
+    const distanceToFriendly = getDistanceBetweenTokens(
+      { ...friendly, coordinates: finalCoord },
+      friendly
+    );
+
+    if (distanceToFriendly >= 1 && distanceToFriendly <= 3) {
+      defensiveValue += Math.max(0, 3 - distanceToFriendly);
+    }
+  });
+
+  const advancedFriendlies = friendlyTokens.filter((token) => getTokenProgress(token) > 0.7);
+
+  advancedFriendlies.forEach((advanced) => {
+    const distanceToAdvanced = getDistanceBetweenTokens(
+      { ...advanced, coordinates: finalCoord },
+      advanced
+    );
+
+    if (distanceToAdvanced >= 1 && distanceToAdvanced <= 2) {
+      defensiveValue += 3;
+    }
+  });
+
+  if (nearbyThreats > 2) {
+    defensiveValue = Math.max(0, defensiveValue - nearbyThreats);
+  }
+
+  return defensiveValue;
+}
+
+function assessClusteringRisk(
+  token: TToken,
+  finalCoord: TCoordinate,
+  botTokens: TToken[],
+  threatCount: number
+): number {
+  const friendlyAtFinal = botTokens.filter(
+    (other) => other.id !== token.id && areCoordsEqual(other.coordinates, finalCoord)
+  ).length;
+
+  const friendlyAtCurrent = botTokens.filter(
+    (other) => other.id !== token.id && areCoordsEqual(other.coordinates, token.coordinates)
+  ).length;
+
+  let clusterRisk = 0;
+
+  if (friendlyAtFinal > 0) {
+    const threatMultiplier = Math.max(0.3, 1 - threatCount * 0.2);
+    const clusterPenalty = Math.ceil(friendlyAtFinal * 3 * threatMultiplier);
+    clusterRisk += clusterPenalty;
+  }
+
+  if (friendlyAtCurrent > 0 && threatCount === 0) {
+    const spreadIncentive = Math.ceil(friendlyAtCurrent * 0.8);
+    clusterRisk += spreadIncentive;
+  }
+
+  return clusterRisk;
 }
 
 function computeDistanceToNearestSafeSpot(botToken: TToken, tokenFinalCoord: TCoordinate): number {
-  if (isCoordInHomeEntryPathForColour(tokenFinalCoord, botToken.colour)) return 0;
+  if (isCoordInHomeEntryPathForColour(tokenFinalCoord, botToken.colour)) return -1;
   const nearestSafeSpot = TOKEN_SAFE_COORDINATES.filter((c) =>
-    isAheadInTokenPath({ ...botToken, coordinates: c }, botToken)
+    isTokenAhead({ ...botToken, coordinates: c }, botToken)
   ).reduce<TCoordinate | null>((nearest, curr) => {
     if (!nearest) return curr;
     const nearestDist = getDistanceInTokenPath(botToken.colour, tokenFinalCoord, nearest);
@@ -112,7 +223,8 @@ export function selectBestTokenForBot(
         const finalCoord = getFinalCoord(t, diceNumber);
         if (!finalCoord) return null;
         const capturableToken = allTokens.find(
-          (t) => t.colour !== botPlayerColour && areCoordsEqual(finalCoord, t.coordinates)
+          (token) =>
+            token.colour !== botPlayerColour && areCoordsEqual(finalCoord, token.coordinates)
         );
         if (capturableToken) return { byWhichBotToken: t, opponentToken: capturableToken };
         return null;
@@ -151,7 +263,7 @@ export function selectBestTokenForBot(
     if (isCoordASafeSpot(t.coordinates)) return false;
     for (let i = 0; i < movableOpponentTokens.length; i++) {
       const oppToken = movableOpponentTokens[i];
-      const isBotTokenAheadOfOppToken = isAheadInTokenPath(t, oppToken);
+      const isBotTokenAheadOfOppToken = isTokenAhead(t, oppToken);
       const dist = getDistanceBetweenTokens(t, oppToken);
       if (dist >= 1 && dist <= 6 && isBotTokenAheadOfOppToken) return true;
     }
@@ -197,30 +309,67 @@ export function selectBestTokenForBot(
       if (!finalCoord) return;
       let riskScore = 0;
 
-      // Heavy penalty if the token can be captured immediately by opponents
-      if (canTokenBeCaptured(t, finalCoord, movableOpponentTokens)) riskScore += 15;
-
-      // Add risk based on number of nearby active opponent tokens within dice range
-      const nearbyThreats = countNearbyActiveOpponents(t, finalCoord, movableOpponentTokens);
-      riskScore += nearbyThreats * 2;
-
-      // Encourage moving towards safe spots only when there are nearby threats
+      const nearbyThreats = getNearbyActiveOpponents(t, finalCoord, movableOpponentTokens);
       const distanceToSafeSpot = computeDistanceToNearestSafeSpot(t, finalCoord);
-      if (nearbyThreats > 0) {
-        // Increase risk score if the current coordinate is a safe spot
-        if (isCoordASafeSpot(t.coordinates)) riskScore += 10;
-        riskScore -= distanceToSafeSpot === -1 ? 0 : distanceToSafeSpot * 1;
+      const isCurrentSafe = isCoordASafeSpot(t.coordinates);
+      const isFinalSafe = isCoordASafeSpot(finalCoord);
+      const tokenProgress = getTokenProgress(t);
+
+      if (canTokenBeCaptured(t, finalCoord, movableOpponentTokens)) {
+        const progressMultiplier = Math.pow(tokenProgress, 2);
+        const baseCaptureRisk = 15;
+        const captureRisk = baseCaptureRisk + progressMultiplier * 25;
+        riskScore += captureRisk;
       }
+
+      if (isCurrentSafe && !isFinalSafe && nearbyThreats.length > 0) {
+        const safetyExitRisk = 12 + nearbyThreats.length * 3;
+        riskScore += safetyExitRisk;
+      }
+
+      nearbyThreats.forEach((threat) => {
+        const distance = getDistanceBetweenTokens(t, threat);
+        if (distance >= 1 && distance <= 6) {
+          const proximityRisk = calculateProximityRisk(distance, threat, t);
+          riskScore += proximityRisk;
+        }
+      });
+
+      const clusteringRisk = assessClusteringRisk(
+        t,
+        finalCoord,
+        movableBotTokens,
+        nearbyThreats.length
+      );
+
+      riskScore += clusteringRisk;
+
+      const positionalBonus = calculatePositionalBonus(
+        isFinalSafe,
+        distanceToSafeSpot,
+        tokenProgress
+      );
+
+      riskScore -= positionalBonus;
+
+      const defensiveValue = assessDefensivePosition(
+        finalCoord,
+        movableBotTokens,
+        nearbyThreats.length
+      );
+
+      riskScore -= defensiveValue;
 
       return { token: t, riskScore };
     })
     .filter(Boolean) as { token: TToken; riskScore: number }[];
 
-  const minRiskScore = Math.min(...tokenRisks.map((e) => e.riskScore));
+  if (tokenRisks.length === 0) return null;
 
+  const minRiskScore = Math.min(...tokenRisks.map((e) => e.riskScore));
   const tokensWithMinRiskScore = tokenRisks
     .filter((e) => e.riskScore === minRiskScore)
     .map((e) => e.token);
 
-  return nearestTokenToHome(tokensWithMinRiskScore, botPlayerColour);
+  return sample(tokensWithMinRiskScore) || null;
 }
