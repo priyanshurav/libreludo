@@ -31,10 +31,11 @@ export const pwaOptions: Partial<VitePWAOptions> = {
   workbox: {
     globPatterns: [
       'assets/**/*.{js,css,ico,png,jpg,jpeg,svg,webp,gif,woff2,woff,ttf,eot,json}',
-      '*.{html,txt,xml,webmanifest}',
+      '*.html',
       'icons/**/*.{png,svg,ico}',
     ],
     globIgnores: ['icons/favicon.png', 'icons/favicon.svg'],
+    navigateFallbackDenylist: [/sitemap\.xml$/, /robots\.txt$/, /manifest\.webmanifest$/],
     navigateFallback: '/index.html',
     mode: process.env.NODE_ENV,
     maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
@@ -69,18 +70,6 @@ export const pwaOptions: Partial<VitePWAOptions> = {
           },
           cacheableResponse: {
             statuses: [0, 200],
-          },
-        },
-      },
-      {
-        urlPattern: /\.(xml|txt|webmanifest)$/,
-        handler: 'NetworkFirst',
-        options: {
-          cacheName: 'network-first-text-assets',
-          networkTimeoutSeconds: 3, // fallback to cache after 3s
-          expiration: {
-            maxEntries: 10,
-            maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days in cache
           },
         },
       },
