@@ -31,11 +31,19 @@ export const pwaOptions: Partial<VitePWAOptions> = {
   workbox: {
     globPatterns: [
       'assets/**/*.{js,css,ico,png,jpg,jpeg,svg,webp,gif,woff2,woff,ttf,eot,json}',
-      '*.{html,txt}',
+      '*.html',
       'icons/**/*.{png,svg,ico}',
-      '_redirects',
     ],
-    globIgnores: ['icons/favicon.png', 'icons/favicon.svg'],
+    globIgnores: [
+      'icons/favicon.png',
+      'icons/favicon.svg',
+      '**/sitemap.xml',
+      '**/robots.txt',
+      '**/*.webmanifest',
+      '**/sw.js',
+      '**/registerSW.js',
+      '**/workbox-*.js',
+    ],
     navigateFallback: '/index.html',
     mode: process.env.NODE_ENV,
     maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
