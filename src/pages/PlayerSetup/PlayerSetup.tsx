@@ -71,6 +71,9 @@ function PlayerSetup() {
     const playerInitData = playersData.slice(0, playerCount);
     const isAnyNameEmpty = playerInitData.some((d) => d.name === '');
     if (isAnyNameEmpty) return toast('Player name must not be empty', { type: 'error' });
+    const areAllPlayersBot = playerInitData.every((d) => d.isBot);
+    if (areAllPlayersBot)
+      return toast('There must be at least one human player', { type: 'error' });
     dispatch(setPlayerInitData(playerInitData));
     setIsLoading(true);
     navigate('/play');
