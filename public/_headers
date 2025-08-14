@@ -1,8 +1,22 @@
 /sw.js
   Cache-Control: no-cache
-
-/workbox-*.js
+/registerSW.js
   Cache-Control: no-cache
 
+/workbox-:hash.js
+  Cache-Control: public, max-age=31536000, immutable
+
 /manifest.webmanifest
+  Cache-Control: no-cache
+
+/sitemap.xml
+  Cache-Control: no-cache
+/robots.txt
+  Cache-Control: no-cache
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*
+  Content-Type: text/html; charset=UTF-8
   Cache-Control: no-cache
