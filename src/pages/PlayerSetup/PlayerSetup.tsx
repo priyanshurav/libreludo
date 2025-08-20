@@ -14,6 +14,9 @@ import bg from '../../assets/bg.jpg';
 import GitHubButton from 'react-github-btn';
 import GoToButton from '../../components/GoToButton/GoToButton';
 
+const ALL_BOT_PLAYER_TOAST_ID = 'all-bot-player';
+const PLAYER_NAME_EMPTY_TOAST_ID = 'player-name-empty';
+
 const INITIAL_PLAYER_DATA: TPlayerInitData[] = [
   {
     name: 'Player 1',
@@ -70,10 +73,17 @@ function PlayerSetup() {
     e.preventDefault();
     const playerInitData = playersData.slice(0, playerCount);
     const isAnyNameEmpty = playerInitData.some((d) => d.name === '');
-    if (isAnyNameEmpty) return toast('Player name must not be empty', { type: 'error' });
+    if (isAnyNameEmpty)
+      return toast('Player name must not be empty', {
+        type: 'error',
+        toastId: PLAYER_NAME_EMPTY_TOAST_ID,
+      });
     const areAllPlayersBot = playerInitData.every((d) => d.isBot);
     if (areAllPlayersBot)
-      return toast('There must be at least one human player', { type: 'error' });
+      return toast('There must be at least one human player', {
+        type: 'error',
+        toastId: ALL_BOT_PLAYER_TOAST_ID,
+      });
     dispatch(setPlayerInitData(playerInitData));
     setIsLoading(true);
     navigate('/play');
