@@ -72,7 +72,9 @@ function PlayerSetup() {
   const handlePlayBtnClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
     const playerInitData = playersData.slice(0, playerCount);
-    const isAnyNameEmpty = playerInitData.some((d) => d.name === '');
+    const isAnyNameEmpty = playerInitData.some(
+      (d) => d.name === '' || [...d.name].every((c) => c === ' ')
+    );
     if (isAnyNameEmpty)
       return toast('Player name must not be empty', {
         type: 'error',
