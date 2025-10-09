@@ -146,7 +146,15 @@ function PlayerSetup() {
         <Link type="button" className="play-btn" to="/play" onClick={handlePlayBtnClick}>
           PLAY
         </Link>
-        <div className="version">v{__APP_VERSION__}</div>
+        <div
+          className="version"
+          role="status"
+          aria-live="polite"
+          aria-label={`LibreLudo version ${__APP_VERSION__}`}
+          tabIndex={0}
+        >
+          v{__APP_VERSION__}
+        </div>
       </div>
       <ToastContainer position="top-center" />
     </div>
