@@ -18,7 +18,7 @@
   border: 1px solid black;
 }
 .bot-status-btn {
-  background-color: #4f46e5;
+  background-color: var(--color-primary);
   width: calc(var(--dialog-width) / 11.5);
   display: flex;
   justify-content: center;
@@ -28,6 +28,11 @@
   height: auto;
   aspect-ratio: 1 / 1;
   cursor: pointer;
+  transition: background-color 200ms;
+}
+.bot-status-btn:hover,
+.bot-status-btn:active {
+  background-color: var(--color-primary-hover);
 }
 .player-name-input {
   padding: calc(var(--dialog-width) / 49) calc(var(--dialog-width) / 35);

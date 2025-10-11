@@ -24,7 +24,7 @@
 }
 
 .welcome h1 span {
-  color: #4f46e5;
+  color: var(--color-primary);
 }
 
 .welcome p {
@@ -38,7 +38,7 @@
 .cta-buttons .cta-button {
   display: inline-block;
   bottom: 0;
-  background-color: #4f46e5; /* Indigo-600 */
+  background-color: var(--color-primary);
   color: white;
   font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   border: none;
@@ -58,17 +58,18 @@
 
 .cta-buttons .play-now-btn:hover,
 .cta-buttons .play-now-btn:focus {
-  background-color: #4338ca;
+  background-color: var(--color-primary-hover);
   transform: translateY(-3px);
 }
 
 .cta-buttons .how-to-play-btn {
   background-color: transparent;
-  color: #4f46e5;
-  border: 1px solid #4f46e5;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
 }
 
 .cta-buttons .how-to-play-btn:hover,
+.cta-buttons .how-to-play-btn:active,
 .cta-buttons .how-to-play-btn:focus {
   background-color: #e0e7ff;
 }

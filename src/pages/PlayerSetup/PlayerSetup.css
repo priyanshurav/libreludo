@@ -35,7 +35,7 @@
   bottom: 0;
   height: 12.5%;
   width: calc(var(--dialog-width) / 3);
-  background-color: #4338ca; /* Indigo-700 */
+  background-color: var(--color-primary);
   border-radius: 10px;
   transform: translateX(calc(var(--dialog-width) / 3 * (var(--player-count) - 2)));
   transition: transform 250ms ease;
@@ -69,7 +69,7 @@
 
 .play-btn {
   height: auto;
-  background-color: #4f46e5; /* Indigo-600 */
+  background-color: var(--color-primary);
   color: white;
   font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   border: none;
@@ -84,7 +84,7 @@
   cursor: pointer;
 }
 .play-btn:hover {
-  background-color: #4338ca; /* Indigo-700 */
+  background-color: var(--color-primary-hover);
   transform: scale(1.05);
 }
 

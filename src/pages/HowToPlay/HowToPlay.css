@@ -82,7 +82,7 @@ code {
 .play-now-btn {
   display: inline-block;
   bottom: 0;
-  background-color: #4f46e5; /* Indigo-600 */
+  background-color: var(--color-primary);
   color: white;
   font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   border: none;
@@ -100,7 +100,7 @@ code {
 
 .play-now-btn:hover,
 .play-now-btn:focus {
-  background-color: #4338ca; /* Indigo-700 */
+  background-color: var(--color-primary-hover);
   transform: scale(1.05);
 }
 

@@ -2,7 +2,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  background-color: #544acf;
+  background-color: var(--color-primary);
   color: white;
   border: none;
   padding: 6px 12px;
@@ -15,5 +15,5 @@
 }
 
 .go-to-btn:hover {
-  background-color: #3a30b5;
+  background-color: var(--color-primary-hover);
 }
