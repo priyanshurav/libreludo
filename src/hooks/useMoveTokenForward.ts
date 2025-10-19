@@ -55,6 +55,7 @@ export const useMoveTokenForward = () => {
               hasTokenReachedHome &&
               player.tokens.filter((t) => t.hasTokenReachedHome).length === 3;
             if (hasTokenReachedHome) dispatch(markTokenAsReachedHome({ colour, id }));
+            tokenEl.removeEventListener('transitionend', handleTransitionEnd);
             dispatch(setIsAnyTokenMoving(false));
             resolve({
               lastTokenCoord: tokenPath[i],
@@ -62,8 +63,7 @@ export const useMoveTokenForward = () => {
               moved: true,
               hasPlayerWon,
             });
-
-            return tokenEl.removeEventListener('transitionend', handleTransitionEnd);
+            return;
           }
           i++;
           count++;
