@@ -9,9 +9,10 @@
 </p>
 
 <p align="center">
-  <a href="https://libreludo.netlify.app" target="_blank">
+  <a href="https://libreludo.netlify.app" target="_blank" rel="noopener noreferrer">
     <img src="https://img.shields.io/badge/Play-Now-brightgreen?style=for-the-badge&logo=netlify" alt="Play LibreLudo" />
   </a>
+  <img alt="GitHub License" src="https://img.shields.io/github/license/priyanshurav/libreludo?style=for-the-badge">
 </p>
 
 ---
