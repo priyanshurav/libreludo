@@ -69,7 +69,10 @@
   width: calc(var(--board-tile-size) * 5.5);
   word-break: break-all;
 }
-
+.dice-container.green .player-name,
+.dice-container.yellow .player-name {
+  text-align: end;
+}
 @keyframes pulse {
   0% {
     transform: scale(1);
