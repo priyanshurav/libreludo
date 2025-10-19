@@ -83,7 +83,9 @@
   text-decoration: none;
   cursor: pointer;
 }
-.play-btn:hover {
+.play-btn:hover,
+.play-btn:active,
+.play-btn:focus {
   background-color: var(--color-primary-hover);
   transform: scale(1.05);
 }

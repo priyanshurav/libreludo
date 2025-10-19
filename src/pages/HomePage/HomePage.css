@@ -57,6 +57,7 @@
 }
 
 .cta-buttons .play-now-btn:hover,
+.cta-buttons .play-now-btn:active,
 .cta-buttons .play-now-btn:focus {
   background-color: var(--color-primary-hover);
   transform: translateY(-3px);
@@ -170,8 +171,11 @@ footer .links a > svg {
   height: 1em;
 }
 
-footer .links a:hover {
+footer .links a:hover,
+footer .links a:active,
+footer .links a:focus {
   background: rgba(255, 255, 255, 0.2);
+  outline: 2px solid white;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }

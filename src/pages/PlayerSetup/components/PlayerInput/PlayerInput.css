@@ -31,7 +31,8 @@
   transition: background-color 200ms;
 }
 .bot-status-btn:hover,
-.bot-status-btn:active {
+.bot-status-btn:active,
+.bot-status-btn:focus {
   background-color: var(--color-primary-hover);
 }
 .player-name-input {
