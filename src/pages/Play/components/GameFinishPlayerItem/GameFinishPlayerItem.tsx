@@ -1,4 +1,4 @@
-import { type TPlayerColour } from '../../../../types';
+import { type TPlayer, type TPlayerColour } from '../../../../types';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../../../state/store';
 import { useEffect, useState } from 'react';
@@ -16,9 +16,22 @@ type Props = {
   isLast: boolean;
 };
 
+function getTimeString(t1: number, t2: number): string {
+  if (t1 === -1 || t2 === -1) return '00:00';
+  const diff = Math.abs(t2 - t1);
+  const minutes = diff / 1000 / 60;
+  const seconds = diff / 1000 - Math.floor(minutes) * 60;
+  const minutesStr = Math.floor(minutes).toString().padStart(2, '0');
+  const secondsStr = Math.floor(seconds).toString().padStart(2, '0');
+  return `${minutesStr}:${secondsStr}`;
+}
+
 function GameFinishPlayerItem({ colour, isLast, name, rank }: Props) {
   const [rankImage, setRankImage] = useState('');
   const { boardTileSize } = useSelector((state: RootState) => state.board);
+  const { gameStartTime, players } = useSelector((state: RootState) => state.players);
+  const { gameFinishTime } = players.find((p) => p.colour === colour) as TPlayer;
+
   useEffect(() => {
     if (rank === 4) return;
     switch (rank) {
@@ -58,6 +71,9 @@ function GameFinishPlayerItem({ colour, isLast, name, rank }: Props) {
           style={{ backgroundColor: playerColours[colour] }}
         ></span>
         <span className="game-finish-player-name">{name}</span>
+        <span className="game-finish-time">
+          {isLast ? '' : getTimeString(gameFinishTime, gameStartTime)}
+        </span>
       </motion.div>
     </AnimatePresence>
   );

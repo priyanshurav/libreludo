@@ -12,6 +12,7 @@ export type TPlayer = {
   colour: TPlayerColour;
   isBot: boolean;
   numberOfConsecutiveSix: number;
+  gameFinishTime: number;
   tokens: TToken[];
 };
 

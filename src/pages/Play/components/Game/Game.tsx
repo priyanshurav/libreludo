@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { registerNewPlayer, setPlayerSequence } from '../../../../state/slices/playersSlice';
+import {
+  registerNewPlayer,
+  setGameStartTime,
+  setPlayerSequence,
+} from '../../../../state/slices/playersSlice';
 import { type TPlayerColour } from '../../../../types';
 import Board from '../Board/Board';
 import './Game.css';
@@ -30,6 +34,7 @@ function Game({ initData }: Props) {
   useEffect(() => {
     if (initData.length === 0) return;
     dispatch(setPlayerSequence({ playerCount: playerCountToWord(initData.length) }));
+    dispatch(setGameStartTime(Date.now()));
   }, [dispatch, initData.length]);
 
   useEffect(() => {

@@ -24,6 +24,7 @@ type TPlayerState = {
   isAnyTokenMoving: boolean;
   isGameEnded: boolean;
   playerFinishOrder: TPlayerNameAndColour[];
+  gameStartTime: number;
 };
 
 export const initialState: TPlayerState = {
@@ -34,6 +35,7 @@ export const initialState: TPlayerState = {
   isAnyTokenMoving: false,
   isGameEnded: false,
   playerFinishOrder: [],
+  gameStartTime: -1,
 };
 
 export function getPlayer(state: TPlayerState, colour: TPlayerColour) {
@@ -67,6 +69,7 @@ const reducers = {
       isBot: action.payload.isBot,
       tokens: genLockedTokens(action.payload.colour),
       numberOfConsecutiveSix: 0,
+      gameFinishTime: -1,
     });
   },
 
@@ -175,6 +178,7 @@ const reducers = {
     const player = getPlayer(state, action.payload.colour);
     const hasPlayerWon = player.tokens.every((t) => t.hasTokenReachedHome);
     if (!hasPlayerWon) return;
+    player.gameFinishTime = Date.now();
     state.playerSequence = state.playerSequence.filter((p) => p !== action.payload.colour);
     state.playerFinishOrder.push({ name: player.name, colour: action.payload.colour });
     if (state.playerSequence.length === 1) {
@@ -198,6 +202,9 @@ const reducers = {
   },
   setPlayerInitData: (state: TPlayerState, action: PayloadAction<TPlayerInitData[]>) => {
     state.playerInitData = action.payload;
+  },
+  setGameStartTime: (state: TPlayerState, action: PayloadAction<number>) => {
+    state.gameStartTime = action.payload;
   },
   clearPlayersState: () => JSON.parse(JSON.stringify(initialState)),
 };
@@ -224,6 +231,7 @@ export const {
   markTokenAsReachedHome,
   setTokenAlignmentData,
   setPlayerInitData,
+  setGameStartTime,
   clearPlayersState,
 } = playersSlice.actions;
 
