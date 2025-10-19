@@ -13,6 +13,7 @@ import playersReducer, {
   markTokenAsReachedHome,
   registerNewPlayer,
   resetNumberOfConsecutiveSix,
+  setGameStartTime,
   setIsAnyTokenMoving,
   setPlayerInitData,
   setPlayerSequence,
@@ -393,6 +394,19 @@ describe('Test players slice reducers', () => {
       expect(newState.isGameEnded).toBe(true);
       expect(newState.playerSequence).toEqual(initState.playerSequence.filter((c) => c !== 'blue'));
     });
+    it('should set the gameFinishTime if player won', () => {
+      const initState = cloneDeep(initialState);
+      initState.players = cloneDeep(DUMMY_PLAYERS);
+      initState.playerSequence = playerSequences.four;
+
+      let newState = initState;
+      const player = getPlayer(initState, 'blue');
+      player.tokens.forEach(({ colour, id }) => {
+        newState = playersReducer(newState, markTokenAsReachedHome({ colour, id }));
+      });
+
+      expect(getPlayer(newState, 'blue').gameFinishTime).to.not.equal(-1);
+    });
   });
   describe('setTokenAlignmentData', () => {
     it("should update the token's alignment data with the provided value", () => {
@@ -418,6 +432,14 @@ describe('Test players slice reducers', () => {
       ];
       const newState = playersReducer(initialState, setPlayerInitData(playerInitData));
       expect(newState.playerInitData).toEqual(playerInitData);
+    });
+  });
+  describe('setGameStartTime', () => {
+    it('should set gameStartTime when called with a valid payload', () => {
+      const initState = cloneDeep(initialState);
+      expect(initState.gameStartTime).toBe(-1);
+      const newState = playersReducer(initState, setGameStartTime(47));
+      expect(newState.gameStartTime).toBe(47);
     });
   });
   describe('clearPlayersState', () => {
