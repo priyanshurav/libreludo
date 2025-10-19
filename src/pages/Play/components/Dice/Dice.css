@@ -62,11 +62,12 @@
 }
 .player-name {
   padding: 0 var(--player-name-padding) 0 var(--player-name-padding);
-  white-space: nowrap;
   font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-weight: bold;
   font-size: calc(var(--board-tile-size) * 0.45);
   cursor: default;
+  width: calc(var(--board-tile-size) * 5.5);
+  word-break: break-all;
 }
 
 @keyframes pulse {

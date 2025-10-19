@@ -13,7 +13,7 @@
   align-self: center;
 }
 .game-finish-player-item .game-finish-player-name {
-  font-size: calc(var(--board-tile-size) * 0.8);
+  font-size: calc(var(--board-tile-size) * 0.65);
   font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-weight: 400;
   word-break: break-all;
