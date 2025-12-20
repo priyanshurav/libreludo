@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import './HowToPlay.css';
+import { ImportantNote } from '../../components/ImportantNote/ImportantNote';
 
 function HowToPlay() {
   useEffect(() => {
@@ -58,13 +59,15 @@ function HowToPlay() {
             </li>
             <li>You can only move a token from the base with a roll of 6.</li>
           </ul>
-          <strong>⭐ Bonus:</strong> Rolling a 6 gives you an extra turn.
+          <ImportantNote label="⭐ Bonus:">Rolling a 6 gives you an extra turn.</ImportantNote>
           <h3>🔁 Moving Tokens</h3>
           <ul>
             <li>Move tokens forward the number of dice spaces rolled.</li>
           </ul>
-          <strong>⚠️ Important: </strong>If you roll three sixes in a row in Ludo, your third roll
-          is canceled and you lose your turn.
+          <ImportantNote label="⚠️ Important:">
+            If you roll three sixes in a row in Ludo, your third roll is canceled and you lose your
+            turn.
+          </ImportantNote>
         </div>
         <div className="section">
           <h2>🧍 Token Rules</h2>
@@ -88,8 +91,10 @@ function HowToPlay() {
               You <strong>cannot</strong> capture tokens in safe zones.
             </li>
           </ul>
-          <strong>⚠️ Important: </strong> Landing on a <strong>non-safe square</strong> occupied by
-          multiple tokens of the same color will <strong>capture all of them</strong>.
+          <ImportantNote label="⚠️ Important:">
+            Landing on a <strong>non-safe</strong> square occupied by multiple opponent tokens
+            captures <strong>all</strong> of them.
+          </ImportantNote>
         </div>
         <div className="section">
           <h2>⭐ Safe Zones</h2>

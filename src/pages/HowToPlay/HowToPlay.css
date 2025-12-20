@@ -40,7 +40,6 @@ ul {
   padding-left: 1.5em;
   margin-top: 0.5em;
   margin-bottom: 1em;
-  list-style-position: inside;
 }
 
 li {
@@ -62,13 +61,6 @@ h3 {
 .highlight {
   font-weight: bold;
   color: #be123c;
-}
-
-code {
-  background: #e2e8f0;
-  padding: 2px 5px;
-  border-radius: 4px;
-  font-size: 0.9em;
 }
 
 .section {
