@@ -47,7 +47,7 @@ function Token({ colour, id, tokenClickData }: Props) {
   const unlock = () => {
     if (!isLocked || !isActive || diceNumber === -1 || !diceNumber) return;
     dispatch(setIsAnyTokenMoving(true));
-    setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME);
+    setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME, token);
     dispatch(unlockAndAlignTokens({ colour, id }));
     dispatch(deactivateAllTokens(colour));
     setTimeout(() => {
