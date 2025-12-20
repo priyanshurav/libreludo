@@ -30,7 +30,7 @@ export function getAvailableSteps({ colour, coordinates }: TToken): number {
   return getDistanceInTokenPath(colour, coordinates, getHomeCoordForColour(colour));
 }
 
-export function isTokenMovable(token: TToken, diceNumber: number): boolean {
-  const areSufficientStepsAvailable = getAvailableSteps(token) >= diceNumber;
-  return !token.isLocked && !token.hasTokenReachedHome && areSufficientStepsAvailable;
+export function isTokenMovable(token: TToken, diceNumber?: number): boolean {
+  if (!diceNumber) return !token.isLocked && !token.hasTokenReachedHome;
+  return !token.isLocked && !token.hasTokenReachedHome && getAvailableSteps(token) >= diceNumber;
 }

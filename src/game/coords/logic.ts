@@ -81,8 +81,11 @@ export function isTokenAhead(token1: TToken, token2: TToken): boolean {
   return false;
 }
 
-export function isCoordASafeSpot(coord: TCoordinate): boolean {
-  return TOKEN_SAFE_COORDINATES.some((c) => areCoordsEqual(coord, c));
+export function isCoordASafeSpot(coord: TCoordinate, colour?: TPlayerColour): boolean {
+  const isSafe = TOKEN_SAFE_COORDINATES.some((c) => areCoordsEqual(coord, c));
+  if (!colour) return isSafe;
+
+  return isSafe || isCoordInHomeEntryPathForColour(coord, colour);
 }
 
 export function getHomeCoordForColour(colour: TPlayerColour): TCoordinate {
