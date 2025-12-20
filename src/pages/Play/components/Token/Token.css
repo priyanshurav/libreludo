@@ -5,7 +5,7 @@
   transform: translateZ(0);
   height: calc(var(--token-height));
   width: calc(var(--token-width));
-  transition: transform var(--token-transition-time) ease-in-out;
+  transition: transform var(--token-transition-time) var(--token-transition-timing-fn);
 }
 .token * {
   user-select: none;
@@ -19,19 +19,6 @@
   animation: bounce 0.7s ease-in-out infinite;
 }
 
-.token.backward {
-  transition: transform var(--token-transition-time) linear !important;
-}
-
-/* @keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-} */
 @keyframes bounce {
   0%,
   100% {

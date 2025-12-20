@@ -1,9 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import {
-  deactivateAllTokens,
-  setIsAnyTokenMoving,
-  setTokenDirection,
-} from '../../../../state/slices/playersSlice';
+import { deactivateAllTokens, setIsAnyTokenMoving } from '../../../../state/slices/playersSlice';
 import { type TPlayer, type TPlayerColour, type TTokenClickData } from '../../../../types';
 import { type TToken } from '../../../../types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,7 +34,7 @@ function Token({ colour, id, tokenClickData }: Props) {
     [player.tokens, id]
   ) as TToken;
 
-  const { coordinates, isActive, isLocked, tokenAlignmentData, isDirectionForward } = token;
+  const { coordinates, isActive, isLocked, tokenAlignmentData } = token;
 
   const { scaleFactor } = tokenAlignmentData;
   const getPosition = useCoordsToPosition();
@@ -51,7 +47,6 @@ function Token({ colour, id, tokenClickData }: Props) {
   const unlock = () => {
     if (!isLocked || !isActive || diceNumber === -1 || !diceNumber) return;
     dispatch(setIsAnyTokenMoving(true));
-    dispatch(setTokenDirection({ colour, id, isForward: true }));
     setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME);
     dispatch(unlockAndAlignTokens({ colour, id }));
     dispatch(deactivateAllTokens(colour));
@@ -89,7 +84,7 @@ function Token({ colour, id, tokenClickData }: Props) {
   return (
     <div
       id={`${colour}_${id}`}
-      className={`token ${isDirectionForward ? '' : 'backward'} `}
+      className="token"
       onClick={unlock}
       style={
         {
