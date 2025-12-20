@@ -7,7 +7,6 @@ import diceReducer, {
   rollDice,
   setIsPlaceholderShowing,
 } from '../../src/state/slices/diceSlice';
-import * as random from '../../src/utils/getRandomNumberBetweenOneAndSix';
 import type { TDice } from '../../src/types';
 
 describe('Test dice slice reducers', () => {
@@ -33,15 +32,16 @@ describe('Test dice slice reducers', () => {
   });
   describe('rollDice', () => {
     it('should generate a random number and update the diceNumber for the specified player', () => {
-      const initState: TDice[] = [
-        { colour: 'blue', diceNumber: 1, isPlaceholderShowing: false },
-        { colour: 'green', diceNumber: 1, isPlaceholderShowing: false },
-      ];
-      vi.spyOn(random, 'getRandomNumberBetweenOneAndSix').mockReturnValue(5);
-      const newState = diceReducer(initState, rollDice({ colour: 'blue' }));
+      let newState = diceReducer(initialState, registerDice('blue'));
+      newState = diceReducer(newState, registerDice('green'));
 
-      expect(getDice(newState, 'blue').diceNumber).toBe(5);
+      vi.spyOn(Math, 'random').mockReturnValue(0);
+      newState = diceReducer(newState, rollDice({ colour: 'blue' }));
+
+      expect(getDice(newState, 'blue').diceNumber).toBe(1);
       expect(getDice(newState, 'green').diceNumber).toBe(1);
+      newState = diceReducer(newState, rollDice({ colour: 'blue' }));
+      expect(getDice(newState, 'blue').diceNumber).toBe(2);
     });
   });
   describe('clearDiceState', () => {

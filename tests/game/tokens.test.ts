@@ -114,7 +114,6 @@ describe('Test tokens/factory', () => {
         expect(t.id).toBe(i);
         expect(t.hasTokenReachedHome).toBe(false);
         expect(t.isActive).toBe(false);
-        expect(t.isDirectionForward).toBe(true);
         expect(t.isLocked).toBe(true);
         expect(t.tokenAlignmentData).toEqual(defaultTokenAlignmentData);
         expect(t.coordinates).toBe(coordinateList[i]);

@@ -18,7 +18,6 @@ import playersReducer, {
   setPlayerInitData,
   setPlayerSequence,
   setTokenAlignmentData,
-  setTokenDirection,
   unlockToken,
 } from '../../src/state/slices/playersSlice';
 import { cloneDeep } from 'lodash';
@@ -254,19 +253,6 @@ describe('Test players slice reducers', () => {
       expect(() =>
         playersReducer(initState, lockToken({ colour: token.colour, id: token.id }))
       ).toThrowError();
-    });
-  });
-  describe('setTokenDirection', () => {
-    it('should update the direction of the specified token based on isForward value', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
-      const token = getToken(initState, 'blue', 0);
-      token.isDirectionForward = false;
-      const newState = playersReducer(
-        initState,
-        setTokenDirection({ colour: token.colour, id: token.id, isForward: true })
-      );
-      expect(getToken(newState, token.colour, token.id).isDirectionForward).toBe(true);
     });
   });
   describe('incrementNumberOfConsecutiveSix', () => {
