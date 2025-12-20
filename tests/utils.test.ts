@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { sleep } from '../src/utils/sleep';
 import { setTokenTransitionTime } from '../src/utils/setTokenTransitionTime';
+import { DUMMY_TOKEN } from './fixtures/token.dummy';
 
 describe('Test utility functions', () => {
   describe('utils/sleep', () => {
@@ -52,13 +53,13 @@ describe('Test utility functions', () => {
     });
 
     it('sets the CSS variable on the .game element', () => {
-      setTokenTransitionTime(500);
+      setTokenTransitionTime(500, DUMMY_TOKEN);
       expect(gameDiv.style.getPropertyValue('--token-transition-time')).toBe('500ms');
     });
 
     it('does nothing if .game is not present', () => {
       gameDiv.remove();
-      expect(() => setTokenTransitionTime(255)).not.toThrow();
+      expect(() => setTokenTransitionTime(255, DUMMY_TOKEN)).not.toThrow();
     });
   });
 });
