@@ -36,7 +36,7 @@ export const useMoveTokenForward = () => {
         const tokenPath = tokenPaths[colour];
 
         dispatch(deactivateAllTokens(colour));
-        setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME);
+        setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME, token);
         dispatch(setIsAnyTokenMoving(true));
         const tokenEl = document.getElementById(`${colour}_${id}`);
         if (!tokenEl) throw new Error(ERRORS.tokenDoesNotExist(colour, id));

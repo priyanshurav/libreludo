@@ -40,7 +40,7 @@ export function changeTurnThunk(moveAndCapture: ReturnType<typeof useMoveAndCapt
       const bestToken = selectBestTokenForBot(colour, diceNumber, allTokens);
       if (!bestToken) return;
 
-      setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME);
+      setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME, bestToken);
 
       if (bestToken.isLocked && !bestToken.hasTokenReachedHome && diceNumber === 6) {
         dispatch(unlockAndAlignTokens({ colour, id: bestToken.id }));
