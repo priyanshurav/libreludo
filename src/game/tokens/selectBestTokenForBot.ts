@@ -178,7 +178,6 @@ export function selectBestTokenForBot(
 
     return { token, feasibilityScore };
   });
-  console.log(botPlayerColour + ' ' + tokenScores.map((s) => s.feasibilityScore));
   if (tokenScores.length === 0) return null;
   const maxScore = Math.max(...tokenScores.map((e) => e.feasibilityScore));
   const tokensWithMaxFeasibilityScore = tokenScores
