@@ -1,0 +1,8 @@
+.important-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.important-note-label {
+  white-space: nowrap;
+}
