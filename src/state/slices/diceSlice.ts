@@ -19,7 +19,7 @@ export function getDice(state: TDice[], colour: TPlayerColour): TDice {
 }
 
 function fillDiceNumberStore(playerColour: TPlayerColour): void {
-  const diceNumbers = Array(6)
+  const diceNumbers = Array(36)
     .fill(null)
     .map((_, i) => (i % 6) + 1);
   diceNumberStore[playerColour] = diceNumbers;
