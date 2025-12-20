@@ -8,7 +8,6 @@ export const DUMMY_TOKEN: TToken = {
   id: 0,
   initialCoords: { x: 0, y: 0 },
   isActive: false,
-  isDirectionForward: true,
   isLocked: true,
   tokenAlignmentData: defaultTokenAlignmentData,
 };

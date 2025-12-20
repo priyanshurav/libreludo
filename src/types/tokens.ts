@@ -20,7 +20,6 @@ export type TToken = {
   tokenAlignmentData: TTokenAlignmentData;
   isLocked: boolean;
   isActive: boolean;
-  isDirectionForward: boolean;
   hasTokenReachedHome: boolean;
 };
 

@@ -3,7 +3,6 @@ import {
   deactivateAllTokens,
   markTokenAsReachedHome,
   setIsAnyTokenMoving,
-  setTokenDirection,
 } from '../state/slices/playersSlice';
 import { type TCoordinate } from '../types';
 import { type TToken } from '../types';
@@ -37,7 +36,6 @@ export const useMoveTokenForward = () => {
         const tokenPath = tokenPaths[colour];
 
         dispatch(deactivateAllTokens(colour));
-        dispatch(setTokenDirection({ colour, id, isForward: true }));
         setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME);
         dispatch(setIsAnyTokenMoving(true));
         const tokenEl = document.getElementById(`${colour}_${id}`);

@@ -17,7 +17,6 @@ export function genLockedTokens(colour: TPlayerColour): TToken[] {
       coordinates: coordinateList[i],
       isLocked: true,
       isActive: false,
-      isDirectionForward: true,
       hasTokenReachedHome: false,
       initialCoords: coordinateList[i],
       tokenAlignmentData: defaultTokenAlignmentData,

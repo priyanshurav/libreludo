@@ -2,9 +2,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { genLockedTokens } from '../../game/tokens/factory';
 import { ERRORS } from '../../utils/errors';
 import { TOKEN_START_COORDINATES } from '../../game/tokens/constants';
-import { setTokenTransitionTime } from '../../utils/setTokenTransitionTime';
 import { getAvailableSteps, isTokenMovable } from '../../game/tokens/logic';
-import { FORWARD_TOKEN_TRANSITION_TIME } from '../../game/tokens/constants';
 import type {
   TPlayer,
   TPlayerColour,
@@ -141,22 +139,10 @@ const reducers = {
     const token = getToken(state, action.payload.colour, action.payload.id);
     if (token.isLocked)
       throw new Error(ERRORS.tokenAlreadyLocked(action.payload.colour, action.payload.id));
-
-    setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME);
     token.isLocked = true;
     token.coordinates = { ...token.initialCoords };
   },
-  setTokenDirection: (
-    state: TPlayerState,
-    action: PayloadAction<{
-      id: number;
-      colour: TPlayerColour;
-      isForward: boolean;
-    }>
-  ) => {
-    const token = getToken(state, action.payload.colour, action.payload.id);
-    token.isDirectionForward = action.payload.isForward;
-  },
+
   incrementNumberOfConsecutiveSix: (state: TPlayerState, action: PayloadAction<TPlayerColour>) => {
     const player = getPlayer(state, action.payload);
     player.numberOfConsecutiveSix++;
@@ -224,7 +210,6 @@ export const {
   deactivateAllTokens,
   unlockToken,
   lockToken,
-  setTokenDirection,
   incrementNumberOfConsecutiveSix,
   resetNumberOfConsecutiveSix,
   setIsAnyTokenMoving,
