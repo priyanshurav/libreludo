@@ -4,7 +4,6 @@ import {
   lockToken,
   setIsAnyTokenMoving,
   setTokenAlignmentData,
-  setTokenDirection,
 } from '../state/slices/playersSlice';
 import { type TCoordinate } from '../types';
 import { type TToken } from '../types';
@@ -14,15 +13,15 @@ import { useCoordsToPosition } from './useCoordsToPosition';
 import type { RootState } from '../state/store';
 import { setTokenTransitionTime } from '../utils/setTokenTransitionTime';
 import { useCallback, useRef } from 'react';
-import { BACKWARD_TOKEN_TRANSITION_TIME } from '../game/tokens/constants';
 import {
-  applyAlignmentData,
-  defaultTokenAlignmentData,
-  getTokenAlignmentData,
-} from '../game/tokens/alignment';
+  BACKWARD_TOKEN_TRANSITION_TIME,
+  FORWARD_TOKEN_TRANSITION_TIME,
+} from '../game/tokens/constants';
+import { defaultTokenAlignmentData } from '../game/tokens/alignment';
 import { TOKEN_SAFE_COORDINATES } from '../game/tokens/constants';
 import { tokensWithCoord } from '../game/tokens/logic';
 import { tokenPaths } from '../game/tokens/paths';
+import { sleep } from '../utils/sleep';
 
 export function useCaptureTokenInSameCoord() {
   const dispatch = useDispatch();
@@ -46,8 +45,11 @@ export function useCaptureTokenInSameCoord() {
 
         if (capturableTokens.length === 0) return resolve(false);
 
-        const alignmentData = getTokenAlignmentData(capturableTokens.length);
-        applyAlignmentData(capturableTokens, dispatch);
+        capturableTokens.forEach(({ colour, id }) => {
+          dispatch(
+            setTokenAlignmentData({ colour, id, newAlignmentData: defaultTokenAlignmentData })
+          );
+        });
         dispatch(
           setTokenAlignmentData({
             colour: capturingToken.colour,
@@ -56,42 +58,44 @@ export function useCaptureTokenInSameCoord() {
           })
         );
         dispatch(deactivateAllTokens(capturingToken.colour));
-        setTokenTransitionTime(BACKWARD_TOKEN_TRANSITION_TIME);
         dispatch(setIsAnyTokenMoving(true));
+        let isFirstCapture = true;
+        let tokensSuccessfullyCaptured = 0;
+        (async () => {
+          for (const t of capturableTokens) {
+            const { colour, id, coordinates } = t;
+            setTokenTransitionTime(BACKWARD_TOKEN_TRANSITION_TIME, t);
+            const tokenPath = tokenPaths[colour];
+            const tokenEl = document.getElementById(`${colour}_${id}`);
+            if (!tokenEl) throw new Error(ERRORS.tokenDoesNotExist(colour, id));
+            const initialCoordinateIndex = tokenPath.findIndex((v) =>
+              areCoordsEqual(v, coordinates)
+            );
+            let index = initialCoordinateIndex;
 
-        capturableTokens.forEach((t, i) => {
-          const { colour, id, coordinates } = t;
-          dispatch(setTokenDirection({ colour, id, isForward: false }));
-
-          const tokenPath = tokenPaths[colour];
-          const tokenEl = document.getElementById(`${colour}_${id}`);
-          if (!tokenEl) throw new Error(ERRORS.tokenDoesNotExist(colour, id));
-          const initialCoordinateIndex = tokenPath.findIndex((v) => areCoordsEqual(v, coordinates));
-          let index = initialCoordinateIndex;
-
-          const handleTransitionEnd = () => {
+            const handleTransitionEnd = () => {
+              index--;
+              if (index < 0) {
+                dispatch(setIsAnyTokenMoving(false));
+                setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME, t);
+                dispatch(lockToken({ colour, id }));
+                tokenEl.removeEventListener('transitionend', handleTransitionEnd);
+                tokensSuccessfullyCaptured++;
+                if (tokensSuccessfullyCaptured === capturableTokens.length) resolve(true);
+                return;
+              }
+              const { x, y } = getPosition(tokenPath[index], defaultTokenAlignmentData);
+              tokenEl.style.transform = `translate(${x}, ${y})`;
+            };
+            // Trigger the first transition
+            if (isFirstCapture) isFirstCapture = false;
+            else await sleep(250);
             index--;
-            if (index < 0) {
-              dispatch(setIsAnyTokenMoving(false));
-              dispatch(lockToken({ colour, id }));
-              capturableTokens.forEach(({ colour, id }) => {
-                dispatch(
-                  setTokenAlignmentData({ colour, id, newAlignmentData: defaultTokenAlignmentData })
-                );
-              });
-              tokenEl.removeEventListener('transitionend', handleTransitionEnd);
-              return resolve(true);
-            }
-            const { x, y } = getPosition(tokenPath[index], alignmentData[i]);
+            const { x, y } = getPosition(tokenPath[index], defaultTokenAlignmentData);
             tokenEl.style.transform = `translate(${x}, ${y})`;
-          };
-          // Trigger the first transition
-          index--;
-          const { x, y } = getPosition(tokenPath[index], alignmentData[i]);
-          tokenEl.style.transform = `translate(${x}, ${y})`;
-
-          tokenEl.addEventListener('transitionend', handleTransitionEnd);
-        });
+            tokenEl.addEventListener('transitionend', handleTransitionEnd);
+          }
+        })();
       });
     },
     [dispatch, getPosition]
