@@ -2,14 +2,27 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { TPlayerColour } from '../../types';
 import { ERRORS } from '../../utils/errors';
 import type { TDice } from '../../types';
-import { getRandomNumberBetweenOneAndSix } from '../../utils/getRandomNumberBetweenOneAndSix';
 
 export const initialState: TDice[] = [];
+
+const diceNumberStore: Record<TPlayerColour, number[]> = {
+  blue: [],
+  red: [],
+  green: [],
+  yellow: [],
+};
 
 export function getDice(state: TDice[], colour: TPlayerColour): TDice {
   const dice = state.find((d) => d.colour === colour);
   if (!dice) throw new Error(ERRORS.diceDoesNotExist(colour));
   return dice;
+}
+
+function fillDiceNumberStore(playerColour: TPlayerColour): void {
+  const diceNumbers = Array(6)
+    .fill(null)
+    .map((_, i) => (i % 6) + 1);
+  diceNumberStore[playerColour] = diceNumbers;
 }
 
 const reducers = {
@@ -19,6 +32,7 @@ const reducers = {
       diceNumber: 1,
       isPlaceholderShowing: false,
     });
+    fillDiceNumberStore(action.payload);
   },
   setIsPlaceholderShowing: (
     state: TDice[],
@@ -28,12 +42,23 @@ const reducers = {
     dice.isPlaceholderShowing = action.payload.isPlaceholderShowing;
   },
   rollDice: (state: TDice[], action: PayloadAction<{ colour: TPlayerColour }>) => {
-    const diceNumber = getRandomNumberBetweenOneAndSix();
+    if (diceNumberStore[action.payload.colour].length === 0)
+      fillDiceNumberStore(action.payload.colour);
 
+    const index = Math.floor(Math.random() * diceNumberStore[action.payload.colour].length);
+    const diceNumber = diceNumberStore[action.payload.colour][index];
+    diceNumberStore[action.payload.colour] = diceNumberStore[action.payload.colour].filter(
+      (_, i) => i !== index
+    );
     const dice = getDice(state, action.payload.colour);
     dice.diceNumber = diceNumber;
   },
-  clearDiceState: () => JSON.parse(JSON.stringify(initialState)),
+  clearDiceState: () => {
+    (Object.keys(diceNumberStore) as TPlayerColour[]).forEach(
+      (colour) => (diceNumberStore[colour] = [])
+    );
+    return JSON.parse(JSON.stringify(initialState));
+  },
 };
 
 const diceSlice = createSlice({
