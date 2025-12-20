@@ -96,3 +96,13 @@ export function getHomeCoordForColour(colour: TPlayerColour): TCoordinate {
 export function areCoordsEqual(coord1: TCoordinate, coord2: TCoordinate): boolean {
   return coord1.x === coord2.x && coord1.y === coord2.y;
 }
+
+export function getFinalCoord(token: TToken, diceNumber: number): TCoordinate | null {
+  const tokenPath = tokenPaths[token.colour];
+  const currentCoordIndex = tokenPath.findIndex((c) => areCoordsEqual(token.coordinates, c));
+  if (currentCoordIndex === -1) return null;
+  const finalIndex = currentCoordIndex + diceNumber;
+  if (finalIndex >= tokenPath.length) return null;
+  const finalCoord = tokenPath[finalIndex];
+  return finalCoord;
+}
