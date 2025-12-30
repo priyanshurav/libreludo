@@ -18,7 +18,7 @@ import {
   isTokenMovable,
   tokensWithCoord,
 } from '../../src/game/tokens/logic';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { DUMMY_TOKEN } from '../fixtures/token.dummy';
 import { getHomeCoordForColour } from '../../src/game/coords/logic';
 

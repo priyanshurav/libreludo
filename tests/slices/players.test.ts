@@ -20,7 +20,7 @@ import playersReducer, {
   setTokenAlignmentData,
   unlockToken,
 } from '../../src/state/slices/playersSlice';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { DUMMY_PLAYERS } from '../fixtures/players.dummy';
 import { playerSequences } from '../../src/game/players/constants';
 import type {

@@ -12,7 +12,7 @@ import {
   getFinalCoord,
 } from '../coords/logic';
 import { expandedGeneralTokenPath, tokenPaths } from './paths';
-import { sample } from 'lodash';
+import { sample } from 'lodash-es';
 
 export function selectBestTokenForBot(
   botPlayerColour: TPlayerColour,
