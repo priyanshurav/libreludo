@@ -37,7 +37,7 @@ function Board({ onDiceClick: onDiceRoll }: Props) {
     };
   }, [dispatch]);
 
-  const handleBoardClick = (e: MouseEvent) => {
+  const handleBoardClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
     if (players.find((p) => p.colour === currentPlayerColour)?.isBot) return;
     const boardNode = boardRef.current;
     if (!boardNode) throw new Error(ERRORS.boardDoesNotExist());
@@ -68,15 +68,8 @@ function Board({ onDiceClick: onDiceRoll }: Props) {
     });
   };
 
-  useEffect(() => {
-    const boardNode = boardRef.current;
-    if (!boardNode) throw new Error(ERRORS.boardDoesNotExist());
-    boardNode.addEventListener('click', handleBoardClick);
-    return () => boardNode.removeEventListener('click', handleBoardClick);
-  });
-
   return (
-    <div className="board" ref={boardRef}>
+    <div className="board" ref={boardRef} onClick={handleBoardClick}>
       {players.map((p, index1) =>
         p.tokens.map((t, index2) => (
           <Token
