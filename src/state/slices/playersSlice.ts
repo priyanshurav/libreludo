@@ -192,7 +192,7 @@ const reducers = {
   setGameStartTime: (state: TPlayerState, action: PayloadAction<number>) => {
     state.gameStartTime = action.payload;
   },
-  clearPlayersState: () => JSON.parse(JSON.stringify(initialState)),
+  clearPlayersState: () => structuredClone(initialState),
 };
 
 const playersSlice = createSlice({

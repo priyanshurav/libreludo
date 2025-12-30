@@ -57,7 +57,7 @@ const reducers = {
     (Object.keys(diceNumberStore) as TPlayerColour[]).forEach(
       (colour) => (diceNumberStore[colour] = [])
     );
-    return JSON.parse(JSON.stringify(initialState));
+    return structuredClone(initialState);
   },
 };
 

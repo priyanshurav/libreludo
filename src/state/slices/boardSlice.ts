@@ -25,7 +25,7 @@ const reducers = {
     state.tokenWidth =
       (action.payload / NUMBER_OF_BLOCKS_IN_ONE_ROW) * 0.8 * TOKEN_WIDTH_HEIGHT_RATIO;
   },
-  clearBoardState: () => JSON.parse(JSON.stringify(initialState)),
+  clearBoardState: () => structuredClone(initialState),
 };
 
 const boardSlice = createSlice({
