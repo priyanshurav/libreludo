@@ -40,8 +40,7 @@ export function selectBestTokenForBot(
       finalCoord = tokenPaths[token.colour][0];
     } else {
       finalCoord = getFinalCoord(token, diceNumber);
-      if (!isTokenMovable(token, diceNumber) || !finalCoord)
-        return { token, feasibilityScore: -Infinity };
+      if (!isTokenMovable(token, diceNumber)) return { token, feasibilityScore: -Infinity };
     }
     if (!finalCoord) return { token, feasibilityScore: -Infinity };
 
@@ -128,10 +127,10 @@ export function selectBestTokenForBot(
           const isOpponentBehind = isTokenAhead(token, t);
           return isOpponentBehind && dist >= 1 && dist <= 12;
         });
-        if (!isThreatenedFromBehind || isFinalCoordSafe || isCurrentCoordSafe) {
+        if (!isThreatenedFromBehind || isFinalCoordSafe) {
           if (currentDist <= 6) feasibilityScore += 15000;
           feasibilityScore += 20000;
-          isSafeLaunchHunter = true;
+          if (!isThreatenedFromBehind) isSafeLaunchHunter = true;
         } else if (currentDist <= 8) {
           feasibilityScore += 10000;
           if (currentDist <= 6) feasibilityScore += 15000;
@@ -164,7 +163,8 @@ export function selectBestTokenForBot(
           if (isFinalCoordSafe) feasibilityScore += 30000;
           else feasibilityScore -= 10000;
         } else {
-          feasibilityScore -= 60000 * safetyMultiplier;
+          const isProtected = isFinalCoordSafe || willTokenBeInHomeEntryPath;
+          if (!isProtected) feasibilityScore -= 100000 * safetyMultiplier;
         }
       }
     }
