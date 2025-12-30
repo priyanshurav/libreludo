@@ -30,6 +30,7 @@
 - ⚛️ **React + Redux Toolkit** – Predictable and scalable game state
 - 🚀 **Fast & Lightweight** – Built with Vite for high performance
 - 📱 **Responsive** – Optimized for mobile, tablet, and desktop
+- 📶 **Offline Support** – Play anywhere, even without an internet connection
 
 ---
 
