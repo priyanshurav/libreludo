@@ -12,7 +12,9 @@
   <a href="https://libreludo.netlify.app" target="_blank" rel="noopener noreferrer">
     <img src="https://img.shields.io/badge/Play-Now-brightgreen?style=for-the-badge&logo=netlify" alt="Play LibreLudo" />
   </a>
-  <img alt="GitHub License" src="https://img.shields.io/github/license/priyanshurav/libreludo?style=for-the-badge">
+  <a href="LICENSE" target="_blank" rel="noopener noreferrer">
+    <img alt="License" src="https://img.shields.io/github/license/priyanshurav/libreludo?style=for-the-badge">
+  </a>
 </p>
 
 ---
@@ -45,6 +47,27 @@
 
 ---
 
+## Build & Run
+
+Requires [Node.js](https://nodejs.org/).
+
+```bash
+# 1. Clone repo
+git clone https://github.com/priyanshurav/libreludo.git
+cd libreludo
+
+# 2. Install dependencies
+npm install
+
+# 3. Start dev server
+npm run dev
+
+# 4. Build for production (Optional)
+npm run build
+```
+
+---
+
 ## 🗺️ Routes
 
 | Path           | Description             |
@@ -59,4 +82,4 @@
 
 ## License
 
-This software is licensed under the MIT License. See the <a href="https://github.com/priyanshurav/libreludo/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">LICENSE</a> for more info.
+This software is licensed under the GNU AGPLv3 License. See the <a href="https://github.com/priyanshurav/libreludo/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">LICENSE</a> for more info.
