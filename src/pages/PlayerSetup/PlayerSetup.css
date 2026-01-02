@@ -100,10 +100,9 @@
   font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
-@media only screen and (max-width: calc(50vh + 15vw)) {
+@media only screen and (max-width: calc(1.8 / 1.5 * 60vh)) {
   .player-setup-dialog {
     height: auto;
-    width: 85vw;
-    aspect-ratio: 1 / 1;
+    width: 92vw;
   }
 }
