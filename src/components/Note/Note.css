@@ -1,0 +1,31 @@
+.note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 16px 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.note[aria-label='important'] {
+  background-color: #fff5f5;
+  border: 1px solid #feb2b2;
+  color: #9b2c2c;
+}
+
+.note[aria-label='bonus'] {
+  background-color: #f0fff4;
+  border: 1px solid #9ae6b4;
+  color: #276749;
+}
+
+.note-label {
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.note-content {
+  flex: 1;
+}
