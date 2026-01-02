@@ -78,4 +78,4 @@ npm run build
 
 ## License
 
-This software is licensed under the GNU AGPLv3 License. See the <a href="https://github.com/priyanshurav/libreludo/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">LICENSE</a> for more info.
+This software is licensed under the GNU Affero General Public License, version 3. See the <a href="https://github.com/priyanshurav/libreludo/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">LICENSE</a> for more info.
