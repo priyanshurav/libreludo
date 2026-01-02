@@ -143,7 +143,7 @@ function PlayerSetup() {
             />
           ))}
         </div>
-        <Link type="button" className="play-btn" to="/play" onClick={handlePlayBtnClick}>
+        <Link className="play-btn" to="/play" onClick={handlePlayBtnClick}>
           PLAY
         </Link>
         <div

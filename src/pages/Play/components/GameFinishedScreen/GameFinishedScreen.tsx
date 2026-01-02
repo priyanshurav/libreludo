@@ -42,7 +42,7 @@ function GameFinishedScreen({ playerFinishOrder }: Props) {
               />
             ))}
           </section>
-          <Link className="play-again-btn" type="button" to="/setup">
+          <Link className="play-again-btn" to="/setup">
             Play Again!
           </Link>
         </motion.div>
