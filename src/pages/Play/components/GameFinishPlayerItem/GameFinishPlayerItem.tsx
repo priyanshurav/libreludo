@@ -1,13 +1,12 @@
 import { type TPlayer, type TPlayerColour } from '../../../../types';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../../../state/store';
-import { useEffect, useState } from 'react';
 import rank1Image from '../../../../assets/player_rank_images/1.png';
 import rank2Image from '../../../../assets/player_rank_images/2.png';
 import rank3Image from '../../../../assets/player_rank_images/3.png';
-import './GameFinishPlayerItem.css';
 import { AnimatePresence, motion } from 'framer-motion';
 import { playerColours } from '../../../../game/players/constants';
+import './GameFinishPlayerItem.css';
 
 type Props = {
   rank: number;
@@ -26,28 +25,23 @@ function getTimeString(t1: number, t2: number): string {
   return `${minutesStr}:${secondsStr}`;
 }
 
+function getRankImage(rank: number): string {
+  switch (rank) {
+    case 1:
+      return rank1Image;
+    case 2:
+      return rank2Image;
+    case 3:
+      return rank3Image;
+    default:
+      throw new Error('Invalid rank');
+  }
+}
+
 function GameFinishPlayerItem({ colour, isLast, name, rank }: Props) {
-  const [rankImage, setRankImage] = useState('');
   const { boardTileSize } = useSelector((state: RootState) => state.board);
   const { gameStartTime, players } = useSelector((state: RootState) => state.players);
   const { gameFinishTime } = players.find((p) => p.colour === colour) as TPlayer;
-
-  useEffect(() => {
-    if (rank === 4) return;
-    switch (rank) {
-      case 1:
-        setRankImage(rank1Image);
-        break;
-      case 2:
-        setRankImage(rank2Image);
-        break;
-      case 3:
-        setRankImage(rank3Image);
-        break;
-      default:
-        throw new Error('Invalid rank');
-    }
-  }, [rank]);
 
   return (
     <AnimatePresence>
@@ -60,11 +54,7 @@ function GameFinishPlayerItem({ colour, isLast, name, rank }: Props) {
         {isLast ? (
           <span />
         ) : (
-          <img
-            src={rankImage === '' ? undefined : rankImage}
-            alt="Rank image"
-            height={boardTileSize * 1.2}
-          />
+          <img src={getRankImage(rank)} alt="Rank image" height={boardTileSize * 1.2} />
         )}
         <span
           className="player-colour-dot"
