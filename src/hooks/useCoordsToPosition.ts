@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import type { TCoordinate } from '../types';
 import type { TTokenAlignmentData } from '../types';
 import type { RootState } from '../state/store';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 export const useCoordsToPosition = (): ((
   coords: TCoordinate,
@@ -10,7 +10,9 @@ export const useCoordsToPosition = (): ((
 ) => { x: string; y: string }) => {
   const boardData = useSelector((state: RootState) => state.board);
   const boardDataRef = useRef(boardData);
-  boardDataRef.current = boardData;
+  useEffect(() => {
+    boardDataRef.current = boardData;
+  }, [boardData]);
   return useCallback((coords: TCoordinate, tokenAlignmentData: TTokenAlignmentData) => {
     const { xOffset, yOffset } = tokenAlignmentData;
     const { boardTileSize, tokenHeight, tokenWidth } = boardDataRef.current;
