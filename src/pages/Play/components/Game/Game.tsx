@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   registerNewPlayer,
   setGameStartTime,
@@ -18,6 +18,7 @@ import type { TPlayerInitData } from '../../../../types';
 import { useNavigate } from 'react-router-dom';
 import { playerCountToWord } from '../../../../game/players/logic';
 import bg from '../../../../assets/bg.jpg';
+import { usePageLeaveBlocker } from '../../../../hooks/usePageLeaveBlocker';
 
 type Props = {
   initData: TPlayerInitData[];
@@ -28,9 +29,10 @@ function Game({ initData }: Props) {
   const boardTileSize = useSelector((state: RootState) => state.board.boardTileSize);
   const { playerSequence, isGameEnded, playerFinishOrder, currentPlayerColour, players } =
     useSelector((state: RootState) => state.players);
-  const [playersRegisteredInitially, setPlayersRegisteredInitially] = useState(true);
+  const playersRegisteredInitiallyRef = useRef(true);
   const navigate = useNavigate();
   const moveAndCapture = useMoveAndCaptureToken();
+  usePageLeaveBlocker(!isGameEnded);
   useEffect(() => {
     if (initData.length === 0) return;
     dispatch(setPlayerSequence({ playerCount: playerCountToWord(initData.length) }));
@@ -40,7 +42,7 @@ function Game({ initData }: Props) {
   useEffect(() => {
     if (initData.length === 0) return;
     for (let i = 0; i < initData.length; i++) {
-      if (!playerSequence.length || !playersRegisteredInitially) return;
+      if (!playerSequence.length || !playersRegisteredInitiallyRef.current) return;
       dispatch(
         registerNewPlayer({
           name: initData[i].name,
@@ -50,8 +52,8 @@ function Game({ initData }: Props) {
       );
       dispatch(registerDice(playerSequence[i]));
     }
-    setPlayersRegisteredInitially(false);
-  }, [dispatch, playerSequence, initData, playersRegisteredInitially]);
+    playersRegisteredInitiallyRef.current = false;
+  }, [dispatch, playerSequence, initData]);
 
   useEffect(() => {
     if (currentPlayerColour || players.length === 0 || initData.length === 0) return;
