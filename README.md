@@ -49,7 +49,7 @@
 
 ## Build & Run
 
-Requires [Node.js](https://nodejs.org/).
+Requires <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">Node.js</a>
 
 ```bash
 # 1. Clone repo
