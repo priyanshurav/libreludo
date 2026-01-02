@@ -13,7 +13,7 @@
     <img src="https://img.shields.io/badge/Play-Now-brightgreen?style=for-the-badge&logo=netlify" alt="Play LibreLudo" />
   </a>
   <a href="LICENSE" target="_blank" rel="noopener noreferrer">
-    <img alt="License" src="https://img.shields.io/github/license/priyanshurav/libreludo?style=for-the-badge">
+    <img alt="License" src="https://img.shields.io/github/license/priyanshurav/libreludo?style=for-the-badge&v=2">
   </a>
 </p>
 
