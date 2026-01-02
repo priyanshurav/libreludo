@@ -7,7 +7,7 @@ import './HomePage.css';
 function HomePage() {
   const cleanup = useCleanup();
   useEffect(() => {
-    document.title = 'Welcome to LibreLudo';
+    document.title = 'LibreLudo - Free Open Source Ludo Game';
     cleanup();
   }, [cleanup]);
   return (
