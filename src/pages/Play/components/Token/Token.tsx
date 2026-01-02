@@ -25,14 +25,11 @@ function Token({ colour, id, tokenClickData }: Props) {
   const { tokenHeight, tokenWidth } = useSelector((state: RootState) => state.board);
   const { players } = useSelector((state: RootState) => state.players);
   const tokenClickDataRef = useRef(tokenClickData);
-  const player = useMemo(
+  const { numberOfConsecutiveSix, tokens: playerTokens } = useMemo(
     () => players.find((v) => v.colour === colour),
     [players, colour]
   ) as TPlayer;
-  const token = useMemo(
-    () => player.tokens.find((t) => t.id === id),
-    [player.tokens, id]
-  ) as TToken;
+  const token = useMemo(() => playerTokens.find((t) => t.id === id), [playerTokens, id]) as TToken;
 
   const { coordinates, isActive, isLocked, tokenAlignmentData } = token;
 
@@ -62,14 +59,10 @@ function Token({ colour, id, tokenClickData }: Props) {
     if (!moveData) return;
     const { hasTokenReachedHome, isCaptured, hasPlayerWon } = moveData;
     if (hasPlayerWon) return dispatch(changeTurnThunk(moveAndCapture));
-    if (
-      (diceNumber !== 6 || player?.numberOfConsecutiveSix >= 3) &&
-      !isCaptured &&
-      !hasTokenReachedHome
-    ) {
+    if ((diceNumber !== 6 || numberOfConsecutiveSix >= 3) && !isCaptured && !hasTokenReachedHome) {
       return dispatch(changeTurnThunk(moveAndCapture));
     }
-  }, [diceNumber, dispatch, isActive, moveAndCapture, player?.numberOfConsecutiveSix, token]);
+  }, [diceNumber, dispatch, isActive, moveAndCapture, numberOfConsecutiveSix, token]);
 
   useEffect(() => {
     const prevClickData = tokenClickDataRef.current;
