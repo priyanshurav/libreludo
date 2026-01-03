@@ -72,8 +72,8 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
   return (
     <div className={`dice-container ${colour}`}>
       <button
-        className={`dice ${isDiceDisabled ? 'disabled' : ''} ${isCurrentPlayer ? 'current' : ''}`}
-        style={{ '--active-border-colour': playerColours[colour] } as React.CSSProperties}
+        className={`dice ${!isDiceDisabled ? 'active' : ''} ${isCurrentPlayer ? 'current' : ''}`}
+        style={{ '--player-colour': playerColours[colour] } as React.CSSProperties}
         type="button"
         onClick={isDiceDisabled ? undefined : handleDiceClick}
       >
