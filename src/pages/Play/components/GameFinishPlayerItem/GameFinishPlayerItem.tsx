@@ -15,9 +15,9 @@ type Props = {
   isLast: boolean;
 };
 
-function getTimeString(t1: number, t2: number): string {
-  if (t1 === -1 || t2 === -1) return '00:00';
-  const diff = Math.abs(t2 - t1);
+function getTimeString(startTime: number, finishTime: number, inactiveTime: number): string {
+  if (finishTime === -1 || startTime === -1 || inactiveTime === -1) return '00:00';
+  const diff = Math.abs(finishTime - startTime - inactiveTime);
   const minutes = diff / 1000 / 60;
   const seconds = diff / 1000 - Math.floor(minutes) * 60;
   const minutesStr = Math.floor(minutes).toString().padStart(2, '0');
@@ -40,8 +40,9 @@ function getRankImage(rank: number): string {
 
 function GameFinishPlayerItem({ colour, isLast, name, rank }: Props) {
   const { boardTileSize } = useSelector((state: RootState) => state.board);
-  const { gameStartTime, players } = useSelector((state: RootState) => state.players);
-  const { gameFinishTime } = players.find((p) => p.colour === colour) as TPlayer;
+  const { players } = useSelector((state: RootState) => state.players);
+  const { gameStartTime, gameInactiveTime } = useSelector((state: RootState) => state.session);
+  const { playerFinishTime } = players.find((p) => p.colour === colour) as TPlayer;
 
   return (
     <AnimatePresence>
@@ -62,7 +63,7 @@ function GameFinishPlayerItem({ colour, isLast, name, rank }: Props) {
         ></span>
         <span className="game-finish-player-name">{name}</span>
         <span className="game-finish-time">
-          {isLast ? '' : getTimeString(gameFinishTime, gameStartTime)}
+          {isLast ? '' : getTimeString(gameStartTime, playerFinishTime, gameInactiveTime)}
         </span>
       </motion.div>
     </AnimatePresence>

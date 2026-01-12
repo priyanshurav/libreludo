@@ -1,9 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import {
-  registerNewPlayer,
-  setGameStartTime,
-  setPlayerSequence,
-} from '../../../../state/slices/playersSlice';
+import { registerNewPlayer, setPlayerSequence } from '../../../../state/slices/playersSlice';
 import { type TPlayerColour } from '../../../../types';
 import Board from '../Board/Board';
 import './Game.css';
@@ -19,6 +15,9 @@ import { useNavigate } from 'react-router-dom';
 import { playerCountToWord } from '../../../../game/players/logic';
 import bg from '../../../../assets/bg.jpg';
 import { usePageLeaveBlocker } from '../../../../hooks/usePageLeaveBlocker';
+import { addToGameInactiveTime, setGameStartTime } from '../../../../state/slices/sessionSlice';
+
+export const EXIT_MESSAGE = 'Are you sure you want to exit? Any progress made will be lost.';
 
 type Props = {
   initData: TPlayerInitData[];
@@ -30,9 +29,10 @@ function Game({ initData }: Props) {
   const { playerSequence, isGameEnded, playerFinishOrder, currentPlayerColour, players } =
     useSelector((state: RootState) => state.players);
   const playersRegisteredInitiallyRef = useRef(true);
+  const gameInactiveStartTime = useRef(0);
   const navigate = useNavigate();
   const moveAndCapture = useMoveAndCaptureToken();
-  usePageLeaveBlocker(!isGameEnded);
+  usePageLeaveBlocker(!isGameEnded && import.meta.env.PROD);
   useEffect(() => {
     if (initData.length === 0) return;
     dispatch(setPlayerSequence({ playerCount: playerCountToWord(initData.length) }));
@@ -56,6 +56,20 @@ function Game({ initData }: Props) {
   }, [dispatch, playerSequence, initData]);
 
   useEffect(() => {
+    const handlePageVisibilityChange = () => {
+      if (isGameEnded) return;
+      if (document.hidden) {
+        gameInactiveStartTime.current = Date.now();
+      } else {
+        const now = Date.now();
+        dispatch(addToGameInactiveTime(now - gameInactiveStartTime.current));
+      }
+    };
+    document.addEventListener('visibilitychange', handlePageVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handlePageVisibilityChange);
+  }, [dispatch, isGameEnded]);
+
+  useEffect(() => {
     if (currentPlayerColour || players.length === 0 || initData.length === 0) return;
     dispatch(changeTurnThunk(moveAndCapture));
   }, [currentPlayerColour, dispatch, initData.length, moveAndCapture, players.length]);
@@ -66,7 +80,7 @@ function Game({ initData }: Props) {
   };
 
   const handleExitBtnClick = () => {
-    const shouldExit = confirm('Are you sure you want to exit? Any progress made will be lost.');
+    const shouldExit = confirm(EXIT_MESSAGE);
     if (!shouldExit) return;
     navigate('/');
   };
