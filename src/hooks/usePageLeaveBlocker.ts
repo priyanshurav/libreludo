@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useBlocker } from 'react-router-dom';
+import { EXIT_MESSAGE } from '../pages/Play/components/Game/Game';
 
 export const usePageLeaveBlocker = (shouldBlock: boolean) => {
   useEffect(() => {
@@ -15,11 +16,8 @@ export const usePageLeaveBlocker = (shouldBlock: boolean) => {
   }, [shouldBlock]);
 
   useBlocker(({ currentLocation, nextLocation }) => {
-    if (!shouldBlock) return false;
-    if (currentLocation.pathname === nextLocation.pathname) return false;
-    const userWantsToLeave = confirm(
-      'Are you sure you want to exit? Any progress made will be lost.'
-    );
+    if (!shouldBlock || currentLocation.pathname === nextLocation.pathname) return false;
+    const userWantsToLeave = confirm(EXIT_MESSAGE);
     return !userWantsToLeave;
   });
 };
