@@ -11,7 +11,7 @@ import type { AppDispatch, RootState } from '../state/store';
 import { areCoordsEqual } from '../game/coords/logic';
 import { updateTokenPositionAndAlignmentThunk } from '../state/thunks/updateTokenPositionAndAlignmentThunk';
 import { setTokenTransitionTime } from '../utils/setTokenTransitionTime';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../game/tokens/constants';
 import { tokenPaths } from '../game/tokens/paths';
 
@@ -26,7 +26,9 @@ export const useMoveTokenForward = () => {
   const dispatch = useDispatch<AppDispatch>();
   const players = useSelector((state: RootState) => state.players.players);
   const playersRef = useRef(players);
-  playersRef.current = players;
+  useEffect(() => {
+    playersRef.current = players;
+  }, [players]);
   return useCallback(
     (diceNumber: number, token: TToken): Promise<TMoveTokenCompletionData> => {
       return new Promise((resolve) => {

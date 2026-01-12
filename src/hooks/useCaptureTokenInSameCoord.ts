@@ -12,7 +12,7 @@ import { areCoordsEqual } from '../game/coords/logic';
 import { useCoordsToPosition } from './useCoordsToPosition';
 import type { RootState } from '../state/store';
 import { setTokenTransitionTime } from '../utils/setTokenTransitionTime';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import {
   BACKWARD_TOKEN_TRANSITION_TIME,
   FORWARD_TOKEN_TRANSITION_TIME,
@@ -28,7 +28,9 @@ export function useCaptureTokenInSameCoord() {
   const getPosition = useCoordsToPosition();
   const players = useSelector((state: RootState) => state.players.players);
   const playersRef = useRef(players);
-  playersRef.current = players;
+  useEffect(() => {
+    playersRef.current = players;
+  }, [players]);
   return useCallback(
     (capturingToken: TToken, latestCoord: TCoordinate): Promise<boolean> => {
       return new Promise((resolve) => {
