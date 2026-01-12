@@ -1,5 +1,5 @@
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../../game/tokens/constants';
-import { selectBestTokenForBot } from '../../game/tokens/selectBestTokenForBot';
+import { selectBestTokenForBot } from '../../game/bot/selectBestTokenForBot';
 import type { AppDispatch, RootState } from '../store';
 import type { useMoveAndCaptureToken } from '../../hooks/useMoveAndCaptureToken';
 import { setTokenTransitionTime } from '../../utils/setTokenTransitionTime';
