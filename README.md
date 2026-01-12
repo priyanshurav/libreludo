@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://libreludo.netlify.app/icons/favicon.png" alt="LibreLudo Logo" width="120" />
+  <img src="https://libreludo.org/icons/favicon.png" alt="LibreLudo Logo" width="120" />
 </p>
 
 <h1 align="center">🎲 LibreLudo</h1>
@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://libreludo.netlify.app" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Play-Now-brightgreen?style=for-the-badge&logo=netlify" alt="Play LibreLudo" /></a>
+  <a href="https://libreludo.org" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Play-Now-brightgreen?style=for-the-badge&logo=netlify" alt="Play LibreLudo" /></a>
   <a href="LICENSE" target="_blank" rel="noopener noreferrer"><img alt="License" src="https://img.shields.io/github/license/priyanshurav/libreludo?style=for-the-badge&v=2"></a>
 </p>
 
@@ -17,7 +17,7 @@
 
 ## ▶️ Play LibreLudo
 
-🟢 <a href="https://libreludo.netlify.app" target="_blank" rel="noopener noreferrer">Click here to play the full game now</a> — no download needed. Just roll the dice and start playing!
+🟢 <a href="https://libreludo.org" target="_blank" rel="noopener noreferrer">Click here to play the full game now</a> — no download needed. Just roll the dice and start playing!
 
 ---
 
