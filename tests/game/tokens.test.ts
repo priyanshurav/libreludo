@@ -9,11 +9,10 @@ import {
   getTokenAlignmentData,
   tokenAlignmentData,
 } from '../../src/game/tokens/alignment';
-import { TOKEN_LOCKED_COORDINATES, TOKEN_START_COORDINATES } from '../../src/game/tokens/constants';
+import { TOKEN_LOCKED_COORDINATES } from '../../src/game/tokens/constants';
 import { DUMMY_PLAYERS } from '../fixtures/players.dummy';
 import {
   getAvailableSteps,
-  getOnlyTokenMovable,
   isAnyTokenActiveOfColour,
   isTokenMovable,
   tokensWithCoord,
@@ -170,30 +169,7 @@ describe('Test tokens/logic', () => {
       expect(isAnyTokenActiveOfColour('blue', DUMMY_PLAYERS)).toBe(false);
     });
   });
-  describe('getOnlyTokenMovable', () => {
-    it('returns the only movable token for the specified player colour and dice number', () => {
-      const players = cloneDeep(DUMMY_PLAYERS);
-      const player = players.find((p) => p.colour === 'blue') as TPlayer;
-      player.tokens[0].isLocked = false;
-      player.tokens[0].coordinates = TOKEN_START_COORDINATES.blue;
-      expect(getOnlyTokenMovable('blue', 5, players)).toEqual(player.tokens[0]);
-    });
-    it('returns null if multiple tokens are movable for the specified player colour and dice number', () => {
-      const players = cloneDeep(DUMMY_PLAYERS);
-      const player = players.find((p) => p.colour === 'blue') as TPlayer;
-      player.tokens[0].isLocked = false;
-      player.tokens[0].coordinates = TOKEN_START_COORDINATES.blue;
-      player.tokens[1].isLocked = false;
-      player.tokens[1].coordinates = TOKEN_START_COORDINATES.blue;
-      expect(getOnlyTokenMovable('blue', 5, players)).toBeNull();
-    });
-    it('returns null if there is no movable token for the specified player colour and dice number', () => {
-      expect(getOnlyTokenMovable('blue', 5, DUMMY_PLAYERS)).toBeNull();
-    });
-    it('should throw error if the specified player colour does not exist in players array', () => {
-      expect(() => getOnlyTokenMovable('white' as never, 5, DUMMY_PLAYERS)).toThrowError();
-    });
-  });
+
   describe('tokensWithCoord', () => {
     it('returns all tokens from all players with the specified coordinate', () => {
       const players = cloneDeep(DUMMY_PLAYERS);

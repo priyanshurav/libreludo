@@ -11,11 +11,7 @@ import { changeTurnThunk } from './changeTurnThunk';
 import type { useMoveAndCaptureToken } from '../../hooks/useMoveAndCaptureToken';
 import type { TMoveData } from '../../types/tokens';
 import { sleep } from '../../utils/sleep';
-import {
-  getOnlyTokenMovable,
-  isAnyTokenActiveOfColour,
-  isTokenMovable,
-} from '../../game/tokens/logic';
+import { isAnyTokenActiveOfColour, isTokenMovable } from '../../game/tokens/logic';
 
 export const handlePostDiceRollThunk = (
   colour: TPlayerColour,
@@ -55,11 +51,8 @@ export const handlePostDiceRollThunk = (
         ? false
         : movableTokens.every((t) => areCoordsEqual(movableTokens[0].coordinates, t.coordinates));
 
-    const onlyTokenMovable = getOnlyTokenMovable(colour, diceNumber, players);
-
-    if (onlyTokenMovable || areAllTokensInSameCoord) {
-      const token = onlyTokenMovable ? onlyTokenMovable : movableTokens[0];
-      const moveData = await moveAndCapture(token, diceNumber);
+    if (areAllTokensInSameCoord) {
+      const moveData = await moveAndCapture(movableTokens[0], diceNumber);
       if (!moveData) {
         if (player.isBot) await sleep(500);
         dispatch(changeTurnThunk(moveAndCapture));
