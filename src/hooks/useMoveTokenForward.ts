@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import {
   deactivateAllTokens,
   markTokenAsReachedHome,
@@ -11,7 +11,7 @@ import type { AppDispatch, RootState } from '../state/store';
 import { areCoordsEqual } from '../game/coords/logic';
 import { updateTokenPositionAndAlignmentThunk } from '../state/thunks/updateTokenPositionAndAlignmentThunk';
 import { setTokenTransitionTime } from '../utils/setTokenTransitionTime';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback } from 'react';
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../game/tokens/constants';
 import { tokenPaths } from '../game/tokens/paths';
 
@@ -24,11 +24,9 @@ export type TMoveTokenCompletionData = {
 
 export const useMoveTokenForward = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const players = useSelector((state: RootState) => state.players.players);
-  const playersRef = useRef(players);
-  useEffect(() => {
-    playersRef.current = players;
-  }, [players]);
+  useSelector((state: RootState) => state.players.players);
+  const store = useStore<RootState>();
+
   return useCallback(
     (diceNumber: number, token: TToken): Promise<TMoveTokenCompletionData> => {
       return new Promise((resolve) => {
@@ -36,7 +34,7 @@ export const useMoveTokenForward = () => {
         const { colour, id, coordinates, isLocked } = token;
         if (isLocked) throw new Error(ERRORS.lockedToken(colour, id));
         const tokenPath = tokenPaths[colour];
-
+        const players = store.getState().players.players;
         dispatch(deactivateAllTokens(colour));
         setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME, token);
         dispatch(setIsAnyTokenMoving(true));
@@ -49,7 +47,7 @@ export const useMoveTokenForward = () => {
         const handleTransitionEnd = () => {
           const hasTokenReachedHome = areCoordsEqual(tokenPath[i], tokenPath[tokenPath.length - 1]);
           if (count >= diceNumber || hasTokenReachedHome) {
-            const player = playersRef.current.find((p) => p.colour === colour);
+            const player = players.find((p) => p.colour === colour);
             if (!player) return;
             const hasPlayerWon =
               hasTokenReachedHome &&
@@ -76,6 +74,6 @@ export const useMoveTokenForward = () => {
         tokenEl.addEventListener('transitionend', handleTransitionEnd);
       });
     },
-    [dispatch]
+    [dispatch, store]
   );
 };

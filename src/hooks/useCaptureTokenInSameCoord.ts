@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import {
   deactivateAllTokens,
   lockToken,
@@ -12,7 +12,7 @@ import { areCoordsEqual } from '../game/coords/logic';
 import { useCoordsToPosition } from './useCoordsToPosition';
 import type { RootState } from '../state/store';
 import { setTokenTransitionTime } from '../utils/setTokenTransitionTime';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback } from 'react';
 import {
   BACKWARD_TOKEN_TRANSITION_TIME,
   FORWARD_TOKEN_TRANSITION_TIME,
@@ -26,17 +26,15 @@ import { sleep } from '../utils/sleep';
 export function useCaptureTokenInSameCoord() {
   const dispatch = useDispatch();
   const getPosition = useCoordsToPosition();
-  const players = useSelector((state: RootState) => state.players.players);
-  const playersRef = useRef(players);
-  useEffect(() => {
-    playersRef.current = players;
-  }, [players]);
+  useSelector((state: RootState) => state.players.players);
+  const store = useStore<RootState>();
+
   return useCallback(
     (capturingToken: TToken, latestCoord: TCoordinate): Promise<boolean> => {
       return new Promise((resolve) => {
         if (capturingToken.isLocked)
           throw new Error(ERRORS.lockedToken(capturingToken.colour, capturingToken.id));
-        const players = playersRef.current;
+        const players = store.getState().players.players;
 
         if (TOKEN_SAFE_COORDINATES.find((c) => areCoordsEqual(c, latestCoord)))
           return resolve(false);
@@ -100,6 +98,6 @@ export function useCaptureTokenInSameCoord() {
         })();
       });
     },
-    [dispatch, getPosition]
+    [dispatch, getPosition, store]
   );
 }
