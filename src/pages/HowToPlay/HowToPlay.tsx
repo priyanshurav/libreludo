@@ -11,7 +11,7 @@ function HowToPlay() {
   }, []);
   return (
     <div className="how-to-play-container">
-      <div className="how-to-play">
+      <main className="how-to-play">
         <section className="introduction">
           <h1>
             <H c="🎲" /> How to Play LibreLudo
@@ -206,7 +206,7 @@ function HowToPlay() {
             </li>
           </ul>
         </div>
-      </div>
+      </main>
       <Link className="play-now-btn" to="/setup">
         <H c="🔥" /> Play Now
       </Link>
