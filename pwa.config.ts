@@ -8,7 +8,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
     name: 'LibreLudo',
     short_name: 'LibreLudo',
     description:
-      'LibreLudo is a free, easy-to-play digital Ludo game with simple gameplay and a clean, user-friendly interface for casual fun.',
+      'An ad-free, open-source Ludo game for the browser. Clean, privacy-focused local multiplayer — no downloads, no logins, no interruptions.',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
