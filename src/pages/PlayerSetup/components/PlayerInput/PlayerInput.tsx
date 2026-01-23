@@ -31,7 +31,7 @@ function PlayerInput({ colour, isBot, name, onBotStatusChange, onNameChange }: P
       <button
         className="bot-status-btn"
         data-tooltip-id={colour}
-        data-tooltip-content={isBot ? 'Player is Bot' : 'Player is Human'}
+        data-tooltip-content={isBot ? 'Bot' : 'Human'}
         aria-label="Toggle Ludo bot on or off"
         onClick={() => onBotStatusChange(!isBot)}
       >
