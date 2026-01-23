@@ -18,7 +18,7 @@ type Props = {
 function Board({ onDiceClick: onDiceRoll }: Props) {
   const { players, currentPlayerColour } = useSelector((state: RootState) => state.players);
   const { boardTileSize, boardSideLength } = useSelector((state: RootState) => state.board);
-  const dice = useSelector((state: RootState) => state.dice);
+  const { dice } = useSelector((state: RootState) => state.dice);
   const [tokenClickData, setTokenClickData] = useState<TTokenClickData | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();

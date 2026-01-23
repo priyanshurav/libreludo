@@ -38,7 +38,7 @@ function Token({ colour, id, tokenClickData }: Props) {
   const getPosition = useCoordsToPosition();
   const { x, y } = getPosition(coordinates, tokenAlignmentData);
   const diceNumber = useSelector((state: RootState) =>
-    state.dice.find((d) => d.colour === colour)
+    state.dice.dice.find((d) => d.colour === colour)
   )?.diceNumber;
   const moveAndCapture = useMoveAndCaptureToken();
 

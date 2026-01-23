@@ -1,4 +1,4 @@
-import { rollDice, setIsPlaceholderShowing } from '../slices/diceSlice';
+import { renewRollBag, setDiceNumber, setIsPlaceholderShowing } from '../slices/diceSlice';
 import type { TPlayerColour } from '../../types';
 import type { AppDispatch, RootState } from '../store';
 
@@ -9,10 +9,15 @@ export function rollDiceThunk(colour: TPlayerColour, onDiceRoll: (diceNumber: nu
     if (getState().players.isGameEnded) return;
     dispatch(setIsPlaceholderShowing({ colour, isPlaceholderShowing: true }));
     setTimeout(() => {
+      const diceState = getState().dice;
+      const dice = diceState.dice.find((d) => d.colour === colour);
+      if (diceState.rollBag[colour].length === 0) dispatch(renewRollBag(colour));
+      const bag = getState().dice.rollBag[colour];
+      const index = Math.floor(Math.random() * bag.length);
+      const diceNumber = bag[index];
       dispatch(setIsPlaceholderShowing({ colour, isPlaceholderShowing: false }));
-      dispatch(rollDice({ colour }));
-      const dice = getState().dice.find((d) => d.colour === colour);
-      if (dice) onDiceRoll(dice.diceNumber);
+      dispatch(setDiceNumber({ colour, randomIndex: index }));
+      if (dice) onDiceRoll(diceNumber);
     }, DICE_PLACEHOLDER_DELAY);
   };
 }

@@ -63,7 +63,7 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
     players,
   } = useSelector((state: RootState) => state.players);
   const { diceNumber, isPlaceholderShowing } =
-    useSelector((state: RootState) => state.dice.find((d) => d.colour === colour)) ?? {};
+    useSelector((state: RootState) => state.dice.dice.find((d) => d.colour === colour)) ?? {};
 
   const anyTokenActive = useMemo(
     () => isAnyTokenActiveOfColour(colour, players),
