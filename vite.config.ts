@@ -16,6 +16,11 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
     },
   },
+  css: {
+    modules: {
+      localsConvention: 'camelCaseOnly',
+    },
+  },
   define: {
     __APP_VERSION__: JSON.stringify(version),
     __APP_LICENSE__: JSON.stringify(license),

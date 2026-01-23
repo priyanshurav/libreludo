@@ -6,7 +6,7 @@ import rank2Image from '../../../../assets/player_rank_images/2.png';
 import rank3Image from '../../../../assets/player_rank_images/3.png';
 import { AnimatePresence, motion } from 'framer-motion';
 import { playerColours } from '../../../../game/players/constants';
-import './GameFinishPlayerItem.css';
+import styles from './GameFinishPlayerItem.module.css';
 
 type Props = {
   rank: number;
@@ -47,7 +47,7 @@ function GameFinishPlayerItem({ colour, isLast, name, rank }: Props) {
   return (
     <AnimatePresence>
       <motion.div
-        className="game-finish-player-item"
+        className={styles.gameFinishPlayerItem}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: rank * 0.1 }}
@@ -58,11 +58,11 @@ function GameFinishPlayerItem({ colour, isLast, name, rank }: Props) {
           <img src={getRankImage(rank)} alt="Rank image" height={boardTileSize * 1.2} />
         )}
         <span
-          className="player-colour-dot"
+          className={styles.playerColourDot}
           style={{ backgroundColor: playerColours[colour] }}
         ></span>
-        <span className="game-finish-player-name">{name}</span>
-        <span className="game-finish-time">
+        <span className={styles.gameFinishPlayerName}>{name}</span>
+        <span className={styles.gameFinishTime}>
           {isLast ? '' : getTimeString(gameStartTime, playerFinishTime, gameInactiveTime)}
         </span>
       </motion.div>

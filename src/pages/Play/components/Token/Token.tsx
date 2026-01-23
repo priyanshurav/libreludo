@@ -5,7 +5,6 @@ import { type TToken } from '../../../../types';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../../../../state/store';
 import TokenImage from '../../../../assets/token.svg?react';
-import './Token.css';
 import { useCoordsToPosition } from '../../../../hooks/useCoordsToPosition';
 import { setTokenTransitionTime } from '../../../../utils/setTokenTransitionTime';
 import { changeTurnThunk } from '../../../../state/thunks/changeTurnThunk';
@@ -13,6 +12,8 @@ import { useMoveAndCaptureToken } from '../../../../hooks/useMoveAndCaptureToken
 import { unlockAndAlignTokens } from '../../../../state/thunks/unlockAndAlignTokens';
 import { playerColours } from '../../../../game/players/constants';
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../../../../game/tokens/constants';
+import styles from './Token.module.css';
+import clsx from 'clsx';
 
 type Props = {
   colour: TPlayerColour;
@@ -77,7 +78,7 @@ function Token({ colour, id, tokenClickData }: Props) {
   return (
     <div
       id={`${colour}_${id}`}
-      className="token"
+      className={styles.token}
       onClick={unlock}
       style={
         {
@@ -88,7 +89,7 @@ function Token({ colour, id, tokenClickData }: Props) {
       }
     >
       <TokenImage
-        className={`${isActive ? 'active' : ''}`}
+        className={clsx(isActive && styles.active)}
         style={
           {
             '--fill-colour': playerColours[colour],

@@ -18,6 +18,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
     "@types/lodash-es": "^4.17.12",
+    "clsx": "^2.1.1",
     "framer-motion": "^12.23.26",
     "lodash-es": "^4.17.22",
     "react": "^19.2.3",

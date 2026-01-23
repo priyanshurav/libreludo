@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { registerNewPlayer, setPlayerSequence } from '../../../../state/slices/playersSlice';
 import { type TPlayerColour } from '../../../../types';
 import Board from '../Board/Board';
-import './Game.css';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../../../../state/store';
 import { registerDice } from '../../../../state/slices/diceSlice';
@@ -16,6 +15,7 @@ import { playerCountToWord } from '../../../../game/players/logic';
 import bg from '../../../../assets/bg.jpg';
 import { usePageLeaveBlocker } from '../../../../hooks/usePageLeaveBlocker';
 import { addToGameInactiveTime, setGameStartTime } from '../../../../state/slices/sessionSlice';
+import styles from './Game.module.css';
 
 export const EXIT_MESSAGE = 'Are you sure you want to exit? Any progress made will be lost.';
 
@@ -87,7 +87,7 @@ function Game({ initData }: Props) {
 
   return (
     <div
-      className="game"
+      className={styles.game}
       style={
         {
           '--board-tile-size': `${boardTileSize}px`,
@@ -98,7 +98,7 @@ function Game({ initData }: Props) {
       <button
         type="button"
         aria-label="Exit button"
-        className="exit-btn"
+        className={styles.exitBtn}
         onClick={handleExitBtnClick}
       >
         &times;

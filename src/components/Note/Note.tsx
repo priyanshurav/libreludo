@@ -1,5 +1,5 @@
 import type React from 'react';
-import './Note.css';
+import styles from './Note.module.css';
 
 type TLabelType = 'important' | 'bonus';
 
@@ -26,9 +26,9 @@ function getLabel(type: TLabelType): React.ReactElement {
 
 function Note({ type, children }: React.PropsWithChildren<Props>) {
   return (
-    <div className="note" role="note" aria-label={type}>
-      <strong className="note-label">{getLabel(type)}</strong>
-      <span className="note-content">{children}</span>
+    <div className={styles.note} role="note" aria-label={type}>
+      <strong className={styles.noteLabel}>{getLabel(type)}</strong>
+      <span className={styles.noteContent}>{children}</span>
     </div>
   );
 }

@@ -3,7 +3,8 @@ import { useEffect } from 'react';
 import { useCleanup } from '../../hooks/useCleanup';
 import GitHubLogo from '../../assets/icons/github-mark-white.svg?react';
 import ShareIcon from '../../assets/icons/share.svg?react';
-import './HomePage.css';
+import styles from './HomePage.module.css';
+import clsx from 'clsx';
 
 function HomePage() {
   const cleanup = useCleanup();
@@ -32,24 +33,24 @@ function HomePage() {
     cleanup();
   }, [cleanup]);
   return (
-    <div className="page-container">
-      <main className="home-page">
-        <section className="welcome">
+    <div className={styles.pageContainer}>
+      <main className={styles.homePage}>
+        <section className={styles.welcome}>
           <h1>
             <span>Welcome to</span> LibreLudo
           </h1>
           <p>Roll the dice, compete with friends, and send your tokens home first.</p>
-          <section className="cta-buttons">
-            <Link className="cta-button play-now-btn" to="/setup">
+          <section className={styles.ctaButtons}>
+            <Link className={clsx(styles.ctaButton, styles.playNowBtn)} to="/setup">
               🔥 Play Now!
             </Link>
-            <Link className="cta-button how-to-play-btn" to="/how-to-play">
+            <Link className={clsx(styles.ctaButton, styles.howToPlayBtn)} to="/how-to-play">
               How to Play
             </Link>
           </section>
         </section>
-        <section className="information">
-          <section className="why-play-libreludo">
+        <section className={styles.information}>
+          <section className={styles.whyPlayLibreludo}>
             <h2>🔥 Why Play LibreLudo?</h2>
             <ul>
               <li>Smooth, modern interface for easy gameplay.</li>
@@ -58,7 +59,7 @@ function HomePage() {
               <li>No registration—play instantly!</li>
             </ul>
           </section>
-          <section className="history">
+          <section className={styles.history}>
             <h2>📜 History of Ludo</h2>
             <dl>
               <dt>Origins</dt>
@@ -80,23 +81,23 @@ function HomePage() {
         </section>
       </main>
       <footer>
-        <div className="text">
+        <div className={styles.text}>
           <a href="https://github.com/priyanshurav" target="_blank" rel="noopener noreferrer">
             Made with ❤️ by @priyanshurav
           </a>
           <span>Copyright &copy; 2025&ndash;{new Date().getFullYear()} Priyanshu Rav</span>
         </div>
-        <div className="footer-actions">
+        <div className={styles.footerActions}>
           <a
             href="https://github.com/priyanshurav/libreludo"
             target="_blank"
             aria-label="View Source on GitHub"
-            className="icon-btn"
+            className={styles.iconBtn}
             rel="noopener noreferrer"
           >
             <GitHubLogo />
           </a>
-          <button className="icon-btn" aria-label="Share" onClick={share}>
+          <button className={styles.iconBtn} aria-label="Share" onClick={share}>
             <ShareIcon />
           </button>
         </div>

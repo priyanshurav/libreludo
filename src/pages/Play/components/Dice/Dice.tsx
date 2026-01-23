@@ -13,7 +13,8 @@ import { ERRORS } from '../../../../utils/errors';
 import { rollDiceThunk } from '../../../../state/thunks/rollDiceThunk';
 import { playerColours } from '../../../../game/players/constants';
 import { isAnyTokenActiveOfColour } from '../../../../game/tokens/logic';
-import './Dice.css';
+import styles from './Dice.module.css';
+import clsx from 'clsx';
 
 type Props = {
   colour: TPlayerColour;
@@ -37,6 +38,19 @@ function getDiceImage(diceNumber: number | undefined): string {
       return dice6;
     default:
       throw new Error(ERRORS.invalidDiceNumber(diceNumber as never));
+  }
+}
+
+function getCSSClass(colour: TPlayerColour): string {
+  switch (colour) {
+    case 'blue':
+      return styles.blue;
+    case 'red':
+      return styles.red;
+    case 'green':
+      return styles.green;
+    case 'yellow':
+      return styles.yellow;
   }
 }
 
@@ -66,23 +80,26 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
     isBot;
 
   const handleDiceClick = () => {
+    if (isDiceDisabled) return;
     dispatch(rollDiceThunk(colour, (diceNumber) => onDiceClick(colour, diceNumber)));
   };
 
   return (
-    <div className={`dice-container ${colour}`}>
+    <div className={clsx(styles.diceContainer, getCSSClass(colour))}>
       <button
-        className={`dice ${!isDiceDisabled ? 'active' : ''} ${isCurrentPlayer ? 'current' : ''}`}
+        className={clsx(styles.dice, {
+          [styles.active]: !isDiceDisabled,
+        })}
         style={{ '--player-colour': playerColours[colour] } as React.CSSProperties}
         type="button"
-        onClick={isDiceDisabled ? undefined : handleDiceClick}
+        onClick={handleDiceClick}
       >
         <img
           src={isPlaceholderShowing ? dicePlaceholder : getDiceImage(diceNumber)}
           alt="Dice image"
         />
       </button>
-      <span className="player-name">{playerName}</span>
+      <span className={styles.playerName}>{playerName}</span>
     </div>
   );
 }

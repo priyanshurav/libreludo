@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import './PlayerSetup.css';
 import PlayerInput from './components/PlayerInput/PlayerInput';
 import { Link, useNavigate } from 'react-router-dom';
 import type { TPlayerInitData } from '../../types';
@@ -13,6 +12,7 @@ import { playerSequences } from '../../game/players/constants';
 import bg from '../../assets/bg.jpg';
 import GitHubButton from 'react-github-btn';
 import HomeIcon from '../../assets/icons/home.svg?react';
+import styles from './PlayerSetup.module.css';
 
 const ALL_BOT_PLAYER_TOAST_ID = 'all-bot-player';
 const PLAYER_NAME_EMPTY_TOAST_ID = 'player-name-empty';
@@ -94,9 +94,9 @@ function PlayerSetup() {
   return isLoading ? (
     <LoadingScreen />
   ) : (
-    <div className="player-setup" style={{ backgroundImage: `url(${bg})` }}>
+    <div className={styles.playerSetup} style={{ backgroundImage: `url(${bg})` }}>
       <main
-        className="player-setup-dialog"
+        className={styles.playerSetupDialog}
         ref={dialogRef}
         style={
           {
@@ -105,18 +105,18 @@ function PlayerSetup() {
           } as React.CSSProperties
         }
       >
-        <div className="player-count-selector">
-          <button className="player-count" type="button" onClick={() => setPlayerCount(2)}>
+        <div className={styles.playerCountSelector}>
+          <button className={styles.playerCount} onClick={() => setPlayerCount(2)}>
             2
           </button>
-          <button className="player-count" type="button" onClick={() => setPlayerCount(3)}>
+          <button className={styles.playerCount} onClick={() => setPlayerCount(3)}>
             3
           </button>
-          <button className="player-count" type="button" onClick={() => setPlayerCount(4)}>
+          <button className={styles.playerCount} onClick={() => setPlayerCount(4)}>
             4
           </button>
         </div>
-        <div className="player-inputs">
+        <div className={styles.playerInputs}>
           {playerSequence.map((c, index) => (
             <PlayerInput
               colour={c}
@@ -132,12 +132,12 @@ function PlayerSetup() {
             />
           ))}
         </div>
-        <Link className="play-btn" to="/play" onClick={handlePlayBtnClick}>
+        <Link className={styles.playBtn} to="/play" onClick={handlePlayBtnClick}>
           PLAY
         </Link>
-        <small className="version">v{__APP_VERSION__}</small>
+        <small className={styles.version}>v{__APP_VERSION__}</small>
       </main>
-      <Link to="/" className="go-to-home">
+      <Link to="/" className={styles.goToHome}>
         <HomeIcon />
       </Link>
       <div style={{ position: 'absolute', top: 0, right: 0 }}>

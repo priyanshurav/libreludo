@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
-import './HowToPlay.css';
 import Note from '../../components/Note/Note';
+import styles from './HowToPlay.module.css';
 
 const H = ({ c }: { c: string }) => <span aria-hidden="true">{c}</span>;
 
@@ -10,9 +10,9 @@ function HowToPlay() {
     document.title = 'LibreLudo - How to Play';
   }, []);
   return (
-    <div className="how-to-play-container">
-      <main className="how-to-play">
-        <section className="introduction">
+    <div className={styles.howToPlayContainer}>
+      <main className={styles.howToPlay}>
+        <section className={styles.introduction}>
           <h1>
             <H c="🎲" /> How to Play LibreLudo
           </h1>
@@ -22,7 +22,7 @@ function HowToPlay() {
           </p>
         </section>
 
-        <div className="section">
+        <div className={styles.section}>
           <h2>
             <H c="🎯" /> Objective
           </h2>
@@ -32,7 +32,7 @@ function HowToPlay() {
           </p>
         </div>
 
-        <div className="section">
+        <div className={styles.section}>
           <h2>
             <H c="🧩" /> Game Components
           </h2>
@@ -48,7 +48,7 @@ function HowToPlay() {
           </ul>
         </div>
 
-        <div className="section">
+        <div className={styles.section}>
           <h2>
             <H c="👥" /> Players
           </h2>
@@ -59,7 +59,7 @@ function HowToPlay() {
           </ul>
         </div>
 
-        <div className="section">
+        <div className={styles.section}>
           <h2>
             <H c="🎮" /> Gameplay Overview
           </h2>
@@ -91,7 +91,7 @@ function HowToPlay() {
             turn.
           </Note>
         </div>
-        <div className="section">
+        <div className={styles.section}>
           <h2>
             <H c="🧍" /> Token Rules
           </h2>
@@ -101,8 +101,8 @@ function HowToPlay() {
           <ul>
             <li>You can land on or stack with your own tokens.</li>
             <li>
-              Stacked tokens do <strong className="highlight-red">not</strong> block captures or
-              protect each other outside <strong>safe zones</strong>.
+              Stacked tokens do <strong className={styles.highlightRed}>not</strong> block captures
+              or protect each other outside <strong>safe zones</strong>.
             </li>
           </ul>
           <h3>
@@ -119,7 +119,7 @@ function HowToPlay() {
           <ul>
             <li>
               If you land on a square with an opponent's token (and it's not a safe zone), it's{' '}
-              <strong className="highlight-red">captured</strong> and sent to base.
+              <strong className={styles.highlightRed}>captured</strong> and sent to base.
             </li>
             <li>
               You <strong>cannot</strong> capture tokens in safe zones.
@@ -134,7 +134,7 @@ function HowToPlay() {
             <strong>extra dice roll.</strong>
           </Note>
         </div>
-        <div className="section">
+        <div className={styles.section}>
           <h2>
             <H c="⭐" /> Safe Zones
           </h2>
@@ -149,7 +149,7 @@ function HowToPlay() {
           </ul>
         </div>
 
-        <div className="section">
+        <div className={styles.section}>
           <h2>
             <H c="🏠" /> Reaching Home
           </h2>
@@ -157,13 +157,13 @@ function HowToPlay() {
             <li>After a full loop, enter the home column.</li>
             <li>
               If the roll is higher than needed, the token does{' '}
-              <strong className="highlight-red">not</strong> move.
+              <strong className={styles.highlightRed}>not</strong> move.
             </li>
             <li>Tokens in the Home Triangle are safe and cannot be captured.</li>
           </ul>
         </div>
 
-        <div className="section">
+        <div className={styles.section}>
           <h2>
             <H c="🏁" /> Winning the Game
           </h2>
@@ -177,7 +177,7 @@ function HowToPlay() {
           </ul>
         </div>
 
-        <div className="section">
+        <div className={styles.section}>
           <h2>
             <H c="💡" /> Quick Tips
           </h2>
@@ -207,7 +207,7 @@ function HowToPlay() {
           </ul>
         </div>
       </main>
-      <Link className="play-now-btn" to="/setup">
+      <Link className={styles.playNowBtn} to="/setup">
         <H c="🔥" /> Play Now
       </Link>
     </div>

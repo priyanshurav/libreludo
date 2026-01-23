@@ -1,10 +1,10 @@
 import type { TPlayerNameAndColour } from '../../../../types';
 import Confetti from 'react-confetti';
-import './GameFinishedScreen.css';
 import { useWindowSize } from 'react-use';
 import GameFinishPlayerItem from '../GameFinishPlayerItem/GameFinishPlayerItem';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import styles from './GameFinishedScreen.module.css';
 
 type Props = {
   playerFinishOrder: TPlayerNameAndColour[];
@@ -14,24 +14,24 @@ function GameFinishedScreen({ playerFinishOrder }: Props) {
   const { width, height } = useWindowSize();
   return (
     <AnimatePresence>
-      <motion.div className="game-finished-screen">
+      <motion.div className={styles.gameFinishedScreen}>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.7 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="game-finished-backdrop"
+          className={styles.gameFinishedBackdrop}
         />
         <Confetti width={width} height={height} style={{ zIndex: 20 }} />
         <motion.div
-          className="game-finished-dialog"
+          className={styles.gameFinishedDialog}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
           transition={{ duration: 0.2 }}
         >
-          <span className="game-finished-text">GAME FINISHED!</span>
-          <section className="game-result">
+          <span className={styles.gameFinishedText}>GAME FINISHED!</span>
+          <section className={styles.gameResult}>
             {playerFinishOrder.map((p, i) => (
               <GameFinishPlayerItem
                 colour={p.colour}
@@ -42,7 +42,7 @@ function GameFinishedScreen({ playerFinishOrder }: Props) {
               />
             ))}
           </section>
-          <Link className="play-again-btn" to="/setup">
+          <Link className={styles.playAgainBtn} to="/setup">
             Play Again!
           </Link>
         </motion.div>

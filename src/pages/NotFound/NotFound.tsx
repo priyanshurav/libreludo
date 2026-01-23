@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import './NotFound.css';
+import styles from './NotFound.module.css';
 import { useEffect } from 'react';
 
 function NotFound() {
@@ -7,12 +7,12 @@ function NotFound() {
     document.title = '404 Not Found';
   }, []);
   return (
-    <div className="not-found-container">
-      <div className="not-found-dialog">
+    <div className={styles.notFoundContainer}>
+      <div className={styles.notFoundDialog}>
         <h1>404</h1>
-        <p className="oops">🎲 Oops! You've rolled the wrong number.</p>
-        <p className="message">The page you're looking for doesn't exist.</p>
-        <Link className="go-to-home-btn" to="/">
+        <p className={styles.oops}>🎲 Oops! You've rolled the wrong number.</p>
+        <p className={styles.message}>The page you're looking for doesn't exist.</p>
+        <Link className={styles.goToHomeBtn} to="/">
           Go to Home
         </Link>
       </div>

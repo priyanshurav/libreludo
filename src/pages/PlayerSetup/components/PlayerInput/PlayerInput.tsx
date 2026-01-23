@@ -4,7 +4,7 @@ import HumanIcon from '../../../../assets/icons/human.svg?react';
 import { Tooltip } from 'react-tooltip';
 import { MAX_PLAYER_NAME_LENGTH, playerColours } from '../../../../game/players/constants';
 import 'react-tooltip/dist/react-tooltip.css';
-import './PlayerInput.css';
+import styles from './PlayerInput.module.css';
 
 type Props = {
   colour: TPlayerColour;
@@ -16,20 +16,20 @@ type Props = {
 
 function PlayerInput({ colour, isBot, name, onBotStatusChange, onNameChange }: Props) {
   return (
-    <div className="player-input">
+    <div className={styles.playerInput}>
       <span
-        className="player-input-colour-dot"
+        className={styles.playerInputColourDot}
         style={{ backgroundColor: playerColours[colour] }}
       />
       <input
         type="text"
         placeholder="Enter player name"
-        className="player-name-input"
+        className={styles.playerNameInput}
         value={name}
         onChange={(e) => onNameChange(e.target.value.slice(0, MAX_PLAYER_NAME_LENGTH))}
       />
       <button
-        className="bot-status-btn"
+        className={styles.botStatusBtn}
         data-tooltip-id={colour}
         data-tooltip-content={isBot ? 'Bot' : 'Human'}
         aria-label="Toggle Ludo bot on or off"

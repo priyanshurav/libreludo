@@ -1,4 +1,3 @@
-import './Board.css';
 import BoardImage from '../../../../assets/board.svg?react';
 import Token from '../Token/Token';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +9,7 @@ import Dice from '../Dice/Dice';
 import type { TCoordinate, TPlayerColour } from '../../../../types';
 import { tokensWithCoord } from '../../../../game/tokens/logic';
 import type { TTokenClickData } from '../../../../types/tokens';
+import styles from './Board.module.css';
 
 type Props = {
   onDiceClick: (colour: TPlayerColour, diceNumber: number) => void;
@@ -69,7 +69,7 @@ function Board({ onDiceClick: onDiceRoll }: Props) {
   };
 
   return (
-    <div className="board" ref={boardRef} onClick={handleBoardClick}>
+    <div className={styles.board} ref={boardRef} onClick={handleBoardClick}>
       {players.map((p, index1) =>
         p.tokens.map((t, index2) => (
           <Token
@@ -88,7 +88,7 @@ function Board({ onDiceClick: onDiceRoll }: Props) {
           key={i}
         />
       ))}
-      <BoardImage className="board-image" />
+      <BoardImage className={styles.boardImage} />
     </div>
   );
 }
