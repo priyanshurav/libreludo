@@ -12,7 +12,7 @@ import { playerCountToWord } from '../../game/players/logic';
 import { playerSequences } from '../../game/players/constants';
 import bg from '../../assets/bg.jpg';
 import GitHubButton from 'react-github-btn';
-import GoToButton from '../../components/GoToButton/GoToButton';
+import HomeIcon from '../../assets/icons/home.svg?react';
 
 const ALL_BOT_PLAYER_TOAST_ID = 'all-bot-player';
 const PLAYER_NAME_EMPTY_TOAST_ID = 'player-name-empty';
@@ -95,18 +95,7 @@ function PlayerSetup() {
     <LoadingScreen />
   ) : (
     <div className="player-setup" style={{ backgroundImage: `url(${bg})` }}>
-      <GoToButton to="/">Go to Home</GoToButton>
-      <div style={{ position: 'absolute', top: 0, right: 0 }}>
-        <GitHubButton
-          href="https://github.com/priyanshurav"
-          data-color-scheme="no-preference: light; light: light; dark: dark;"
-          data-size="large"
-          aria-label="Follow @priyanshurav on GitHub"
-        >
-          Follow @priyanshurav
-        </GitHubButton>
-      </div>
-      <div
+      <main
         className="player-setup-dialog"
         ref={dialogRef}
         style={
@@ -146,15 +135,20 @@ function PlayerSetup() {
         <Link className="play-btn" to="/play" onClick={handlePlayBtnClick}>
           PLAY
         </Link>
-        <div
-          className="version"
-          role="status"
-          aria-live="polite"
-          aria-label={`LibreLudo version ${__APP_VERSION__}`}
-          tabIndex={0}
+        <small className="version">v{__APP_VERSION__}</small>
+      </main>
+      <Link to="/" className="go-to-home">
+        <HomeIcon />
+      </Link>
+      <div style={{ position: 'absolute', top: 0, right: 0 }}>
+        <GitHubButton
+          href="https://github.com/priyanshurav"
+          data-color-scheme="no-preference: light; light: light; dark: dark;"
+          data-size="large"
+          aria-label="Follow @priyanshurav on GitHub"
         >
-          v{__APP_VERSION__}
-        </div>
+          Follow @priyanshurav
+        </GitHubButton>
       </div>
       <ToastContainer position="top-center" />
     </div>

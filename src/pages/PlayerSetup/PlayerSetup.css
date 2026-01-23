@@ -46,7 +46,9 @@
   border: none;
   font-size: calc(var(--dialog-width) / 23);
   font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  transition: background-color 250ms ease-in-out, font-size 100ms ease;
+  transition:
+    background-color 250ms ease-in-out,
+    font-size 100ms ease;
   user-select: none;
 }
 .player-count:hover {
@@ -79,7 +81,9 @@
   padding-block: calc(var(--dialog-width) / 40);
   padding-inline: calc(var(--dialog-width) / 20);
   border-radius: calc(var(--dialog-width) / 45);
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
   text-decoration: none;
   cursor: pointer;
 }
@@ -98,6 +102,37 @@
   font-size: calc(var(--dialog-width) / 30);
   color: rgba(0, 0, 0, 0.65);
   font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.go-to-home {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  height: 2rem;
+  width: 2rem;
+  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.go-to-home > svg {
+  height: 1.6rem;
+}
+
+.go-to-home:hover,
+.go-to-home:active,
+.go-to-home:focus {
+  background-color: var(--color-primary-hover);
 }
 
 @media only screen and (max-width: calc(1.8 / 1.5 * 60vh)) {
