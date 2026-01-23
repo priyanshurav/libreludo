@@ -2,12 +2,33 @@ import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useCleanup } from '../../hooks/useCleanup';
 import GitHubLogo from '../../assets/icons/github-mark-white.svg?react';
+import ShareIcon from '../../assets/icons/share.svg?react';
 import './HomePage.css';
 
 function HomePage() {
   const cleanup = useCleanup();
+
+  const share: React.MouseEventHandler<HTMLButtonElement> = async () => {
+    const shareData: ShareData = {
+      title: 'LibreLudo',
+      text: 'Play Ludo locally with friends on LibreLudo!',
+      url: 'https://libreludo.org/',
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        if (import.meta.env.DEV) console.error(err);
+      }
+    } else {
+      navigator.clipboard.writeText('https://libreludo.org/');
+      alert('Link copied to clipboard!');
+    }
+  };
+
   useEffect(() => {
-    document.title = 'LibreLudo - Free Open Source Ludo Game';
+    document.title = 'LibreLudo | Free and Open Source Ludo Game';
     cleanup();
   }, [cleanup]);
   return (
@@ -63,24 +84,21 @@ function HomePage() {
           <a href="https://github.com/priyanshurav" target="_blank" rel="noopener noreferrer">
             Made with ❤️ by @priyanshurav
           </a>
-          <span>Copyright &copy; {new Date().getFullYear()} Priyanshu Rav</span>
+          <span>Copyright &copy; 2025&ndash;{new Date().getFullYear()} Priyanshu Rav</span>
         </div>
-        <div className="links">
+        <div className="footer-actions">
           <a
             href="https://github.com/priyanshurav/libreludo"
             target="_blank"
+            aria-label="View Source on GitHub"
+            className="icon-btn"
             rel="noopener noreferrer"
           >
             <GitHubLogo />
-            Repository
           </a>
-          <a
-            href="https://github.com/priyanshurav/libreludo/blob/main/LICENSE"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            License
-          </a>
+          <button className="icon-btn" aria-label="Share" onClick={share}>
+            <ShareIcon />
+          </button>
         </div>
       </footer>
     </div>
