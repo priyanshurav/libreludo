@@ -23,6 +23,7 @@ export function selectBestTokenForBot(
   const botTokens = allTokens.filter((t) => t.colour === botPlayerColour);
   const movableBotTokens = botTokens.filter((t) => isTokenMovable(t, diceNumber));
   const botTokenHomeCoord = getHomeCoordForColour(botPlayerColour);
+  const botTokenStartCoord = tokenPaths[botPlayerColour][0];
   const activeOpponentTokens = allTokens.filter(
     (t) =>
       t.colour !== botPlayerColour &&
@@ -43,10 +44,11 @@ export function selectBestTokenForBot(
     } else {
       finalCoord = getFinalCoord(token, diceNumber);
       // If the move is not allowed (like going past the finish line), stop here.
-      if (!isTokenMovable(token, diceNumber)) return { token, feasibilityScore: -Infinity };
+      if (!isTokenMovable(token, diceNumber))
+        return { token, feasibilityScore: Number.NEGATIVE_INFINITY };
     }
 
-    if (!finalCoord) return { token, feasibilityScore: -Infinity };
+    if (!finalCoord) return { token, feasibilityScore: Number.NEGATIVE_INFINITY };
 
     const isFinalCoordSafe = isCoordASafeSpot(finalCoord, token.colour);
     const isCurrentCoordSafe = isCoordASafeSpot(token.coordinates, token.colour);
@@ -103,6 +105,11 @@ export function selectBestTokenForBot(
     if (token.isLocked) return { token, feasibilityScore };
 
     const distFromHome = getDistanceInTokenPath(token.colour, token.coordinates, botTokenHomeCoord);
+    const distFromStart = getDistanceInTokenPath(
+      token.colour,
+      token.coordinates,
+      botTokenStartCoord
+    );
     const botTokensInCurrentCoord = movableBotTokens.filter((t) =>
       areCoordsEqual(t.coordinates, token.coordinates)
     ).length;
@@ -134,6 +141,8 @@ export function selectBestTokenForBot(
     }
 
     let isSafeLaunchHunter = false;
+
+    let hasRefundedDistance = false;
 
     // Check every enemy to see if we are chasing them or they are chasing us.
     for (let i = 0; i < activeOpponentTokens.length; i++) {
@@ -167,7 +176,7 @@ export function selectBestTokenForBot(
           if (!isThreatenedFromBehind) isSafeLaunchHunter = true;
         }
         // Risky Hunt: Someone is behind us, but we want to attack anyway.
-        else if (currentDist <= LOGIC_CONFIG.RISKY_ATTACK_RANGE) {
+        else if (currentDist <= LOGIC_CONFIG.RISKY_HUNT_RANGE) {
           feasibilityScore += WEIGHTS.RISKY_CHASE_BASE_BONUS;
           if (currentDist <= LOGIC_CONFIG.CRITICAL_COMBAT_RANGE)
             feasibilityScore += WEIGHTS.RISKY_HUNT_CRITICAL_RANGE_BONUS;
@@ -190,28 +199,49 @@ export function selectBestTokenForBot(
         }
       }
 
-      // Check if this move helps us escape.
       if (
         futureDist >= 1 &&
         futureDist <= LOGIC_CONFIG.MAX_THREAT_LOOKAHEAD &&
         isBotTokenAheadOfOppTokenInFuture
       ) {
+        const threats = activeOpponentTokens.filter((t) => {
+          const dist = getDistanceBetweenTokens({ ...token, coordinates: finalCoord }, t);
+          const isOpponentBehind = isTokenAhead({ ...token, coordinates: finalCoord }, t);
+          return isOpponentBehind && dist >= 1 && dist <= LOGIC_CONFIG.DANGER_ZONE_RANGE;
+        });
+        const isGoingIntoDanger =
+          isBotTokenAheadOfOppTokenInFuture &&
+          !isBotTokenAheadOfOppTokenCurrently &&
+          !isFinalCoordSafe &&
+          threats.length > 0;
+
+        if (isGoingIntoDanger)
+          feasibilityScore -=
+            WEIGHTS.IMMINENT_CAPTURE_PENALTY * threats.length * Math.max(1, distFromStart / 2);
+
         const isEscaping =
           isBotTokenAheadOfOppTokenCurrently && futureDist > currentDist && !isCurrentCoordSafe;
 
-        if (isEscaping) {
-          // Reward moves that put more distance between us and the chaser.
-          feasibilityScore += (futureDist - currentDist) * WEIGHTS.ESCAPE_DISTANCE_MULTIPLIER;
-          if (currentDist <= LOGIC_CONFIG.CRITICAL_COMBAT_RANGE)
-            feasibilityScore += WEIGHTS.CRITICAL_ESCAPE_BONUS;
-
-          // Bonus if we run to a safe spot; Penalty if we run but are still unsafe.
+        if (
+          isEscaping ||
+          (isFinalCoordSafe && isBotTokenAheadOfOppTokenCurrently && !isCurrentCoordSafe)
+        ) {
+          if (isEscaping) {
+            feasibilityScore += (futureDist - currentDist) * WEIGHTS.ESCAPE_DISTANCE_MULTIPLIER;
+          }
+          if (currentDist <= LOGIC_CONFIG.CRITICAL_COMBAT_RANGE) {
+            if (isEscaping) feasibilityScore += WEIGHTS.CRITICAL_ESCAPE_BONUS;
+            if (!hasRefundedDistance) {
+              feasibilityScore += distFromHome * WEIGHTS.BASE_DISTANCE_PENALTY * endgameMultiplier;
+              hasRefundedDistance = true;
+            }
+          }
           if (isFinalCoordSafe) feasibilityScore += WEIGHTS.SAFE_HAVEN_BONUS;
-          else feasibilityScore -= WEIGHTS.UNSAFE_ESCAPE_PENALTY;
+          else if (isEscaping) feasibilityScore -= WEIGHTS.UNSAFE_ESCAPE_PENALTY;
         } else {
           // If we are not escaping, don't leave a safe spot just to stand in danger.
           const isProtected = isFinalCoordSafe || willTokenBeInHomeEntryPath;
-          if (!isProtected && isCurrentCoordSafe)
+          if (!isProtected && isCurrentCoordSafe && !isGoingIntoDanger)
             feasibilityScore -= WEIGHTS.SAFE_SPOT_ABANDONMENT_PENALTY * safetyMultiplier;
         }
       }
