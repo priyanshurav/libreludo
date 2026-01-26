@@ -1,9 +1,9 @@
 import type { VitePWAOptions } from 'vite-plugin-pwa';
 
 export const pwaOptions: Partial<VitePWAOptions> = {
-  registerType: 'autoUpdate',
+  registerType: 'prompt',
   filename: 'sw.js',
-  injectRegister: 'auto',
+  injectRegister: false,
   manifest: {
     name: 'LibreLudo',
     short_name: 'LibreLudo',
@@ -41,7 +41,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
     maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
     cleanupOutdatedCaches: true,
     clientsClaim: true,
-    skipWaiting: true,
+    skipWaiting: false,
     runtimeCaching: [
       {
         // Cache Google Fonts CSS

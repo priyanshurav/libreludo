@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from './state/store.ts';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router.tsx';
+import { PWAUpdater } from './components/PWAUpdater/PWAUpdater.tsx';
 import './index.css';
 
 // Disable React DevTools in production
@@ -30,6 +31,7 @@ console.log(
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
+      <PWAUpdater />
       <RouterProvider router={router} />
     </Provider>
   </StrictMode>
