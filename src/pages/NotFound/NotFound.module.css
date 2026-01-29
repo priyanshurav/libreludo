@@ -5,7 +5,6 @@
   justify-content: center;
   align-items: center;
   background-color: #f1f1f1;
-  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 .not-found-dialog > * {
   text-align: center;
@@ -30,7 +29,6 @@
 .not-found-dialog .go-to-home-btn {
   background-color: var(--color-primary);
   color: white;
-  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   border: none;
   font-size: 1.4em;
   /* font-size: clamp(1em, 2.5vw, 2em); */
@@ -39,7 +37,9 @@
   border-radius: 0.7em;
   text-decoration: none;
   margin-top: 1.3em;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
   cursor: pointer;
 }
 

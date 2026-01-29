@@ -1,5 +1,4 @@
 .how-to-play-container {
-  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.6;
   max-width: 100vw;
   display: flex;
@@ -76,7 +75,6 @@ h3 {
   bottom: 0;
   background-color: var(--color-primary);
   color: white;
-  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-weight: 600;
   border: none;
   font-size: 1.8em;

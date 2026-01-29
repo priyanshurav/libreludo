@@ -31,7 +31,6 @@
 }
 .game-finished-text {
   font-size: var(--board-tile-size);
-  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-weight: 600;
 }
 .game-result {
@@ -46,14 +45,15 @@
   bottom: 0;
   background-color: var(--color-primary);
   color: white;
-  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   border: none;
   font-size: calc(var(--board-tile-size) * 0.65);
   padding: calc(var(--board-tile-size) * 0.45);
   margin-top: calc(var(--board-tile-size) * 0.45);
   border-radius: calc(var(--board-tile-size) * 0.2);
   text-decoration: none;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
   cursor: pointer;
 }
 

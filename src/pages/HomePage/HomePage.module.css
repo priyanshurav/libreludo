@@ -4,7 +4,6 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 .home-page {
   display: flex;
@@ -40,7 +39,6 @@
   bottom: 0;
   background-color: var(--color-primary);
   color: white;
-  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   border: none;
   font-size: 1.5em;
   padding: 0.9em 0.8em;

@@ -45,7 +45,6 @@
   background: none;
   border: none;
   font-size: calc(var(--dialog-width) / 23);
-  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   transition:
     background-color 250ms ease-in-out,
     font-size 100ms ease;
@@ -73,7 +72,6 @@
   height: auto;
   background-color: var(--color-primary);
   color: white;
-  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   border: none;
   font-size: calc(var(--dialog-width) / 17);
   margin-top: calc(var(--dialog-width) / 35);
@@ -101,7 +99,6 @@
   padding: calc(var(--dialog-width) / 60);
   font-size: calc(var(--dialog-width) / 30);
   color: rgba(0, 0, 0, 0.65);
-  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .go-to-home {
@@ -113,7 +110,6 @@
   border: none;
   height: 2rem;
   width: 2rem;
-  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   cursor: pointer;
   text-decoration: none;
   display: flex;

@@ -56,7 +56,6 @@
 }
 .player-name {
   padding: 0 var(--player-name-padding) 0 var(--player-name-padding);
-  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-weight: bold;
   font-size: calc(var(--board-tile-size) * 0.45);
   cursor: default;
