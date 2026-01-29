@@ -22,7 +22,7 @@ function HowToPlay() {
           </p>
         </section>
 
-        <div className={styles.section}>
+        <section className={styles.section}>
           <h2>
             <H c="🎯" /> Objective
           </h2>
@@ -30,9 +30,9 @@ function HowToPlay() {
             Be the first to move all <strong>4 of your tokens</strong> from Base to the Home
             Triangle by moving them in a clockwise path around the board.
           </p>
-        </div>
+        </section>
 
-        <div className={styles.section}>
+        <section className={styles.section}>
           <h2>
             <H c="🧩" /> Game Components
           </h2>
@@ -46,9 +46,9 @@ function HowToPlay() {
               Each player gets 1 six-sided die <H c="🎲" /> (numbers 1-6)
             </li>
           </ul>
-        </div>
+        </section>
 
-        <div className={styles.section}>
+        <section className={styles.section}>
           <h2>
             <H c="👥" /> Players
           </h2>
@@ -57,9 +57,32 @@ function HowToPlay() {
             <li>Each player picks a color</li>
             <li>Can be played solo (vs. Bot) or with friends</li>
           </ul>
-        </div>
-
-        <div className={styles.section}>
+        </section>
+        <section className={styles.section}>
+          <h2>
+            <H c="🕹️" /> Quick Start Guide
+          </h2>
+          <ul>
+            <li>
+              Click{' '}
+              <Link to="/setup" className={styles.link}>
+                Play Now
+              </Link>{' '}
+              to open the setup screen.
+            </li>
+            <li>
+              Choose <strong>2</strong>, <strong>3</strong>, or <strong>4</strong> players using the
+              top tabs
+            </li>
+            <li>(Optional) Enter custom names for any player.</li>
+            <li>
+              Click the Person Icon <H c="👤" /> to toggle a player between Human and Bot{' '}
+              <H c="🤖" /> (the icon will change)
+            </li>
+            <li>Tap PLAY to start the match!</li>
+          </ul>
+        </section>
+        <section className={styles.section}>
           <h2>
             <H c="🎮" /> Gameplay Overview
           </h2>
@@ -90,8 +113,8 @@ function HowToPlay() {
             If you roll three sixes in a row in Ludo, your third roll is canceled and you lose your
             turn.
           </Note>
-        </div>
-        <div className={styles.section}>
+        </section>
+        <section className={styles.section}>
           <h2>
             <H c="🧍" /> Token Rules
           </h2>
@@ -133,8 +156,8 @@ function HowToPlay() {
             Capturing one or more opponent tokens in a single roll grants an{' '}
             <strong>extra dice roll.</strong>
           </Note>
-        </div>
-        <div className={styles.section}>
+        </section>
+        <section className={styles.section}>
           <h2>
             <H c="⭐" /> Safe Zones
           </h2>
@@ -147,9 +170,9 @@ function HowToPlay() {
             </li>
             <li>Multiple tokens (even from different players) can share the same safe zone.</li>
           </ul>
-        </div>
+        </section>
 
-        <div className={styles.section}>
+        <section className={styles.section}>
           <h2>
             <H c="🏠" /> Reaching Home
           </h2>
@@ -161,9 +184,9 @@ function HowToPlay() {
             </li>
             <li>Tokens in the Home Triangle are safe and cannot be captured.</li>
           </ul>
-        </div>
+        </section>
 
-        <div className={styles.section}>
+        <section className={styles.section}>
           <h2>
             <H c="🏁" /> Winning the Game
           </h2>
@@ -175,9 +198,9 @@ function HowToPlay() {
               <strong>Final Rankings:</strong> 1st → 2nd → 3rd → Last (based on finish order).
             </li>
           </ul>
-        </div>
+        </section>
 
-        <div className={styles.section}>
+        <section className={styles.section}>
           <h2>
             <H c="💡" /> Quick Tips
           </h2>
@@ -205,7 +228,7 @@ function HowToPlay() {
               <H c="🎲" /> Plan for exact rolls - Needed to reach home
             </li>
           </ul>
-        </div>
+        </section>
       </main>
       <Link className={styles.playNowBtn} to="/setup">
         <H c="🔥" /> Play Now

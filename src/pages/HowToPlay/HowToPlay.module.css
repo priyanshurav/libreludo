@@ -86,7 +86,9 @@ h3 {
   margin-top: 1em;
   margin-bottom: 4em;
   text-decoration: none;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   cursor: pointer;
 }
@@ -96,6 +98,17 @@ h3 {
 .play-now-btn:focus {
   background-color: var(--color-primary-hover);
   transform: scale(1.05);
+}
+
+.link {
+  color: #4338ca;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.link:hover {
+  color: #3730a3;
+  text-decoration: underline;
 }
 
 @media only screen and (max-width: 830px) {
