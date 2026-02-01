@@ -19,7 +19,7 @@ import {
 } from '../game/tokens/constants';
 import { defaultTokenAlignmentData } from '../game/tokens/alignment';
 import { TOKEN_SAFE_COORDINATES } from '../game/tokens/constants';
-import { tokensWithCoord } from '../game/tokens/logic';
+import { getTokenDOMId, tokensWithCoord } from '../game/tokens/logic';
 import { tokenPaths } from '../game/tokens/paths';
 import { sleep } from '../utils/sleep';
 
@@ -66,7 +66,7 @@ export function useCaptureTokenInSameCoord() {
             const { colour, id, coordinates } = t;
             setTokenTransitionTime(BACKWARD_TOKEN_TRANSITION_TIME, t);
             const tokenPath = tokenPaths[colour];
-            const tokenEl = document.getElementById(`${colour}_${id}`);
+            const tokenEl = document.getElementById(getTokenDOMId(colour, id));
             if (!tokenEl) throw new Error(ERRORS.tokenDoesNotExist(colour, id));
             const initialCoordinateIndex = tokenPath.findIndex((v) =>
               areCoordsEqual(v, coordinates)

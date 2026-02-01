@@ -14,6 +14,7 @@ import { playerColours } from '../../../../game/players/constants';
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../../../../game/tokens/constants';
 import styles from './Token.module.css';
 import clsx from 'clsx';
+import { getTokenDOMId } from '../../../../game/tokens/logic';
 
 type Props = {
   colour: TPlayerColour;
@@ -77,7 +78,7 @@ function Token({ colour, id, tokenClickData }: Props) {
 
   return (
     <div
-      id={`${colour}_${id}`}
+      id={getTokenDOMId(colour, id)}
       className={styles.token}
       onClick={unlock}
       style={

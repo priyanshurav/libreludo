@@ -14,6 +14,7 @@ import { setTokenTransitionTime } from '../utils/setTokenTransitionTime';
 import { useCallback } from 'react';
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../game/tokens/constants';
 import { tokenPaths } from '../game/tokens/paths';
+import { getTokenDOMId } from '../game/tokens/logic';
 
 export type TMoveTokenCompletionData = {
   lastTokenCoord: TCoordinate;
@@ -38,7 +39,7 @@ export const useMoveTokenForward = () => {
         dispatch(deactivateAllTokens(colour));
         setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME, token);
         dispatch(setIsAnyTokenMoving(true));
-        const tokenEl = document.getElementById(`${colour}_${id}`);
+        const tokenEl = document.getElementById(getTokenDOMId(colour, id));
         if (!tokenEl) throw new Error(ERRORS.tokenDoesNotExist(colour, id));
         const initialCoordinateIndex = tokenPath.findIndex((v) => areCoordsEqual(v, coordinates));
         let i = initialCoordinateIndex;
