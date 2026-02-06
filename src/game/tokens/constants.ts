@@ -93,19 +93,19 @@ export const TOKEN_LOCKED_COORDINATES: Record<TPlayerColour, TCoordinate[]> = {
   blue: [
     {
       x: 1.5,
-      y: 12.2,
+      y: 10.2,
     },
     {
       x: 3.5,
-      y: 12.2,
+      y: 10.2,
     },
     {
       x: 1.5,
-      y: 10.2,
+      y: 12.2,
     },
     {
       x: 3.5,
-      y: 10.2,
+      y: 12.2,
     },
   ],
   red: [
@@ -118,48 +118,48 @@ export const TOKEN_LOCKED_COORDINATES: Record<TPlayerColour, TCoordinate[]> = {
       y: 1.2,
     },
     {
-      x: 3.5,
+      x: 1.5,
       y: 3.2,
     },
     {
-      x: 1.5,
+      x: 3.5,
       y: 3.2,
     },
   ],
   green: [
     {
       x: 10.5,
-      y: 3.2,
+      y: 1.2,
     },
     {
       x: 12.5,
-      y: 3.2,
+      y: 1.2,
     },
     {
       x: 10.5,
-      y: 1.2,
+      y: 3.2,
     },
     {
       x: 12.5,
-      y: 1.2,
+      y: 3.2,
     },
   ],
   yellow: [
     {
       x: 10.5,
-      y: 12.2,
+      y: 10.2,
     },
     {
       x: 12.5,
-      y: 12.2,
+      y: 10.2,
     },
     {
       x: 10.5,
-      y: 10.2,
+      y: 12.2,
     },
     {
       x: 12.5,
-      y: 10.2,
+      y: 12.2,
     },
   ],
 };
