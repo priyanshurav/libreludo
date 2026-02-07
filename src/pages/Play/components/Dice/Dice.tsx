@@ -90,6 +90,7 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
         className={clsx(styles.dice, {
           [styles.active]: !isDiceDisabled,
         })}
+        tabIndex={isDiceDisabled ? -1 : undefined}
         style={{ '--player-colour': playerColours[colour] } as React.CSSProperties}
         type="button"
         onClick={handleDiceClick}

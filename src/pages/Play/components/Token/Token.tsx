@@ -77,7 +77,7 @@ function Token({ colour, id, tokenClickData }: Props) {
   }, [colour, executeTokenMove, id, tokenClickData]);
 
   return (
-    <div
+    <button
       id={getTokenDOMId(colour, id)}
       className={styles.token}
       onClick={unlock}
@@ -91,13 +91,14 @@ function Token({ colour, id, tokenClickData }: Props) {
     >
       <TokenImage
         className={clsx(isActive && styles.active)}
+        aria-hidden="true"
         style={
           {
             '--fill-colour': playerColours[colour],
           } as React.CSSProperties
         }
       />
-    </div>
+    </button>
   );
 }
 

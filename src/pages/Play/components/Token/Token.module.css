@@ -4,6 +4,8 @@
   will-change: transform;
   transform: translateZ(0);
   height: calc(var(--token-height));
+  background: none;
+  border: none;
   width: calc(var(--token-width));
   transition: transform var(--token-transition-time) var(--token-transition-timing-fn);
 }

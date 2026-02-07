@@ -88,7 +88,7 @@ function Board({ onDiceClick: onDiceRoll }: Props) {
           key={i}
         />
       ))}
-      <BoardImage className={styles.boardImage} />
+      <BoardImage className={styles.boardImage} aria-hidden="true" />
     </div>
   );
 }
