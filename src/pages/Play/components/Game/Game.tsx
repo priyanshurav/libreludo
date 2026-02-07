@@ -79,11 +79,7 @@ function Game({ initData }: Props) {
     dispatch(handlePostDiceRollThunk(colour, diceNumber, moveAndCapture));
   };
 
-  const handleExitBtnClick = () => {
-    const shouldExit = confirm(EXIT_MESSAGE);
-    if (!shouldExit) return;
-    navigate('/');
-  };
+  const handleExitBtnClick = () => navigate('/');
 
   return (
     <div

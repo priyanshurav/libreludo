@@ -11,6 +11,7 @@ import bg from '../../assets/bg.jpg';
 import GitHubButton from 'react-github-btn';
 import HomeIcon from '../../assets/icons/home.svg?react';
 import styles from './PlayerSetup.module.css';
+import { Tooltip } from 'react-tooltip';
 
 const ALL_BOT_PLAYER_TOAST_ID = 'all-bot-player';
 const PLAYER_NAME_EMPTY_TOAST_ID = 'player-name-empty';
@@ -146,7 +147,13 @@ function PlayerSetup() {
           Follow @priyanshurav
         </GitHubButton>
       </div>
-      <ToastContainer position="top-center" />
+      <ToastContainer position="top-center" containerId="toast-container" />
+      <Tooltip
+        id="bot-status-tooltip"
+        className="tooltip"
+        openEvents={{ focus: false, mouseover: true }}
+        place="bottom-start"
+      />
     </div>
   );
 }

@@ -7,7 +7,7 @@ import { NUMBER_OF_BLOCKS_IN_ONE_ROW, resizeBoard } from '../../../../state/slic
 import { ERRORS } from '../../../../utils/errors';
 import Dice from '../Dice/Dice';
 import type { TCoordinate, TPlayerColour } from '../../../../types';
-import { tokensWithCoord } from '../../../../game/tokens/logic';
+import { getTokenDOMId, tokensWithCoord } from '../../../../game/tokens/logic';
 import type { TTokenClickData } from '../../../../types/tokens';
 import styles from './Board.module.css';
 
@@ -21,21 +21,33 @@ function Board({ onDiceClick: onDiceRoll }: Props) {
   const { dice } = useSelector((state: RootState) => state.dice);
   const [tokenClickData, setTokenClickData] = useState<TTokenClickData | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const boardNode = boardRef.current;
     if (!boardNode) throw new Error(ERRORS.boardDoesNotExist());
-    const resizeObserver = new ResizeObserver(() => {
-      const boardSideLength = boardNode.getBoundingClientRect().width;
-      dispatch(resizeBoard(boardSideLength));
-    });
+    if (!resizeObserverRef.current) {
+      resizeObserverRef.current = new ResizeObserver(() => {
+        const boardSideLength = boardNode.getBoundingClientRect().width;
+        dispatch(resizeBoard(boardSideLength));
+      });
+    }
+    const resizeObserver = resizeObserverRef.current;
     resizeObserver.observe(boardNode);
     return () => {
       resizeObserver.unobserve(boardNode);
-      resizeObserver.disconnect();
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    return () => {
+      if (resizeObserverRef.current) {
+        resizeObserverRef.current.disconnect();
+        resizeObserverRef.current = null;
+      }
+    };
+  }, []);
 
   const handleBoardClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
     if (players.find((p) => p.colour === currentPlayerColour)?.isBot) return;
@@ -70,22 +82,22 @@ function Board({ onDiceClick: onDiceRoll }: Props) {
 
   return (
     <div className={styles.board} ref={boardRef} onClick={handleBoardClick}>
-      {players.map((p, index1) =>
-        p.tokens.map((t, index2) => (
+      {players.map((p) =>
+        p.tokens.map((t) => (
           <Token
             colour={t.colour}
             id={t.id}
             tokenClickData={tokenClickData}
-            key={`${index1}${index2}`}
+            key={getTokenDOMId(t.colour, t.id)}
           />
         ))
       )}
-      {dice.map((d, i) => (
+      {dice.map((d) => (
         <Dice
           colour={d.colour}
           onDiceClick={onDiceRoll}
           playerName={players.find((p) => p.colour === d.colour)?.name as string}
-          key={i}
+          key={d.colour}
         />
       ))}
       <BoardImage className={styles.boardImage} aria-hidden="true" />
