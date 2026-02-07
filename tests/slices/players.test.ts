@@ -14,7 +14,6 @@ import playersReducer, {
   registerNewPlayer,
   resetNumberOfConsecutiveSix,
   setIsAnyTokenMoving,
-  setPlayerInitData,
   setPlayerSequence,
   setTokenAlignmentData,
   unlockToken,
@@ -22,12 +21,7 @@ import playersReducer, {
 import { cloneDeep } from 'lodash-es';
 import { DUMMY_PLAYERS } from '../fixtures/players.dummy';
 import { playerSequences } from '../../src/game/players/constants';
-import type {
-  TPlayerCount,
-  TPlayerInitData,
-  TTokenAlignmentData,
-  TTokenColourAndId,
-} from '../../src/types';
+import type { TPlayerCount, TTokenAlignmentData, TTokenColourAndId } from '../../src/types';
 import { TOKEN_START_COORDINATES } from '../../src/game/tokens/constants';
 import { defaultTokenAlignmentData } from '../../src/game/tokens/alignment';
 
@@ -408,17 +402,6 @@ describe('Test players slice reducers', () => {
       expect(newToken.tokenAlignmentData).toEqual(newAlignmentData);
     });
   });
-  describe('setPlayerInitData', () => {
-    it('should set playerInitData to the provided array of player initialization data', () => {
-      const playerInitData: TPlayerInitData[] = [
-        { name: 'Player 1', isBot: false },
-        { name: 'Player 2', isBot: true },
-        { name: 'Player 3', isBot: false },
-      ];
-      const newState = playersReducer(initialState, setPlayerInitData(playerInitData));
-      expect(newState.playerInitData).toEqual(playerInitData);
-    });
-  });
   describe('clearPlayersState', () => {
     it('should clear players state', () => {
       const initState = cloneDeep(initialState);
@@ -427,7 +410,6 @@ describe('Test players slice reducers', () => {
       initState.playerSequence = playerSequences.four;
       initState.isAnyTokenMoving = true;
       initState.isGameEnded = true;
-      initState.playerInitData = [{ name: 'Player 1', isBot: false }];
       initState.playerFinishOrder = [{ colour: 'green', name: 'Player 3' }];
 
       const newState = playersReducer(initState, clearPlayersState());

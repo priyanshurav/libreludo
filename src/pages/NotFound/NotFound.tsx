@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom';
 import styles from './NotFound.module.css';
 import { useEffect } from 'react';
+import { useCleanup } from '../../hooks/useCleanup';
 
 function NotFound() {
+  const cleanup = useCleanup();
+
   useEffect(() => {
     document.title = '404 Not Found';
-  }, []);
+    cleanup();
+  }, [cleanup]);
   return (
     <div className={styles.notFoundContainer}>
       <div className={styles.notFoundDialog}>

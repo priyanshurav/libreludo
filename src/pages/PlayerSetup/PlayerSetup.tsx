@@ -4,8 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import type { TPlayerInitData } from '../../types';
 import { ToastContainer, toast } from 'react-toastify';
 import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
-import { useDispatch } from 'react-redux';
-import { setPlayerInitData } from '../../state/slices/playersSlice';
 import { useCleanup } from '../../hooks/useCleanup';
 import { playerCountToWord } from '../../game/players/logic';
 import { playerSequences } from '../../game/players/constants';
@@ -41,7 +39,6 @@ function PlayerSetup() {
   const [dialogWidth, setDialogWidth] = useState(0);
   const [playersData, setPlayersData] = useState<TPlayerInitData[]>(INITIAL_PLAYER_DATA);
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const dialogRef = useRef<HTMLDivElement>(null);
   const cleanup = useCleanup();
@@ -86,9 +83,8 @@ function PlayerSetup() {
         type: 'error',
         toastId: ALL_BOT_PLAYER_TOAST_ID,
       });
-    dispatch(setPlayerInitData(playerInitData));
     setIsLoading(true);
-    navigate('/play');
+    navigate('/play', { state: { initData: playerInitData } });
   };
 
   return isLoading ? (

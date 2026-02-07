@@ -1,15 +1,22 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import Game from './components/Game/Game';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../../state/store';
 import { useEffect } from 'react';
+import { useCleanup } from '../../hooks/useCleanup';
+import type { TPlayerInitData } from '../../types';
 
 function Play() {
+  const cleanup = useCleanup();
+  const location = useLocation();
+  const { initData } = (location.state as { initData: TPlayerInitData[] }) ?? {};
   useEffect(() => {
     document.title = 'Play LibreLudo';
-  }, []);
-  const initData = useSelector((state: RootState) => state.players.playerInitData);
-  return initData.length !== 0 ? <Game initData={initData} /> : <Navigate to="/setup" />;
+    return () => cleanup();
+  }, [cleanup]);
+  return initData && initData?.length !== 0 ? (
+    <Game initData={initData} />
+  ) : (
+    <Navigate to="/setup" />
+  );
 }
 
 export default Play;

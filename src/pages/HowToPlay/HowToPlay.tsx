@@ -2,13 +2,16 @@ import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import Note from '../../components/Note/Note';
 import styles from './HowToPlay.module.css';
+import { useCleanup } from '../../hooks/useCleanup';
 
 const H = ({ c }: { c: string }) => <span aria-hidden="true">{c}</span>;
 
 function HowToPlay() {
+  const cleanup = useCleanup();
   useEffect(() => {
     document.title = 'LibreLudo - How to Play';
-  }, []);
+    cleanup();
+  }, [cleanup]);
   return (
     <div className={styles.howToPlayContainer}>
       <main className={styles.howToPlay}>

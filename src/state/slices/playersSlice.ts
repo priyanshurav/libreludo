@@ -8,7 +8,6 @@ import type {
   TPlayerColour,
   TPlayerNameAndColour,
   TCoordinate,
-  TPlayerInitData,
   TPlayerCount,
 } from '../../types';
 import type { TToken, TTokenColourAndId, TTokenAlignmentData } from '../../types';
@@ -16,7 +15,6 @@ import { playerSequences } from '../../game/players/constants';
 
 type TPlayerState = {
   players: TPlayer[];
-  playerInitData: TPlayerInitData[];
   currentPlayerColour: TPlayerColour | null;
   playerSequence: TPlayerColour[];
   isAnyTokenMoving: boolean;
@@ -26,7 +24,6 @@ type TPlayerState = {
 
 export const initialState: TPlayerState = {
   players: [],
-  playerInitData: [],
   currentPlayerColour: null,
   playerSequence: [],
   isAnyTokenMoving: false,
@@ -184,9 +181,6 @@ const reducers = {
     const token = getToken(state, action.payload.colour, action.payload.id);
     token.tokenAlignmentData = action.payload.newAlignmentData;
   },
-  setPlayerInitData: (state: TPlayerState, action: PayloadAction<TPlayerInitData[]>) => {
-    state.playerInitData = action.payload;
-  },
   clearPlayersState: () => structuredClone(initialState),
 };
 
@@ -210,7 +204,6 @@ export const {
   setIsAnyTokenMoving,
   markTokenAsReachedHome,
   setTokenAlignmentData,
-  setPlayerInitData,
   clearPlayersState,
 } = playersSlice.actions;
 
