@@ -87,6 +87,17 @@ function HowToPlay() {
         </section>
         <section className={styles.section}>
           <h2>
+            <H c="⌨️" /> Controls
+          </h2>
+          <ul>
+            <li>
+              Press <kbd>D</kbd> or click the dice to roll.
+            </li>
+            <li>Click a token to move it.</li>
+          </ul>
+        </section>
+        <section className={styles.section}>
+          <h2>
             <H c="🎮" /> Gameplay Overview
           </h2>
           <h3>

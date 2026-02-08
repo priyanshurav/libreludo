@@ -5,7 +5,7 @@ import dice4 from '../../../../assets/dice/4.svg';
 import dice5 from '../../../../assets/dice/5.svg';
 import dice6 from '../../../../assets/dice/6.svg';
 import dicePlaceholder from '../../../../assets/dice/dice_placeholder.gif';
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { type TPlayerColour } from '../../../../types';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../../../../state/store';
@@ -79,11 +79,19 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
     isPlaceholderShowing ||
     isBot;
 
-  const handleDiceClick = () => {
+  const handleDiceClick = useCallback(() => {
     if (isDiceDisabled) return;
     dispatch(rollDiceThunk(colour, (diceNumber) => onDiceClick(colour, diceNumber)));
-  };
+  }, [colour, dispatch, isDiceDisabled, onDiceClick]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.repeat || e.key.toLowerCase() !== 'd' || isDiceDisabled) return;
+      handleDiceClick();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleDiceClick, isDiceDisabled]);
   return (
     <div className={clsx(styles.diceContainer, getCSSClass(colour))}>
       <button
@@ -91,6 +99,7 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
           [styles.active]: !isDiceDisabled,
         })}
         tabIndex={isDiceDisabled ? -1 : undefined}
+        title={!isDiceDisabled ? 'Roll Dice (Press D)' : undefined}
         style={{ '--player-colour': playerColours[colour] } as React.CSSProperties}
         type="button"
         onClick={handleDiceClick}

@@ -109,6 +109,15 @@ h3 {
   text-decoration: underline;
 }
 
+kbd {
+  background-color: #eee;
+  color: #222;
+  padding: 2px 6px;
+  font-weight: 700;
+  border: 1px solid #777;
+  border-radius: 3px;
+}
+
 @media only screen and (max-width: 830px) {
   .how-to-play-container {
     font-size: 0.75rem;

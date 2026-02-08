@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { deactivateAllTokens, setIsAnyTokenMoving } from '../../../../state/slices/playersSlice';
 import { type TPlayer, type TPlayerColour, type TTokenClickData } from '../../../../types';
 import { type TToken } from '../../../../types';
@@ -27,6 +27,8 @@ function Token({ colour, id, tokenClickData }: Props) {
   const { tokenHeight, tokenWidth } = useSelector((state: RootState) => state.board);
   const { players } = useSelector((state: RootState) => state.players);
   const tokenClickDataRef = useRef(tokenClickData);
+  const [isCurrentlyFocused, setIsCurrentlyFocused] = useState(false);
+  const tokenElRef = useRef<HTMLButtonElement | null>(null);
   const { numberOfConsecutiveSix, tokens: playerTokens } = useMemo(
     () => players.find((v) => v.colour === colour),
     [players, colour]
@@ -44,7 +46,6 @@ function Token({ colour, id, tokenClickData }: Props) {
   const moveAndCapture = useMoveAndCaptureToken();
 
   const unlock = () => {
-    if (!isLocked || !isActive || diceNumber === -1 || !diceNumber) return;
     dispatch(setIsAnyTokenMoving(true));
     setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME, token);
     dispatch(unlockAndAlignTokens({ colour, id }));
@@ -76,11 +77,22 @@ function Token({ colour, id, tokenClickData }: Props) {
     if (newTokenClickData.colour === colour && newTokenClickData.id === id) executeTokenMove();
   }, [colour, executeTokenMove, id, tokenClickData]);
 
+  const handleTokenClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    if (e.detail === 0) e.stopPropagation();
+    if (isLocked && isActive && diceNumber !== -1 && diceNumber) unlock();
+    tokenElRef.current?.blur?.();
+    executeTokenMove();
+  };
+
   return (
     <button
       id={getTokenDOMId(colour, id)}
       className={styles.token}
-      onClick={unlock}
+      tabIndex={isActive ? undefined : -1}
+      onFocus={() => setIsCurrentlyFocused(true)}
+      onBlur={() => setIsCurrentlyFocused(false)}
+      ref={tokenElRef}
+      onClick={handleTokenClick}
       style={
         {
           '--token-height': `${tokenHeight}px`,
@@ -89,15 +101,17 @@ function Token({ colour, id, tokenClickData }: Props) {
         } as React.CSSProperties
       }
     >
-      <TokenImage
-        className={clsx(isActive && styles.active)}
-        aria-hidden="true"
-        style={
-          {
-            '--fill-colour': playerColours[colour],
-          } as React.CSSProperties
-        }
-      />
+      <span className={clsx(styles.bouncer, { [styles.active]: isActive && !isCurrentlyFocused })}>
+        <TokenImage
+          className={styles.svg}
+          aria-hidden="true"
+          style={
+            {
+              '--fill-colour': playerColours[colour],
+            } as React.CSSProperties
+          }
+        />
+      </span>
     </button>
   );
 }
