@@ -93,7 +93,7 @@ h3 {
 
 .play-now-btn:hover,
 .play-now-btn:active,
-.play-now-btn:focus {
+.play-now-btn:focus-visible {
   background-color: var(--color-primary-hover);
   transform: scale(1.05);
 }

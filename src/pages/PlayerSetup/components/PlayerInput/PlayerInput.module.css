@@ -32,7 +32,7 @@
 }
 .bot-status-btn:hover,
 .bot-status-btn:active,
-.bot-status-btn:focus {
+.bot-status-btn:focus-visible {
   background-color: var(--color-primary-hover);
 }
 .player-name-input {
@@ -46,9 +46,7 @@
 }
 
 .player-name-input:hover,
-.player-name-input:focus {
+.player-name-input:focus-visible {
   border-color: #5b6ef5;
   box-shadow: 0 0 0 2px rgba(91, 110, 245, 0.2);
-}
-.tooltip {
 }

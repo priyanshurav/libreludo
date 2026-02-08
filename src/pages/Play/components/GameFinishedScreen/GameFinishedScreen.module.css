@@ -58,7 +58,7 @@
 }
 
 .play-again-btn:hover,
-.play-again-btn:focus {
+.play-again-btn:focus-visible {
   background-color: var(--color-primary-hover);
   transform: scale(1.05);
 }

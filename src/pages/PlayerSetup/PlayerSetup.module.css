@@ -87,7 +87,7 @@
 }
 .play-btn:hover,
 .play-btn:active,
-.play-btn:focus {
+.play-btn:focus-visible {
   background-color: var(--color-primary-hover);
   transform: scale(1.05);
 }
@@ -127,7 +127,7 @@
 
 .go-to-home:hover,
 .go-to-home:active,
-.go-to-home:focus {
+.go-to-home:focus-visible {
   background-color: var(--color-primary-hover);
 }
 

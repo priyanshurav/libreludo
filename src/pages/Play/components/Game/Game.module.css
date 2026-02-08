@@ -24,6 +24,6 @@
   transition: background-color 200ms ease;
 }
 .exit-btn:hover,
-.exit-btn:focus {
+.exit-btn:focus-visible {
   background-color: #dc0000;
 }
