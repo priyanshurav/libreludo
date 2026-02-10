@@ -35,7 +35,8 @@ h2 {
   padding-bottom: 0.3em;
 }
 
-ul {
+ul,
+ol {
   padding-left: 1.5em;
   margin-top: 0.5em;
   margin-bottom: 1em;
@@ -110,12 +111,20 @@ h3 {
 }
 
 kbd {
-  background-color: #eee;
-  color: #222;
-  padding: 2px 6px;
-  font-weight: 700;
-  border: 1px solid #777;
-  border-radius: 3px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  line-height: 1;
+  padding: 0.15em 0.45em;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.35em;
+  background: #f3f5f7;
+  color: #2b333b;
+  border: 1px solid #c4ccd4;
+  font-weight: 600;
+  box-shadow: inset 0 -1px 0 #c4ccd4;
+  white-space: nowrap;
 }
 
 @media only screen and (max-width: 830px) {

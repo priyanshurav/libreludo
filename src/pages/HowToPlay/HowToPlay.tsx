@@ -65,7 +65,7 @@ function HowToPlay() {
           <h2>
             <H c="🕹️" /> Quick Start Guide
           </h2>
-          <ul>
+          <ol>
             <li>
               Click{' '}
               <Link to="/setup" className={styles.link}>
@@ -82,8 +82,10 @@ function HowToPlay() {
               Click the Person Icon <H c="👤" /> to toggle a player between Human and Bot{' '}
               <H c="🤖" /> (the icon will change)
             </li>
-            <li>Tap PLAY to start the match!</li>
-          </ul>
+            <li>
+              Tap <strong>PLAY</strong> to start the match!
+            </li>
+          </ol>
         </section>
         <section className={styles.section}>
           <h2>

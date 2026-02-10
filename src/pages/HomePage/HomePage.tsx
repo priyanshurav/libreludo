@@ -20,7 +20,7 @@ function HomePage() {
       try {
         await navigator.share(shareData);
       } catch (err) {
-        if (import.meta.env.DEV) console.error(err);
+        console.error(err);
       }
     } else {
       navigator.clipboard.writeText('https://libreludo.org/');
@@ -40,16 +40,16 @@ function HomePage() {
             <span>Welcome to</span> LibreLudo
           </h1>
           <p>Roll the dice, compete with friends, and send your tokens home first.</p>
-          <section className={styles.ctaButtons}>
+          <nav className={styles.ctaButtons}>
             <Link className={clsx(styles.ctaButton, styles.playNowBtn)} to="/setup">
               🔥 Play Now!
             </Link>
             <Link className={clsx(styles.ctaButton, styles.howToPlayBtn)} to="/how-to-play">
               How to Play
             </Link>
-          </section>
+          </nav>
         </section>
-        <section className={styles.information}>
+        <div className={styles.information}>
           <section className={styles.whyPlayLibreludo}>
             <h2>🔥 Why Play LibreLudo?</h2>
             <ul>
@@ -78,14 +78,23 @@ function HomePage() {
               <dd>Today, Ludo is enjoyed globally in both board and digital forms.</dd>
             </dl>
           </section>
-        </section>
+        </div>
       </main>
       <footer>
         <div className={styles.text}>
-          <a href="https://github.com/priyanshurav" target="_blank" rel="noopener noreferrer">
-            Made with ❤️ by @priyanshurav
-          </a>
-          <span>Copyright &copy; 2025&ndash;{new Date().getFullYear()} Priyanshu Rav</span>
+          <p className={styles.credits}>
+            Made with{' '}
+            <span aria-label="love" role="img">
+              ❤️
+            </span>{' '}
+            by{' '}
+            <a href="https://github.com/priyanshurav" target="_blank" rel="noopener noreferrer">
+              @priyanshurav
+            </a>
+          </p>
+          <small className={styles.copyright}>
+            Copyright &copy; 2025&ndash;{new Date().getFullYear()} Priyanshu Rav
+          </small>
         </div>
         <div className={styles.footerActions}>
           <a
@@ -97,7 +106,7 @@ function HomePage() {
           >
             <GitHubLogo />
           </a>
-          <button className={styles.iconBtn} aria-label="Share" onClick={share}>
+          <button className={styles.iconBtn} aria-label="Share this game" onClick={share}>
             <ShareIcon />
           </button>
         </div>

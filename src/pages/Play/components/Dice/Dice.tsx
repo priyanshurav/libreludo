@@ -41,19 +41,6 @@ function getDiceImage(diceNumber: number | undefined): string {
   }
 }
 
-function getCSSClass(colour: TPlayerColour): string {
-  switch (colour) {
-    case 'blue':
-      return styles.blue;
-    case 'red':
-      return styles.red;
-    case 'green':
-      return styles.green;
-    case 'yellow':
-      return styles.yellow;
-  }
-}
-
 function Dice({ colour, onDiceClick, playerName }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const {
@@ -93,7 +80,7 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleDiceClick, isDiceDisabled]);
   return (
-    <div className={clsx(styles.diceContainer, getCSSClass(colour))}>
+    <div className={clsx(styles.diceContainer, styles[colour])}>
       <button
         className={clsx(styles.dice, {
           [styles.active]: !isDiceDisabled,
@@ -107,6 +94,7 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
         <img
           src={isPlaceholderShowing ? dicePlaceholder : getDiceImage(diceNumber)}
           alt="Dice image"
+          aria-hidden="true"
         />
       </button>
       <span className={styles.playerName}>{playerName}</span>
