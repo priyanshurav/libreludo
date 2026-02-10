@@ -147,7 +147,7 @@ function PlayerSetup() {
           Follow @priyanshurav
         </GitHubButton>
       </div>
-      <ToastContainer position="top-center" containerId="toast-container" />
+      <ToastContainer position="top-center" />
       <Tooltip
         id="bot-status-tooltip"
         className="tooltip"
