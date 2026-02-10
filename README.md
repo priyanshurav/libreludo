@@ -21,6 +21,18 @@
 
 ---
 
+## 📸 Screenshots
+
+<div align="center"> 
+  <img src=".github/assets/libreludo-homepage.jpg" alt="LibreLudo Homepage" width="100%" />
+</div>
+
+<br />
+
+|                               Game Setup                                |                                 Gameplay                                  |
+| :---------------------------------------------------------------------: | :-----------------------------------------------------------------------: |
+| <img src=".github/assets/libreludo-setup.jpg" alt="Setup" width="100%"> | <img src=".github/assets/libreludo-play.jpg" alt="Gameplay" width="100%"> |
+
 ## ✨ Features
 
 - 🎮 **2–4 Player Local Matches** – Mix human and bot players on one device
@@ -73,6 +85,12 @@ npm run build
 | `/play`        | Start and play the game |
 | `/how-to-play` | How to Play Guide       |
 | `*`            | 404 Not Found           |
+
+---
+
+## 🤝 Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 ---
 
