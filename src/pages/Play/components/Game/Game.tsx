@@ -91,6 +91,7 @@ function Game({ initData }: Props) {
         } as React.CSSProperties
       }
     >
+      <Board onDiceClick={handleDiceRoll} />
       <button
         type="button"
         aria-label="Exit button"
@@ -99,7 +100,6 @@ function Game({ initData }: Props) {
       >
         &times;
       </button>
-      <Board onDiceClick={handleDiceRoll} />
       {isGameEnded && <GameFinishedScreen playerFinishOrder={playerFinishOrder} />}
     </div>
   );
