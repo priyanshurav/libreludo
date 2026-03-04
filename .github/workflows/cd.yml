@@ -3,34 +3,32 @@ name: Continuous Deployment
 on:
   release:
     types: [published]
-
+permissions:
+  contents: read
 jobs:
-  build-test:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      # Source
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Runtime
-      - name: Setup Node.js 22
+      - name: Setup Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
 
-      # Dependencies
       - name: Install dependencies
         run: npm ci
 
-      # Run tests
       - name: Run tests
         run: npm test
 
-      # Publish to Netlify
+      - name: Build project
+        run: npm run build
+
       - name: Publish to Netlify
-        run: npx --yes netlify deploy --prod --dir=dist
+        run: npx netlify deploy --prod --no-build --dir=dist
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
