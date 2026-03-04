@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import PlayerInput from './components/PlayerInput/PlayerInput';
 import { Link, useNavigate } from 'react-router-dom';
 import type { TPlayerInitData } from '../../types';
@@ -12,6 +12,7 @@ import GitHubButton from 'react-github-btn';
 import HomeIcon from '../../assets/icons/home.svg?react';
 import styles from './PlayerSetup.module.css';
 import { Tooltip } from 'react-tooltip';
+import { useResizeObserver } from '../../hooks/useResizeObserver';
 
 const ALL_BOT_PLAYER_TOAST_ID = 'all-bot-player';
 const PLAYER_NAME_EMPTY_TOAST_ID = 'player-name-empty';
@@ -41,7 +42,7 @@ function PlayerSetup() {
   const [playersData, setPlayersData] = useState<TPlayerInitData[]>(INITIAL_PLAYER_DATA);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const dialogRef = useRef<HTMLDivElement>(null);
+  const [dialogNode, setDialogNode] = useState<HTMLElement | null>(null);
   const cleanup = useCleanup();
   const playerSequence = useMemo(
     () => playerSequences[playerCountToWord(playerCount)],
@@ -53,19 +54,13 @@ function PlayerSetup() {
     cleanup();
   }, [cleanup]);
 
-  useEffect(() => {
-    if (!dialogRef.current) return;
-    const dialogNode = dialogRef.current;
-    const resizeObserver = new ResizeObserver(() => {
-      const { width } = dialogNode.getBoundingClientRect();
-      setDialogWidth(width);
-    });
-    resizeObserver.observe(dialogNode);
-    return () => {
-      resizeObserver.unobserve(dialogNode);
-      resizeObserver.disconnect();
-    };
-  }, []);
+  const onResize = useCallback(() => {
+    if (!dialogNode) return;
+    const dialogWidth = dialogNode.getBoundingClientRect().width;
+    setDialogWidth(dialogWidth);
+  }, [dialogNode]);
+
+  useResizeObserver(dialogNode, onResize);
 
   const handlePlayBtnClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
@@ -94,7 +89,7 @@ function PlayerSetup() {
     <div className={styles.playerSetup} style={{ backgroundImage: `url(${bg})` }}>
       <main
         className={styles.playerSetupDialog}
-        ref={dialogRef}
+        ref={setDialogNode}
         style={
           {
             '--dialog-width': `${dialogWidth}px`,
