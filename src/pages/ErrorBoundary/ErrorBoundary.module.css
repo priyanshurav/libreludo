@@ -1,0 +1,126 @@
+.error-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f3f4f6;
+}
+
+.error-dialog {
+  position: relative;
+  background-color: #fff;
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  padding: 1.8em;
+  padding-top: 3em;
+  border-radius: 1.5em;
+  display: flex;
+  flex-direction: column;
+  max-width: 40em;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.error-dialog > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.start-new-game-btn {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  font-size: 1.5em;
+  padding: 0.8em;
+  border-radius: 0.7em;
+  text-decoration: none;
+  margin-top: 1.5em;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+  cursor: pointer;
+}
+
+.error-dialog .start-new-game-btn:hover,
+.error-dialog .start-new-game-btn:focus-visible {
+  background-color: var(--color-primary-hover);
+  transform: scale(1.05);
+}
+
+.error-details {
+  margin-top: 3em;
+  margin-right: auto;
+  width: 100%;
+}
+.error-details summary {
+  color: #4b5563;
+  cursor: pointer;
+  font-size: 0.8em;
+  margin-block: 0.5em;
+}
+
+.error-details summary:hover {
+  color: #111827;
+}
+
+.error-content {
+  overflow: auto;
+  background-color: #f3f4f6;
+  max-height: 9.5em;
+  font-family: monospace;
+  color: #1f2937;
+  white-space: pre-wrap;
+}
+
+.oops {
+  font-size: 2em;
+  padding-block: 0.6em;
+  text-align: center;
+  white-space: nowrap;
+}
+.oops span {
+  font-weight: bold;
+  color: #d32f2f;
+  font-size: 1.1em;
+}
+.message {
+  padding-top: 1em;
+  font-size: 1.1em;
+  color: #4b5563;
+  text-align: center;
+}
+
+@media only screen and (min-width: 3840px) {
+  .error-dialog {
+    font-size: 3rem;
+  }
+}
+
+@media only screen and (min-width: 2560px) {
+  .error-dialog {
+    font-size: 2.25rem;
+  }
+}
+
+@media only screen and (min-width: 1600px) {
+  .error-dialog {
+    font-size: 1.5rem;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .error-dialog {
+    font-size: 0.8rem;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .error-dialog {
+    font-size: 0.6rem;
+  }
+}
