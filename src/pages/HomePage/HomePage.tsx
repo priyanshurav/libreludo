@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useCleanup } from '../../hooks/useCleanup';
 import GitHubLogo from '../../assets/icons/github-mark-white.svg?react';
+import LicenseIcon from '../../assets/icons/license.svg?react';
 import ShareIcon from '../../assets/icons/share.svg?react';
 import styles from './HomePage.module.css';
 import clsx from 'clsx';
@@ -101,12 +102,28 @@ function HomePage() {
             href="https://github.com/priyanshurav/libreludo"
             target="_blank"
             aria-label="View Source on GitHub"
+            title="View Source on GitHub"
             className={styles.iconBtn}
             rel="noopener noreferrer"
           >
             <GitHubLogo />
           </a>
-          <button className={styles.iconBtn} aria-label="Share this game" onClick={share}>
+          <a
+            href="/THIRD_PARTY_LICENSES.txt"
+            target="_blank"
+            aria-label="Third Party Open Source Licenses"
+            title="Third Party Open Source Licenses"
+            className={styles.iconBtn}
+            rel="noopener noreferrer"
+          >
+            <LicenseIcon />
+          </a>
+          <button
+            className={styles.iconBtn}
+            aria-label="Share LibreLudo"
+            title="Share LibreLudo"
+            onClick={share}
+          >
             <ShareIcon />
           </button>
         </div>
