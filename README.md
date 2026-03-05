@@ -5,17 +5,17 @@
 <h1 align="center">🎲 LibreLudo</h1>
 
 <p align="center">
-  A modern, open-source Ludo game built with React, Redux, Vite, and React Router — with a clean UI, local multiplayer, and bot opponents.
+  A modern, ad-free, open-source Ludo game with a clean UI, local multiplayer, and bot opponents.
 </p>
 
 <p align="center">
   <a href="https://libreludo.org/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Play-Now-brightgreen?style=for-the-badge&logo=netlify" alt="Play LibreLudo" /></a>
-  <a href="LICENSE" target="_blank" rel="noopener noreferrer"><img alt="License" src="https://img.shields.io/github/license/priyanshurav/libreludo?style=for-the-badge&v=2"></a>
+  <a href="LICENSE" target="_blank" rel="noopener noreferrer"><img alt="License badge" src="https://img.shields.io/github/license/priyanshurav/libreludo?style=for-the-badge"></a>
 </p>
 
 ---
 
-## ▶️ Play LibreLudo
+## 🎮 Play LibreLudo
 
 🟢 <a href="https://libreludo.org/" target="_blank" rel="noopener noreferrer">Click here to play the full game now</a> — no download needed. Just roll the dice and start playing!
 
@@ -32,6 +32,8 @@
 |                               Game Setup                                |                                 Gameplay                                  |
 | :---------------------------------------------------------------------: | :-----------------------------------------------------------------------: |
 | <img src=".github/assets/libreludo-setup.jpg" alt="Setup" width="100%"> | <img src=".github/assets/libreludo-play.jpg" alt="Gameplay" width="100%"> |
+
+---
 
 ## ✨ Features
 
@@ -55,27 +57,6 @@
 
 ---
 
-## Build & Run
-
-Requires <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">Node.js</a>
-
-```bash
-# 1. Clone repo
-git clone https://github.com/priyanshurav/libreludo.git
-cd libreludo
-
-# 2. Install dependencies
-npm install
-
-# 3. Start dev server
-npm run dev
-
-# 4. Build for production (Optional)
-npm run build
-```
-
----
-
 ## 🗺️ Routes
 
 | Path           | Description             |
@@ -90,10 +71,10 @@ npm run build
 
 ## 🤝 Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) before opening an issue or pull request.
 
 ---
 
-## License
+## 📜 License
 
 This software is licensed under the GNU Affero General Public License, version 3. See the <a href="https://github.com/priyanshurav/libreludo/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">LICENSE</a> for more info.
