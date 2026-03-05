@@ -2,6 +2,7 @@ import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import checker from 'vite-plugin-checker';
+import licenses from 'rollup-plugin-license';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import { VitePWA } from 'vite-plugin-pwa';
 import { pwaOptions } from './pwa.config';
@@ -37,6 +38,11 @@ export default defineConfig({
     }),
     checker({ typescript: { tsconfigPath: './tsconfig.app.json' } }),
     ViteImageOptimizer(),
+    licenses({
+      thirdParty: {
+        output: 'dist/THIRD_PARTY_LICENSES.txt',
+      },
+    }),
     VitePWA(pwaOptions),
   ],
 });

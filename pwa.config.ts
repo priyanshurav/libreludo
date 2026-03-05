@@ -35,44 +35,17 @@ export const pwaOptions: Partial<VitePWAOptions> = {
       'icons/**/*.{png,svg,ico}',
     ],
     globIgnores: ['icons/favicon.png', 'icons/favicon.svg'],
-    navigateFallbackDenylist: [/sitemap\.xml$/, /robots\.txt$/, /manifest\.webmanifest$/],
+    navigateFallbackDenylist: [
+      /sitemap\.xml$/,
+      /robots\.txt$/,
+      /manifest\.webmanifest$/,
+      /THIRD_PARTY_LICENSES\.txt$/,
+    ],
     navigateFallback: '/index.html',
     mode: process.env.NODE_ENV,
     maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
     cleanupOutdatedCaches: true,
     clientsClaim: true,
     skipWaiting: false,
-    runtimeCaching: [
-      {
-        // Cache Google Fonts CSS
-        urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-        handler: 'CacheFirst',
-        options: {
-          cacheName: 'google-fonts-stylesheets',
-          expiration: {
-            maxEntries: 10,
-            maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-          },
-          cacheableResponse: {
-            statuses: [0, 200],
-          },
-        },
-      },
-      {
-        // Cache Google Fonts files (e.g., woff2)
-        urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-        handler: 'CacheFirst',
-        options: {
-          cacheName: 'google-fonts-webfonts',
-          expiration: {
-            maxEntries: 20,
-            maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-          },
-          cacheableResponse: {
-            statuses: [0, 200],
-          },
-        },
-      },
-    ],
   },
 };
