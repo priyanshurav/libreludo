@@ -5,6 +5,7 @@ import { store } from './state/store.ts';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router.tsx';
 import { PWAUpdater } from './components/PWAUpdater/PWAUpdater.tsx';
+import '@fontsource-variable/inter';
 import './index.css';
 
 // Disable React DevTools in production
