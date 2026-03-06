@@ -4,9 +4,12 @@ import svgr from 'vite-plugin-svgr';
 import checker from 'vite-plugin-checker';
 import licenses from 'rollup-plugin-license';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { VitePWA } from 'vite-plugin-pwa';
 import { pwaOptions } from './pwa.config';
 import { version, license } from './package.json';
+import { normalizePath } from 'vite';
+import path from 'node:path';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -40,8 +43,17 @@ export default defineConfig({
     ViteImageOptimizer(),
     licenses({
       thirdParty: {
-        output: 'dist/THIRD_PARTY_LICENSES.txt',
+        output: normalizePath(path.resolve(__dirname, 'dist', 'THIRD_PARTY_LICENSES.txt')),
       },
+    }),
+    viteStaticCopy({
+      targets: [
+        {
+          src: normalizePath(path.resolve(__dirname, 'LICENSE')),
+          dest: normalizePath(path.resolve(__dirname, 'dist')),
+          rename: 'LICENSE.txt',
+        },
+      ],
     }),
     VitePWA(pwaOptions),
   ],
