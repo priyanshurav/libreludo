@@ -39,6 +39,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
       /sitemap\.xml$/,
       /robots\.txt$/,
       /manifest\.webmanifest$/,
+      /LICENSE\.txt$/,
       /THIRD_PARTY_LICENSES\.txt$/,
     ],
     navigateFallback: '/index.html',
