@@ -5,6 +5,7 @@
   align-items: center;
   flex-direction: column;
 }
+
 .home-page {
   display: flex;
   justify-content: space-evenly;
@@ -13,9 +14,11 @@
   padding-inline: 1em;
   min-height: 100vh;
 }
+
 .welcome {
   text-align: center;
 }
+
 .welcome h1 {
   font-size: 4em;
   margin-top: 1.5em;
@@ -34,6 +37,7 @@
   margin-top: 4em;
   margin-bottom: 1em;
 }
+
 .cta-button {
   display: inline-block;
   bottom: 0;
@@ -95,9 +99,11 @@
   align-self: flex-start;
   margin-top: 2em;
 }
+
 .why-play-libreludo {
   margin-top: 4em;
 }
+
 .history {
   margin-bottom: 7em;
 }
@@ -105,15 +111,19 @@
 .history dl {
   margin-left: 1.5em;
 }
+
 dt {
   font-weight: bold;
 }
+
 dd {
   margin-bottom: 0.4em;
 }
+
 dt::after {
   content: ':';
 }
+
 footer {
   position: absolute;
   bottom: 0;
@@ -146,10 +156,20 @@ footer {
   text-decoration: underline;
 }
 
-.copyright {
+.copyright,
+.copyright a {
   font-size: 0.75em;
   color: rgb(255, 255, 255, 0.8);
   margin-top: 0.5em;
+  text-decoration: none;
+}
+
+.copyright a {
+  font-size: inherit;
+}
+
+.copyright a:hover {
+  text-decoration: underline;
 }
 
 .footer-actions {

@@ -94,7 +94,16 @@ function HomePage() {
             </a>
           </p>
           <small className={styles.copyright}>
-            Copyright &copy; 2025&ndash;{new Date().getFullYear()} Priyanshu Rav
+            Copyright &copy; 2025&ndash;{new Date().getFullYear()} Priyanshu Rav &middot;{' '}
+            <a
+              href="/LICENSE.txt"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Read the LibreLudo AGPLv3 License"
+              title="Read the LibreLudo AGPLv3 License"
+            >
+              AGPLv3
+            </a>
           </small>
         </div>
         <div className={styles.footerActions}>
