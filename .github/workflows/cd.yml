@@ -24,11 +24,8 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Build project
-        run: npm run build
-
-      - name: Publish to Netlify
-        run: npx netlify deploy --prod --no-build --dir=dist
+      - name: Deploy to Netlify
+        run: npx netlify deploy --prod --dir=dist
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
