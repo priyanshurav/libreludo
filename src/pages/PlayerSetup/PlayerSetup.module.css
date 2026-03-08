@@ -110,6 +110,7 @@
   border: none;
   height: 2rem;
   width: 2rem;
+  border-bottom-right-radius: 0.25em;
   cursor: pointer;
   text-decoration: none;
   display: flex;
