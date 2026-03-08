@@ -20,8 +20,8 @@ function HowToPlay() {
             <H c="🎲" /> How to Play LibreLudo
           </h1>
           <p>
-            Welcome to the colorful world of Ludo! Whether you're new or need a refresher, here's
-            everything you need to know to play and win.
+            Welcome to the colorful world of LibreLudo! Whether you're new or need a refresher,
+            here's everything you need to know to play and win.
           </p>
         </section>
 
