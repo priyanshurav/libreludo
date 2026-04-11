@@ -202,7 +202,7 @@ footer {
 .icon-btn:active,
 .icon-btn:focus-visible {
   background: rgba(255, 255, 255, 0.2);
-  outline: 2px solid white;
+  outline: 0.125em solid white;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   cursor: pointer;
