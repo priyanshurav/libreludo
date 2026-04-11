@@ -91,6 +91,7 @@ function Token({ colour, id, tokenClickData }: Props) {
       tabIndex={isActive ? undefined : -1}
       onFocus={() => setIsCurrentlyFocused(true)}
       onBlur={() => setIsCurrentlyFocused(false)}
+      disabled={!isActive}
       ref={tokenElRef}
       onClick={handleTokenClick}
       style={
