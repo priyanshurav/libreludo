@@ -4,7 +4,6 @@ import {
   markTokenAsReachedHome,
   setIsAnyTokenMoving,
 } from '../state/slices/playersSlice';
-import { type TCoordinate } from '../types';
 import { type TToken } from '../types';
 import { ERRORS } from '../utils/errors';
 import type { AppDispatch, RootState } from '../state/store';
@@ -15,13 +14,7 @@ import { useCallback } from 'react';
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../game/tokens/constants';
 import { tokenPaths } from '../game/tokens/paths';
 import { getTokenDOMId } from '../game/tokens/logic';
-
-export type TMoveTokenCompletionData = {
-  lastTokenCoord: TCoordinate;
-  hasTokenReachedHome: boolean;
-  hasPlayerWon: boolean;
-  moved: boolean;
-};
+import type { TMoveTokenCompletionData } from '../types/tokens';
 
 export const useMoveTokenForward = () => {
   const dispatch = useDispatch<AppDispatch>();

@@ -28,11 +28,6 @@ export type TTokenPath = {
   endCoords: TCoordinate;
 };
 
-export type TTokenTriggerCoordinates = {
-  newPathTriggerCoord: TCoordinate;
-  winningCoord: TCoordinate;
-};
-
 export type TMoveData = {
   isCaptured: boolean;
   hasTokenReachedHome: boolean;
@@ -40,3 +35,10 @@ export type TMoveData = {
 };
 
 export type TTokenClickData = { timestamp: number; id: number; colour: TPlayerColour };
+
+export type TMoveTokenCompletionData = {
+  lastTokenCoord: TCoordinate;
+  hasTokenReachedHome: boolean;
+  hasPlayerWon: boolean;
+  moved: boolean;
+};
