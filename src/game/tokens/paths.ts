@@ -20,7 +20,7 @@ export function getIntegersBetween(a: number, b: number): number[] {
 export function expandTokenPath(tokenPaths: TTokenPath[]): TCoordinate[] {
   const expandedPath: TCoordinate[] = [];
   for (let i = 0; i < tokenPaths.length; i++) {
-    const path = tokenPaths[i] as TTokenPath;
+    const path = tokenPaths[i];
     const isVertical = path.startCoords.x === path.endCoords.x;
     const staticCoordinateComponent = isVertical ? path.startCoords.x : path.startCoords.y;
     const variableStartCoordinate = isVertical ? path.startCoords.y : path.startCoords.x;
