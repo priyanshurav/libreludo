@@ -60,16 +60,6 @@ export const tokenAlignmentData: Record<number, TTokenAlignmentData[]> = {
   ],
   5: [
     {
-      xOffset: -0.28,
-      yOffset: 0.2,
-      scaleFactor: 0.5,
-    },
-    {
-      xOffset: 0,
-      yOffset: 0.2,
-      scaleFactor: 0.5,
-    },
-    {
       xOffset: 0.28,
       yOffset: 0.2,
       scaleFactor: 0.5,
@@ -82,6 +72,16 @@ export const tokenAlignmentData: Record<number, TTokenAlignmentData[]> = {
     {
       xOffset: 0.15,
       yOffset: -0.2,
+      scaleFactor: 0.5,
+    },
+    {
+      xOffset: -0.28,
+      yOffset: 0.2,
+      scaleFactor: 0.5,
+    },
+    {
+      xOffset: 0,
+      yOffset: 0.2,
       scaleFactor: 0.5,
     },
   ],
