@@ -58,11 +58,12 @@ function Game({ initData }: Props) {
   useEffect(() => {
     const handlePageVisibilityChange = () => {
       if (isGameEnded) return;
-      if (document.hidden) {
+      if (document.visibilityState === 'hidden') {
         gameInactiveStartTime.current = Date.now();
-      } else {
+      } else if (document.visibilityState === 'visible' && gameInactiveStartTime.current > 0) {
         const now = Date.now();
         dispatch(addToGameInactiveTime(now - gameInactiveStartTime.current));
+        gameInactiveStartTime.current = 0;
       }
     };
     document.addEventListener('visibilitychange', handlePageVisibilityChange);
