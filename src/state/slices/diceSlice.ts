@@ -55,7 +55,7 @@ const reducers = {
   renewRollBag: (state: TDiceState, action: PayloadAction<TPlayerColour>) => {
     state.rollBag[action.payload] = generateRollBag();
   },
-  clearDiceState: () => structuredClone(initialState),
+  clearDiceState: () => initialState,
 };
 
 const diceSlice = createSlice({

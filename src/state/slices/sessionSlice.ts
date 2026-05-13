@@ -17,7 +17,7 @@ const reducers = {
   addToGameInactiveTime: (state: TSessionState, action: PayloadAction<number>) => {
     state.gameInactiveTime += action.payload;
   },
-  clearSessionState: () => structuredClone(initialState),
+  clearSessionState: () => initialState,
 };
 
 const sessionSlice = createSlice({

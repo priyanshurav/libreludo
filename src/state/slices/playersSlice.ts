@@ -181,7 +181,7 @@ const reducers = {
     const token = getToken(state, action.payload.colour, action.payload.id);
     token.tokenAlignmentData = action.payload.newAlignmentData;
   },
-  clearPlayersState: () => structuredClone(initialState),
+  clearPlayersState: () => initialState,
 };
 
 const playersSlice = createSlice({
