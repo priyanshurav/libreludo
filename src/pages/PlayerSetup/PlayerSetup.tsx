@@ -127,7 +127,7 @@ function PlayerSetup() {
         <Link className={styles.playBtn} to="/play" onClick={handlePlayBtnClick}>
           PLAY
         </Link>
-        <small className={styles.version}>v{__APP_VERSION__}</small>
+        <small className={styles.version}>v{__LIBRELUDO_VERSION__}</small>
       </main>
       <Link to="/" className={styles.goToHome}>
         <HomeIcon />

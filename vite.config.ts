@@ -26,8 +26,8 @@ export default defineConfig({
     },
   },
   define: {
-    __APP_VERSION__: JSON.stringify(version),
-    __APP_LICENSE__: JSON.stringify(license),
+    __LIBRELUDO_VERSION__: JSON.stringify(version),
+    __LIBRELUDO_LICENSE__: JSON.stringify(license),
   },
   plugins: [
     react(),

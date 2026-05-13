@@ -20,7 +20,7 @@ if (import.meta.env.PROD) {
 }
 
 console.log(
-  `%c LibreLudo v${__APP_VERSION__} %c License: ${__APP_LICENSE__}`,
+  `%c LibreLudo v${__LIBRELUDO_VERSION__} %c License: ${__LIBRELUDO_LICENSE__}`,
   'background: #4caf50; color: #fff; padding: 5px 10px; border-radius: 3px 0 0 3px; font-weight: bold;',
   'background: #e65100; color: #fff; padding: 5px 10px; font-weight: bold;'
 );
