@@ -1,4 +1,4 @@
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 import {
   deactivateAllTokens,
   markTokenAsReachedHome,
@@ -18,7 +18,6 @@ import type { TMoveTokenCompletionData } from '../types/tokens';
 
 export const useMoveTokenForward = () => {
   const dispatch = useDispatch<AppDispatch>();
-  useSelector((state: RootState) => state.players.players);
   const store = useStore<RootState>();
 
   return useCallback(

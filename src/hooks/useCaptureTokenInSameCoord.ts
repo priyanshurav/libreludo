@@ -1,4 +1,4 @@
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 import {
   deactivateAllTokens,
   lockToken,
@@ -26,7 +26,6 @@ import { sleep } from '../utils/sleep';
 export function useCaptureTokenInSameCoord() {
   const dispatch = useDispatch();
   const getPosition = useCoordsToPosition();
-  useSelector((state: RootState) => state.players.players);
   const store = useStore<RootState>();
 
   return useCallback(

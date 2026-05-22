@@ -1,4 +1,4 @@
-import { useSelector, useStore } from 'react-redux';
+import { useStore } from 'react-redux';
 import type { TCoordinate } from '../types';
 import type { TTokenAlignmentData } from '../types';
 import type { RootState } from '../state/store';
@@ -8,7 +8,6 @@ export const useCoordsToPosition = (): ((
   coords: TCoordinate,
   tokenAlignmentData: TTokenAlignmentData
 ) => { x: string; y: string }) => {
-  useSelector((state: RootState) => state.board);
   const store = useStore<RootState>();
   return useCallback(
     (coords: TCoordinate, tokenAlignmentData: TTokenAlignmentData) => {
