@@ -78,3 +78,9 @@ Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) be
 ## 📜 License
 
 This software is licensed under the GNU Affero General Public License, version 3. See the <a href="https://github.com/priyanshurav/libreludo/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">LICENSE</a> for more info.
+
+---
+
+## ⚠️ No Affiliation or Endorsement
+
+Forks, derivative works, modifications, and third-party projects based on or derived from LibreLudo are independent works. They are not affiliated with, sponsored by, endorsed by, or approved by the LibreLudo project or its maintainers. Use of this codebase does not imply any association with or approval from the LibreLudo project.
