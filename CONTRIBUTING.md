@@ -40,6 +40,12 @@ The more detail you include, the faster it can be understood and resolved.
 
 ---
 
+## Prerequisites
+
+This project strictly uses **[pnpm](https://pnpm.io/)** as its package manager.
+
+---
+
 ## Local setup
 
 LibreLudo requires <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">Node.js 20+</a>.
@@ -51,13 +57,13 @@ git clone https://github.com/YOUR_USERNAME/libreludo.git
 cd libreludo
 
 # Install dependencies
-npm install
+pnpm install
 
 # Start the development server
-npm run dev
+pnpm run dev
 
-# Optionally, build and preview the production build
-npm run build && npm run preview
+# Optionally, compile and preview the production build
+pnpm run build && pnpm run preview
 ```
 
 After running the dev server, the project should be available locally in your browser.
@@ -73,8 +79,9 @@ Please create branches using the following naming pattern. It helps keep the com
 | Feature  | `feat/...`     | `feat/animated-dice`       |
 | Bug fix  | `fix/...`      | `fix/token-overlap`        |
 | Refactor | `refactor/...` | `refactor/turn-reducer`    |
+| Build    | `build/...`    | `build/upgrade-vite`       |
 | Docs     | `docs/...`     | `docs/update-contributing` |
-| Chore    | `chore/...`    | `chore/upgrade-vite`       |
+| Chore    | `chore/...`    | `chore/update-gitignore`   |
 
 Keep branch names short but descriptive.
 
@@ -88,13 +95,13 @@ Before opening a pull request, please make sure everything passes locally.
 
 ```bash
 # Linting
-npm run lint
+pnpm run lint
 
 # Type checking
-npm run type-check
+pnpm run type-check
 
 # Run tests
-npm test
+pnpm test
 ```
 
 Formatting is handled automatically by **Prettier** if your editor supports it. Installing the Prettier extension for your editor is recommended.
@@ -107,29 +114,30 @@ EditorConfig settings are also included in the repo. Many editors support it aut
 
 Commits must follow the **Conventional Commits** format.
 
-Scope is required for every commit.
+Providing a scope is encouraged, but not mandatory.
 
 ```
-<type>(<scope>): <short description>
+<type>([scope]): <short description>
 
-[optional body]
+[body]
 ```
 
 The body is optional but helpful when the reason behind the change isn't obvious.
 
 ### Commit types
 
-| Type     | Description                                  |
-| -------- | -------------------------------------------- |
-| feat     | New feature                                  |
-| fix      | Bug fix                                      |
-| docs     | Documentation only                           |
-| style    | Formatting or style changes                  |
-| refactor | Code restructuring without changing behavior |
-| test     | Adding or updating tests                     |
-| chore    | Maintenance tasks or dependency updates      |
-| perf     | Performance improvements                     |
-| ci       | CI/CD related changes                        |
+| Type     | Description                                                   |
+| -------- | ------------------------------------------------------------- |
+| feat     | New feature                                                   |
+| fix      | Bug fix                                                       |
+| docs     | Documentation only                                            |
+| style    | Formatting or style changes                                   |
+| refactor | Code restructuring without changing behavior                  |
+| build    | Changes that affect the build system or external dependencies |
+| test     | Adding or updating tests                                      |
+| chore    | Routine repository maintenance tasks                          |
+| perf     | Performance improvements                                      |
+| ci       | CI/CD related changes                                         |
 
 ### Example commits
 
@@ -137,12 +145,11 @@ The body is optional but helpful when the reason behind the change isn't obvious
 feat(board): animate token movement
 fix(dice): correct roll distribution
 refactor(game-state): simplify turn reducer
+build(deps): update workbox-window to v7
 docs(contributing): clarify commit guidelines
 test(bot): add move scoring tests
-chore(deps): upgrade vite to v7
+chore: run prettier across codebase
 ```
-
-Commits without a scope (for example `fix: typo`) will not be accepted.
 
 ---
 
