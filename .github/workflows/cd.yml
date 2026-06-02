@@ -33,7 +33,7 @@ jobs:
         run: pnpm test
 
       - name: Deploy to Netlify
-        run: npx netlify deploy --prod --dir=dist
+        run: pnpm exec netlify deploy --prod --dir=dist
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
