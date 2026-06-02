@@ -15,6 +15,13 @@
     "test:watch": "vitest --reporter verbose",
     "test:coverage": "vitest run --coverage"
   },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.5.0",
+      "onFail": "download"
+    }
+  },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
     "@reduxjs/toolkit": "^2.11.2",
