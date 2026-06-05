@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://libreludo.org/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Play-Now-brightgreen?style=for-the-badge&logo=netlify" alt="Play LibreLudo" /></a>
+  <a href="https://libreludo.org/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Play-Now-brightgreen?style=for-the-badge&logo=cloudflare" alt="Play LibreLudo" /></a>
   <a href="LICENSE" target="_blank" rel="noopener noreferrer"><img alt="License badge" src="https://img.shields.io/github/license/priyanshurav/libreludo?style=for-the-badge"></a>
 </p>
 
@@ -53,7 +53,7 @@
 - **React Router DOM** for routing
 - **TypeScript**
 - **Vitest + React Testing Library** for testing
-- **Netlify** for hosting
+- **Cloudflare** for hosting
 
 ---
 
