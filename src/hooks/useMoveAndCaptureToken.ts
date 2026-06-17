@@ -6,11 +6,13 @@ import { useMoveTokenForward } from './useMoveTokenForward';
 import type { TMoveData } from '../types/tokens';
 import { getAvailableSteps } from '../game/tokens/logic';
 import { useCallback } from 'react';
+import { useGameStorage } from './useGameStorage';
 
 export function useMoveAndCaptureToken() {
   const moveToken = useMoveTokenForward();
   const captureToken = useCaptureTokenInSameCoord();
   const dispatch = useDispatch();
+  const { saveState } = useGameStorage();
   return useCallback(
     async (token: TToken, diceNumber: number): Promise<TMoveData | null> => {
       if (getAvailableSteps(token) < diceNumber) {
@@ -24,8 +26,9 @@ export function useMoveAndCaptureToken() {
       );
       if (!moved) return null;
       const isCaptured = await captureToken(token, lastTokenCoord);
+      saveState();
       return { isCaptured, hasTokenReachedHome, hasPlayerWon };
     },
-    [captureToken, dispatch, moveToken]
+    [captureToken, dispatch, moveToken, saveState]
   );
 }
