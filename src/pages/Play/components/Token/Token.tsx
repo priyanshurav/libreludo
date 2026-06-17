@@ -7,14 +7,15 @@ import type { AppDispatch, RootState } from '../../../../state/store';
 import TokenImage from '../../../../assets/token.svg?react';
 import { useCoordsToPosition } from '../../../../hooks/useCoordsToPosition';
 import { setTokenTransitionTime } from '../../../../utils/setTokenTransitionTime';
-import { changeTurnThunk } from '../../../../state/thunks/changeTurnThunk';
 import { useMoveAndCaptureToken } from '../../../../hooks/useMoveAndCaptureToken';
-import { unlockAndAlignTokens } from '../../../../state/thunks/unlockAndAlignTokens';
 import { playerColours } from '../../../../game/players/constants';
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../../../../game/tokens/constants';
 import styles from './Token.module.css';
 import clsx from 'clsx';
 import { getTokenDOMId } from '../../../../game/tokens/logic';
+import { useChangeTurn } from '../../../../hooks/useChangeTurn';
+import { useUnlockAndAlignTokens } from '../../../../hooks/useUnlockAndAlignTokens';
+import { useGameStorage } from '../../../../hooks/useGameStorage';
 
 type Props = {
   colour: TPlayerColour;
@@ -29,6 +30,9 @@ function Token({ colour, id, tokenClickData }: Props) {
   const tokenClickDataRef = useRef(tokenClickData);
   const [isCurrentlyFocused, setIsCurrentlyFocused] = useState(false);
   const tokenElRef = useRef<HTMLButtonElement | null>(null);
+  const changeTurnFn = useChangeTurn();
+  const unlockAndAlignTokens = useUnlockAndAlignTokens();
+  const { saveState } = useGameStorage();
   const { numberOfConsecutiveSix, tokens: playerTokens } = useMemo(
     () => players.find((v) => v.colour === colour),
     [players, colour]
@@ -48,24 +52,25 @@ function Token({ colour, id, tokenClickData }: Props) {
   const unlock = () => {
     dispatch(setIsAnyTokenMoving(true));
     setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME, token);
-    dispatch(unlockAndAlignTokens({ colour, id }));
+    unlockAndAlignTokens({ colour, id });
     dispatch(deactivateAllTokens(colour));
     setTimeout(() => {
       dispatch(setIsAnyTokenMoving(false));
+      saveState();
     }, FORWARD_TOKEN_TRANSITION_TIME);
   };
 
   const executeTokenMove = useCallback(async () => {
-    if (!isActive || diceNumber === -1 || !diceNumber) return;
+    if (!isActive || diceNumber === -1 || !diceNumber || isLocked) return;
 
     const moveData = await moveAndCapture(token, diceNumber);
     if (!moveData) return;
     const { hasTokenReachedHome, isCaptured, hasPlayerWon } = moveData;
-    if (hasPlayerWon) return dispatch(changeTurnThunk(moveAndCapture));
+    if (hasPlayerWon) return changeTurnFn();
     if ((diceNumber !== 6 || numberOfConsecutiveSix >= 3) && !isCaptured && !hasTokenReachedHome) {
-      return dispatch(changeTurnThunk(moveAndCapture));
+      return changeTurnFn();
     }
-  }, [diceNumber, dispatch, isActive, moveAndCapture, numberOfConsecutiveSix, token]);
+  }, [changeTurnFn, diceNumber, isActive, isLocked, moveAndCapture, numberOfConsecutiveSix, token]);
 
   useEffect(() => {
     const prevClickData = tokenClickDataRef.current;
