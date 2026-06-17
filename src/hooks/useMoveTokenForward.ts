@@ -8,17 +8,18 @@ import { type TToken } from '../types';
 import { ERRORS } from '../utils/errors';
 import type { AppDispatch, RootState } from '../state/store';
 import { areCoordsEqual } from '../game/coords/logic';
-import { updateTokenPositionAndAlignmentThunk } from '../state/thunks/updateTokenPositionAndAlignmentThunk';
 import { setTokenTransitionTime } from '../utils/setTokenTransitionTime';
 import { useCallback } from 'react';
 import { FORWARD_TOKEN_TRANSITION_TIME } from '../game/tokens/constants';
 import { tokenPaths } from '../game/tokens/paths';
 import { getTokenDOMId } from '../game/tokens/logic';
 import type { TMoveTokenCompletionData } from '../types/tokens';
+import { useUpdateTokenPositionAndAlignment } from './useUpdateTokenPositionAndAlignment';
 
 export const useMoveTokenForward = () => {
   const dispatch = useDispatch<AppDispatch>();
   const store = useStore<RootState>();
+  const updateTokenPositionAndAlignment = useUpdateTokenPositionAndAlignment();
 
   return useCallback(
     (diceNumber: number, token: TToken): Promise<TMoveTokenCompletionData> => {
@@ -58,15 +59,15 @@ export const useMoveTokenForward = () => {
           }
           i++;
           count++;
-          dispatch(updateTokenPositionAndAlignmentThunk({ colour, id, newCoords: tokenPath[i] }));
+          updateTokenPositionAndAlignment({ colour, id, newCoords: tokenPath[i] });
         };
         // Trigger the first transition
         i++;
         count++;
-        dispatch(updateTokenPositionAndAlignmentThunk({ colour, id, newCoords: tokenPath[i] }));
+        updateTokenPositionAndAlignment({ colour, id, newCoords: tokenPath[i] });
         tokenEl.addEventListener('transitionend', handleTransitionEnd);
       });
     },
-    [dispatch, store]
+    [dispatch, store, updateTokenPositionAndAlignment]
   );
 };
