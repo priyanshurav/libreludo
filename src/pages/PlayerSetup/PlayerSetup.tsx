@@ -13,11 +13,18 @@ import HomeIcon from '../../assets/icons/home.svg?react';
 import styles from './PlayerSetup.module.css';
 import { Tooltip } from 'react-tooltip';
 import { useResizeObserver } from '../../hooks/useResizeObserver';
+import { validateStoredState } from '../../game/storage/validator';
+import { retrieveSaveFromStorage } from '../../game/storage/storage';
+import { SAVE_VERSION } from '../../game/storage/constants';
 
-const ALL_BOT_PLAYER_TOAST_ID = 'all-bot-player';
-const PLAYER_NAME_EMPTY_TOAST_ID = 'player-name-empty';
+const toastIds = {
+  allBotPlayer: 'all-bot-player',
+  playerNameEmpty: 'player-name-empty',
+  corruptedSave: 'corrupted-save',
+  incompatibleSave: 'incompatible-save',
+} as const satisfies Record<string, string>;
 
-const INITIAL_PLAYER_DATA: TPlayerInitData[] = [
+const DEFAULT_PLAYER_DATA: TPlayerInitData[] = [
   {
     name: 'Player 1',
     isBot: false,
@@ -39,7 +46,7 @@ const INITIAL_PLAYER_DATA: TPlayerInitData[] = [
 function PlayerSetup() {
   const [playerCount, setPlayerCount] = useState(2);
   const [dialogWidth, setDialogWidth] = useState(0);
-  const [playersData, setPlayersData] = useState<TPlayerInitData[]>(INITIAL_PLAYER_DATA);
+  const [playersData, setPlayersData] = useState<TPlayerInitData[]>(DEFAULT_PLAYER_DATA);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [dialogNode, setDialogNode] = useState<HTMLElement | null>(null);
@@ -71,18 +78,36 @@ function PlayerSetup() {
     if (isAnyNameEmpty)
       return toast('Player name must not be empty', {
         type: 'error',
-        toastId: PLAYER_NAME_EMPTY_TOAST_ID,
+        toastId: toastIds.playerNameEmpty,
       });
     const areAllPlayersBot = playerInitData.every((d) => d.isBot);
     if (areAllPlayersBot)
       return toast('There must be at least one human player', {
         type: 'error',
-        toastId: ALL_BOT_PLAYER_TOAST_ID,
+        toastId: toastIds.allBotPlayer,
       });
     setIsLoading(true);
     navigate('/play', { state: { initData: playerInitData } });
   };
 
+  const handleLoadLinkClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
+    const { success, result } = validateStoredState(retrieveSaveFromStorage());
+    if (!success) {
+      toast("Save file does not exist or it's corrupted", {
+        type: 'error',
+        toastId: toastIds.corruptedSave,
+      });
+    } else if (result.version !== SAVE_VERSION) {
+      toast(`Incompatible save: v${result.version} (requires v${SAVE_VERSION})`, {
+        type: 'error',
+        toastId: toastIds.incompatibleSave,
+      });
+    } else {
+      setIsLoading(true);
+      navigate('/play', { state: 'LOAD_SAVE' });
+    }
+  };
   return isLoading ? (
     <LoadingScreen />
   ) : (
@@ -124,8 +149,17 @@ function PlayerSetup() {
             />
           ))}
         </div>
+
         <Link className={styles.playBtn} to="/play" onClick={handlePlayBtnClick}>
           PLAY
+        </Link>
+        <Link
+          className={styles.loadGame}
+          to="/play"
+          title="Load last game"
+          onClick={handleLoadLinkClick}
+        >
+          or, load last game
         </Link>
         <small className={styles.version}>v{__LIBRELUDO_VERSION__}</small>
       </main>

@@ -75,7 +75,7 @@
   border: none;
   font-size: calc(var(--dialog-width) / 17);
   margin-top: calc(var(--dialog-width) / 35);
-  margin-bottom: calc(var(--dialog-width) / 25);
+  margin-bottom: calc(var(--dialog-width) / 50);
   padding-block: calc(var(--dialog-width) / 40);
   padding-inline: calc(var(--dialog-width) / 20);
   border-radius: calc(var(--dialog-width) / 45);
@@ -98,7 +98,7 @@
   right: 0;
   padding: calc(var(--dialog-width) / 60);
   font-size: calc(var(--dialog-width) / 30);
-  color: rgba(0, 0, 0, 0.65);
+  color: #595959;
 }
 
 .go-to-home {
@@ -132,6 +132,11 @@
   background-color: var(--color-primary-hover);
 }
 
+.load-game {
+  color: #595959;
+  font-size: calc(var(--dialog-width) / 35);
+  margin-bottom: calc(var(--dialog-width) / 50);
+}
 @media only screen and (max-width: calc(1.8 / 1.5 * 60vh)) {
   .player-setup-dialog {
     height: auto;
