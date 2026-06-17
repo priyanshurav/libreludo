@@ -8,15 +8,20 @@ function Play() {
   const cleanup = useCleanup();
   const location = useLocation();
   const { initData } = (location.state as { initData: TPlayerInitData[] }) ?? {};
+  const shouldLoad = location.state === 'LOAD_SAVE';
+
   useEffect(() => {
     document.title = 'Play LibreLudo';
     return () => cleanup();
   }, [cleanup]);
-  return initData && initData?.length !== 0 ? (
-    <Game initData={initData} />
-  ) : (
-    <Navigate to="/setup" />
-  );
+
+  if (shouldLoad) {
+    return <Game initData={[]} loadSave={true} />;
+  } else if (initData && initData?.length !== 0) {
+    return <Game initData={initData} loadSave={false} />;
+  } else {
+    return <Navigate to="/setup" />;
+  }
 }
 
 export default Play;
