@@ -7,14 +7,14 @@ import dice6 from '../../../../assets/dice/6.svg';
 import dicePlaceholder from '../../../../assets/dice/dice_placeholder.gif';
 import { useCallback, useEffect, useMemo } from 'react';
 import { type TPlayerColour } from '../../../../types';
-import { useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch, RootState } from '../../../../state/store';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../../state/store';
 import { ERRORS } from '../../../../utils/errors';
-import { rollDiceThunk } from '../../../../state/thunks/rollDiceThunk';
 import { playerColours } from '../../../../game/players/constants';
 import { isAnyTokenActiveOfColour } from '../../../../game/tokens/logic';
 import styles from './Dice.module.css';
 import clsx from 'clsx';
+import { useRollDice } from '../../../../hooks/useRollDice';
 
 type Props = {
   colour: TPlayerColour;
@@ -42,7 +42,6 @@ function getDiceImage(diceNumber: number | undefined): string {
 }
 
 function Dice({ colour, onDiceClick, playerName }: Props) {
-  const dispatch = useDispatch<AppDispatch>();
   const {
     isAnyTokenMoving,
     isGameEnded,
@@ -56,6 +55,7 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
     () => isAnyTokenActiveOfColour(colour, players),
     [colour, players]
   );
+  const rollDice = useRollDice();
   const isBot = players.find((p) => p.colour === colour)?.isBot;
   const isCurrentPlayer = currentPlayer === colour;
   const isDiceDisabled =
@@ -68,8 +68,10 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
 
   const handleDiceClick = useCallback(() => {
     if (isDiceDisabled) return;
-    dispatch(rollDiceThunk(colour, (diceNumber) => onDiceClick(colour, diceNumber)));
-  }, [colour, dispatch, isDiceDisabled, onDiceClick]);
+    rollDice(colour, (diceNumber) => {
+      onDiceClick(colour, diceNumber);
+    });
+  }, [colour, isDiceDisabled, onDiceClick, rollDice]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
