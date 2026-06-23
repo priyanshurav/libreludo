@@ -10,6 +10,6 @@ export function playerCountToWord(playerCount: number): TPlayerCount {
     case 4:
       return 'four';
     default:
-      throw new Error(ERRORS.invalidNumberOfPlayers());
+      throw new Error(ERRORS.invalidNumberOfPlayers(playerCount));
   }
 }

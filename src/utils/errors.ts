@@ -1,6 +1,7 @@
 export const ERRORS = {
   boardDoesNotExist: () => 'The board does not exist',
-  invalidNumberOfPlayers: () => 'Number of player can only be either two, three or four',
+  invalidNumberOfPlayers: (received: unknown) =>
+    `Number of player can only be either two, three or four. Received: ${received}`,
   playerDoesNotExist: (playerColour: string) => `Player with colour ${playerColour} does not exist`,
   playerAlreadyExists: (playerColour: string) =>
     `Player with colour ${playerColour} already exists`,
