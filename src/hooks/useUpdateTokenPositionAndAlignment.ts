@@ -4,16 +4,23 @@ import { areCoordsEqual } from '../game/coords/logic';
 import { applyAlignmentData } from '../game/tokens/alignment';
 import { tokensWithCoord } from '../game/tokens/logic';
 import { tokenPaths } from '../game/tokens/paths';
-import { changeCoordsOfToken } from '../state/slices/playersSlice';
+import { updateTokenCoordinatesAndDirection } from '../state/slices/playersSlice';
 import type { RootState, AppDispatch } from '../state/store';
-import type { TPlayerColour, TCoordinate } from '../types';
+import type { TPlayerColour, TCoordinate, TTokenDirection } from '../types';
+
+type TUpdateTokenPositionAndAlignmentParams = {
+  colour: TPlayerColour;
+  id: number;
+  newCoords: TCoordinate;
+  direction: TTokenDirection;
+};
 
 export const useUpdateTokenPositionAndAlignment = () => {
   const store = useStore<RootState>();
   const dispatch = useDispatch<AppDispatch>();
   return useCallback(
-    ({ colour, id, newCoords }: { colour: TPlayerColour; id: number; newCoords: TCoordinate }) => {
-      dispatch(changeCoordsOfToken({ colour, id, newCoords }));
+    ({ colour, id, newCoords, direction }: TUpdateTokenPositionAndAlignmentParams) => {
+      dispatch(updateTokenCoordinatesAndDirection({ colour, id, newCoords, direction }));
       const players = store.getState().players.players;
       const tokenPath = tokenPaths[colour];
       const currentCoordIndex = tokenPath.findIndex((c) => areCoordsEqual(c, newCoords));
