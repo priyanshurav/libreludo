@@ -12,7 +12,6 @@ import {
   getFinalCoord,
 } from '../coords/logic';
 import { expandedGeneralTokenPath, tokenPaths } from '../tokens/paths';
-import { sample } from 'lodash-es';
 import { LOGIC_CONFIG, WEIGHTS } from './constants';
 
 export function selectBestTokenForBot(
@@ -264,5 +263,9 @@ export function selectBestTokenForBot(
     .filter((e) => e.feasibilityScore === maxScore)
     .map((e) => e.token);
 
-  return sample(tokensWithMaxFeasibilityScore) || null;
+  return (
+    tokensWithMaxFeasibilityScore[
+      Math.floor(Math.random() * tokensWithMaxFeasibilityScore.length)
+    ] || null
+  );
 }
