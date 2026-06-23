@@ -23,3 +23,7 @@ export const retrieveSaveFromStorage = (): unknown => {
 export const deleteSaveFromStorage = (): void => {
   localStorage.removeItem(SAVE_GAME_KEY);
 };
+
+export const saveExists = (): boolean => {
+  return localStorage.getItem(SAVE_GAME_KEY) !== null;
+};
