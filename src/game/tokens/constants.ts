@@ -1,8 +1,17 @@
+import type { Easing } from 'framer-motion';
 import type { TPlayerColour, TCoordinate } from '../../types';
-import type { TTokenPath } from '../../types/tokens';
+import type { TTokenDirection, TTokenPath } from '../../types/tokens';
 
-export const FORWARD_TOKEN_TRANSITION_TIME = 500;
-export const BACKWARD_TOKEN_TRANSITION_TIME = 100;
+export const transitionStates = {
+  forward: {
+    timingFn: 'easeInOut',
+    durationMs: 500,
+  },
+  backward: {
+    timingFn: 'linear',
+    durationMs: 100,
+  },
+} as const satisfies Record<TTokenDirection, { durationMs: number; timingFn: Easing }>;
 
 export const GENERAL_TOKEN_PATH: TTokenPath[] = [
   {

@@ -23,6 +23,6 @@ export function isTokenMovable(token: TToken, diceNumber?: number): boolean {
   return !token.isLocked && !token.hasTokenReachedHome && getAvailableSteps(token) >= diceNumber;
 }
 
-export function getTokenDOMId(colour: TPlayerColour, id: number): string {
+export function getGloballyUniqueTokenId(colour: TPlayerColour, id: number): string {
   return `${colour}_${id}`;
 }

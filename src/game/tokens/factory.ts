@@ -20,6 +20,7 @@ export function genLockedTokens(colour: TPlayerColour): TToken[] {
       hasTokenReachedHome: false,
       initialCoords: coordinateList[i],
       tokenAlignmentData: defaultTokenAlignmentData,
+      direction: null,
     });
   }
 
