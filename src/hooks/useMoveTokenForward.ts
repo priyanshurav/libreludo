@@ -1,73 +1,44 @@
 import { useDispatch, useStore } from 'react-redux';
-import {
-  deactivateAllTokens,
-  markTokenAsReachedHome,
-  setIsAnyTokenMoving,
-} from '../state/slices/playersSlice';
 import { type TToken } from '../types';
 import { ERRORS } from '../utils/errors';
 import type { AppDispatch, RootState } from '../state/store';
-import { areCoordsEqual } from '../game/coords/logic';
-import { setTokenTransitionTime } from '../utils/setTokenTransitionTime';
 import { useCallback } from 'react';
-import { FORWARD_TOKEN_TRANSITION_TIME } from '../game/tokens/constants';
-import { tokenPaths } from '../game/tokens/paths';
-import { getTokenDOMId } from '../game/tokens/logic';
-import type { TMoveTokenCompletionData } from '../types/tokens';
+import type { TSequenceCalculationResult } from '../types/tokens';
 import { useUpdateTokenPositionAndAlignment } from './useUpdateTokenPositionAndAlignment';
+import { deactivateAllTokens, getToken, setIsAnyTokenMoving } from '../state/slices/playersSlice';
+import { tokenMotionRegistry } from '../game/movement/tokenMotionRegistry';
+import { getGloballyUniqueTokenId } from '../game/tokens/logic';
+import { useCoordsToPosition } from './useCoordsToPosition';
+import { transitionStates } from '../game/tokens/constants';
 
 export const useMoveTokenForward = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const store = useStore<RootState>();
   const updateTokenPositionAndAlignment = useUpdateTokenPositionAndAlignment();
+  const store = useStore<RootState>();
+  const getPosition = useCoordsToPosition();
 
   return useCallback(
-    (diceNumber: number, token: TToken): Promise<TMoveTokenCompletionData> => {
-      return new Promise((resolve) => {
-        if (diceNumber < 0) throw new Error(ERRORS.numberOfStepsNegative());
-        const { colour, id, coordinates, isLocked } = token;
-        if (isLocked) throw new Error(ERRORS.lockedToken(colour, id));
-        const tokenPath = tokenPaths[colour];
-        const players = store.getState().players.players;
-        dispatch(deactivateAllTokens(colour));
-        setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME, token);
-        dispatch(setIsAnyTokenMoving(true));
-        const tokenEl = document.getElementById(getTokenDOMId(colour, id));
-        if (!tokenEl) throw new Error(ERRORS.tokenDoesNotExist(colour, id));
-        const initialCoordinateIndex = tokenPath.findIndex((v) => areCoordsEqual(v, coordinates));
-        let i = initialCoordinateIndex;
-        let count = 0;
-
-        const handleTransitionEnd = () => {
-          const hasTokenReachedHome = areCoordsEqual(tokenPath[i], tokenPath[tokenPath.length - 1]);
-          if (count >= diceNumber || hasTokenReachedHome) {
-            const player = players.find((p) => p.colour === colour);
-            if (!player) return;
-            const hasPlayerWon =
-              hasTokenReachedHome &&
-              player.tokens.filter((t) => t.hasTokenReachedHome).length === 3;
-            if (hasTokenReachedHome) dispatch(markTokenAsReachedHome({ colour, id }));
-            tokenEl.removeEventListener('transitionend', handleTransitionEnd);
-            dispatch(setIsAnyTokenMoving(false));
-            resolve({
-              lastTokenCoord: tokenPath[i],
-              hasTokenReachedHome,
-              moved: true,
-              hasPlayerWon,
-            });
-            return;
-          }
-          i++;
-          count++;
-          updateTokenPositionAndAlignment({ colour, id, newCoords: tokenPath[i] });
-        };
-        // Trigger the first transition
-        i++;
-        count++;
-        updateTokenPositionAndAlignment({ colour, id, newCoords: tokenPath[i] });
-        tokenEl.addEventListener('transitionend', handleTransitionEnd);
-      });
+    async (
+      moveSequence: TSequenceCalculationResult['moveSequence'],
+      token: TToken
+    ): Promise<void> => {
+      const { colour, id, isLocked } = token;
+      if (isLocked) throw new Error(ERRORS.lockedToken(colour, id));
+      const { durationMs, timingFn } = transitionStates.forward;
+      dispatch(deactivateAllTokens(colour));
+      dispatch(setIsAnyTokenMoving(true));
+      const entry = tokenMotionRegistry.get(getGloballyUniqueTokenId(colour, id));
+      if (!entry) return;
+      entry.setExternallyAnimating(true);
+      for (const coord of moveSequence) {
+        updateTokenPositionAndAlignment({ colour, id, newCoords: coord, direction: 'forward' });
+        const updatedToken = getToken(store.getState().players, colour, id);
+        const { x, y } = getPosition(coord, updatedToken.tokenAlignmentData);
+        await entry.animateTo(x, y, { duration: durationMs / 1000, ease: timingFn });
+      }
+      entry.setExternallyAnimating(false);
+      dispatch(setIsAnyTokenMoving(false));
     },
-    [dispatch, store, updateTokenPositionAndAlignment]
+    [dispatch, store, updateTokenPositionAndAlignment, getPosition]
   );
 };

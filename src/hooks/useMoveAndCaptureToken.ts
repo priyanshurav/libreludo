@@ -1,34 +1,48 @@
-import { useDispatch } from 'react-redux';
-import { deactivateAllTokens } from '../state/slices/playersSlice';
+import { useDispatch, useStore } from 'react-redux';
+import { deactivateAllTokens, getToken, setPlayersState } from '../state/slices/playersSlice';
 import { type TToken } from '../types';
 import { useCaptureTokenInSameCoord } from './useCaptureTokenInSameCoord';
 import { useMoveTokenForward } from './useMoveTokenForward';
 import type { TMoveData } from '../types/tokens';
 import { getAvailableSteps } from '../game/tokens/logic';
 import { useCallback } from 'react';
-import { useGameStorage } from './useGameStorage';
+import { calculateSequence } from '../game/movement/calculateSequence';
+import { type RootState } from '../state/store';
+import { ERRORS } from '../utils/errors';
+import { saveState } from '../game/storage/saveState';
 
 export function useMoveAndCaptureToken() {
   const moveToken = useMoveTokenForward();
   const captureToken = useCaptureTokenInSameCoord();
   const dispatch = useDispatch();
-  const { saveState } = useGameStorage();
+  const store = useStore<RootState>();
   return useCallback(
     async (token: TToken, diceNumber: number): Promise<TMoveData | null> => {
+      if (diceNumber < 0) throw new Error(ERRORS.numberOfStepsNegative());
       if (getAvailableSteps(token) < diceNumber) {
         dispatch(deactivateAllTokens(token.colour));
         return null;
       }
-
-      const { hasTokenReachedHome, lastTokenCoord, hasPlayerWon, moved } = await moveToken(
-        diceNumber,
-        token
+      const { nextState, moveSequence, captureData } = calculateSequence(
+        store.getState(),
+        token,
+        diceNumber
       );
-      if (!moved) return null;
-      const isCaptured = await captureToken(token, lastTokenCoord);
-      saveState();
-      return { isCaptured, hasTokenReachedHome, hasPlayerWon };
+      saveState(nextState);
+      await moveToken(moveSequence, token);
+      if (moveSequence.length === 0) return null;
+      await captureToken(captureData, token);
+      const t = getToken(nextState.players, token.colour, token.id);
+      const hasPlayerWon = nextState.players.players
+        .find((p) => p.colour === token.colour)!
+        .tokens.every((t) => t.hasTokenReachedHome);
+      dispatch(setPlayersState(nextState.players));
+      return {
+        isCaptured: captureData.length !== 0,
+        hasTokenReachedHome: t.hasTokenReachedHome,
+        hasPlayerWon,
+      };
     },
-    [captureToken, dispatch, moveToken, saveState]
+    [captureToken, dispatch, moveToken, store]
   );
 }
