@@ -12,13 +12,12 @@ import type { TMoveData, TPlayerColour } from '../types';
 import { sleep } from '../utils/sleep';
 import { useMoveAndCaptureToken } from './useMoveAndCaptureToken';
 import { useCallback } from 'react';
-import { useGameStorage } from './useGameStorage';
+import { saveState } from '../game/storage/saveState';
 
 export const useHandlePostDiceRoll = () => {
   const store = useStore<RootState>();
   const dispatch = useDispatch<AppDispatch>();
   const moveAndCapture = useMoveAndCaptureToken();
-  const { saveState } = useGameStorage();
   return useCallback(
     async (
       colour: TPlayerColour,
@@ -32,7 +31,7 @@ export const useHandlePostDiceRoll = () => {
       else dispatch(resetNumberOfConsecutiveSix(colour));
 
       dispatch(activateTokens({ all: diceNumber === 6, colour, diceNumber }));
-      saveState();
+      saveState(store.getState());
       const players = store.getState().players.players;
       const player = players.find((p) => p.colour === colour);
       if (!player) return null;
@@ -78,6 +77,6 @@ export const useHandlePostDiceRoll = () => {
       }
       return { moveData: null, shouldChangeTurn: false };
     },
-    [dispatch, moveAndCapture, saveState, store]
+    [dispatch, moveAndCapture, store]
   );
 };

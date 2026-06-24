@@ -7,7 +7,7 @@ import { useCallback } from 'react';
 export const useCoordsToPosition = (): ((
   coords: TCoordinate,
   tokenAlignmentData: TTokenAlignmentData
-) => { x: string; y: string }) => {
+) => { x: number; y: number }) => {
   const store = useStore<RootState>();
   return useCallback(
     (coords: TCoordinate, tokenAlignmentData: TTokenAlignmentData) => {
@@ -15,8 +15,8 @@ export const useCoordsToPosition = (): ((
       const { xOffset, yOffset } = tokenAlignmentData;
       const tileCenterX = coords.x * boardTileSize + boardTileSize / 2;
       const tileCenterY = coords.y * boardTileSize + boardTileSize / 2;
-      const x = `${tileCenterX - tokenWidth / 2 + xOffset * boardTileSize}px`;
-      const y = `${tileCenterY - tokenHeight / 2 + yOffset * boardTileSize}px`;
+      const x = tileCenterX - tokenWidth / 2 + xOffset * boardTileSize;
+      const y = tileCenterY - tokenHeight / 2 + yOffset * boardTileSize;
       return { x, y };
     },
     [store]
