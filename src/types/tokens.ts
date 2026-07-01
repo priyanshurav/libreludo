@@ -1,3 +1,4 @@
+import type { RootState } from '../state/store';
 import type { TPlayerColour, TCoordinate } from './players';
 
 export type TTokenAlignmentData = {
@@ -12,6 +13,14 @@ export type TTokenColourAndId = {
   id: number;
 };
 
+export type TTokenDirection = 'forward' | 'backward';
+
+export type TSequenceCalculationResult = {
+  nextState: RootState;
+  moveSequence: TCoordinate[];
+  captureData: { token: TToken; moveSequence: TCoordinate[] }[];
+};
+
 export type TToken = {
   id: number;
   colour: TPlayerColour;
@@ -21,6 +30,7 @@ export type TToken = {
   isLocked: boolean;
   isActive: boolean;
   hasTokenReachedHome: boolean;
+  direction: TTokenDirection | null;
 };
 
 export type TTokenPath = {
@@ -35,10 +45,3 @@ export type TMoveData = {
 };
 
 export type TTokenClickData = { timestamp: number; id: number; colour: TPlayerColour };
-
-export type TMoveTokenCompletionData = {
-  lastTokenCoord: TCoordinate;
-  hasTokenReachedHome: boolean;
-  hasPlayerWon: boolean;
-  moved: boolean;
-};
