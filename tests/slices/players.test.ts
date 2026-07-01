@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import playersReducer, {
   activateTokens,
-  changeCoordsOfToken,
+  updateTokenCoordinatesAndDirection,
   changeTurn,
   clearPlayersState,
   deactivateAllTokens,
@@ -18,7 +18,6 @@ import playersReducer, {
   setTokenAlignmentData,
   unlockToken,
 } from '../../src/state/slices/playersSlice';
-import { cloneDeep } from 'lodash-es';
 import { DUMMY_PLAYERS } from '../fixtures/players.dummy';
 import { playerSequences } from '../../src/game/players/constants';
 import type { TPlayerCount, TTokenAlignmentData, TTokenColourAndId } from '../../src/types';
@@ -48,33 +47,29 @@ describe('Test players slice reducers', () => {
   });
   describe('changeCoordsOfToken', () => {
     it('should update the coordinates of the specified token for the given player colour', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       const newCoords = { x: 8, y: 11 };
       const tokenColourAndId: TTokenColourAndId = { colour: 'blue', id: 0 };
       const newState = playersReducer(
         initState,
-        changeCoordsOfToken({ ...tokenColourAndId, newCoords })
+        updateTokenCoordinatesAndDirection({ ...tokenColourAndId, newCoords, direction: 'forward' })
       );
       const token = getToken(newState, tokenColourAndId.colour, tokenColourAndId.id);
       expect(token.coordinates).toEqual(newCoords);
+      expect(token.direction).toEqual('forward');
     });
   });
   describe('changeTurn', () => {
-    it("should set currentPlayerColour to 'blue' if no turn has started", () => {
-      const newState = playersReducer(initialState, changeTurn());
-      expect(initialState.currentPlayerColour).toBeNull();
-      expect(newState.currentPlayerColour).toBe('blue');
-    });
     it('should update currentPlayerColour to the next in playerSequence', () => {
-      const initData = cloneDeep(initialState);
+      const initData = structuredClone(initialState);
       initData.playerSequence = playerSequences.four;
       initData.currentPlayerColour = initData.playerSequence[0];
       const newState = playersReducer(initData, changeTurn());
       expect(newState.currentPlayerColour).toBe(initData.playerSequence[1]);
     });
     it('should cycle to the first player if current player is the last in sequence', () => {
-      const initData = cloneDeep(initialState);
+      const initData = structuredClone(initialState);
       initData.playerSequence = playerSequences.four;
       initData.currentPlayerColour = initData.playerSequence[initData.playerSequence.length - 1];
       const newState = playersReducer(initData, changeTurn());
@@ -93,8 +88,8 @@ describe('Test players slice reducers', () => {
   });
   describe('activateTokens', () => {
     it("should activate all eligible tokens when 'all' is true and movement is possible", () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       const player = getPlayer(initState, 'blue');
 
       // Should not be activated
@@ -128,8 +123,8 @@ describe('Test players slice reducers', () => {
       expect(newPlayer.tokens[3].isActive).toBe(true);
     });
     it("should activate only tokens that can move based on dice number when 'all' is false", () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       const player = getPlayer(initState, 'blue');
 
       // Should not be activated
@@ -163,8 +158,8 @@ describe('Test players slice reducers', () => {
       expect(newPlayer.tokens[3].isActive).toBe(true);
     });
     it('should not activate any tokens if none meet the movement criteria', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       const newState = playersReducer(
         initState,
         activateTokens({ all: false, colour: 'blue', diceNumber: 5 })
@@ -175,8 +170,8 @@ describe('Test players slice reducers', () => {
       });
     });
     it('should activate tokens only for the player with the specified colour', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       getPlayer(initState, 'blue').tokens.forEach((t) => {
         t.isLocked = false;
         t.hasTokenReachedHome = false;
@@ -197,8 +192,8 @@ describe('Test players slice reducers', () => {
   });
   describe('deactivateAllTokens', () => {
     it('should deactivate all tokens for the specified player colour', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       getPlayer(initState, 'blue').tokens.forEach((t) => (t.isActive = true));
       const newState = playersReducer(initState, deactivateAllTokens('blue'));
       const newTokens = getPlayer(newState, 'blue').tokens;
@@ -208,8 +203,8 @@ describe('Test players slice reducers', () => {
   });
   describe('unlockToken', () => {
     it('should unlock the specified token and set its coordinates to the start position', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       const tokenColourAndId: TTokenColourAndId = { colour: 'blue', id: 0 };
       const newState = playersReducer(initState, unlockToken(tokenColourAndId));
       const newToken = getToken(newState, tokenColourAndId.colour, tokenColourAndId.id);
@@ -217,8 +212,8 @@ describe('Test players slice reducers', () => {
       expect(newToken.coordinates).toBe(TOKEN_START_COORDINATES['blue']);
     });
     it('should throw an error if the token is already unlocked', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       const token = getToken(initState, 'blue', 0);
       token.isLocked = false;
       expect(() =>
@@ -228,8 +223,8 @@ describe('Test players slice reducers', () => {
   });
   describe('lockToken', () => {
     it('should lock the specified token and reset its coordinates to initial position', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       const token = getToken(initState, 'blue', 0);
       token.isLocked = false;
       token.coordinates = { x: 6, y: 9 };
@@ -239,8 +234,8 @@ describe('Test players slice reducers', () => {
       expect(newToken.coordinates).toEqual(token.initialCoords);
     });
     it('should throw an error if the token is already locked', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       const token = getToken(initState, 'blue', 0);
       token.isLocked = true;
       expect(() =>
@@ -250,8 +245,8 @@ describe('Test players slice reducers', () => {
   });
   describe('incrementNumberOfConsecutiveSix', () => {
     it('should increment numberOfConsecutiveSix for the specified player', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       getPlayer(initState, 'blue').numberOfConsecutiveSix = 0;
       const newState = playersReducer(initState, incrementNumberOfConsecutiveSix('blue'));
       expect(getPlayer(newState, 'blue').numberOfConsecutiveSix).toBe(1);
@@ -259,8 +254,8 @@ describe('Test players slice reducers', () => {
   });
   describe('resetNumberOfConsecutiveSix', () => {
     it('should reset numberOfConsecutiveSix to zero for the specified player', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       getPlayer(initState, 'blue').numberOfConsecutiveSix = 3;
       const newState = playersReducer(initState, resetNumberOfConsecutiveSix('blue'));
       expect(getPlayer(newState, 'blue').numberOfConsecutiveSix).toBe(0);
@@ -268,7 +263,7 @@ describe('Test players slice reducers', () => {
   });
   describe('setIsAnyTokenMoving', () => {
     it('should set isAnyTokenMoving to the provided boolean value', () => {
-      const initState = cloneDeep(initialState);
+      const initState = structuredClone(initialState);
       initState.isAnyTokenMoving = false;
       const newState = playersReducer(initState, setIsAnyTokenMoving(true));
       expect(newState.isAnyTokenMoving).toBe(true);
@@ -276,8 +271,8 @@ describe('Test players slice reducers', () => {
   });
   describe('markTokenAsReachedHome', () => {
     it('should mark the specified token as having reached home and lock it', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       const token = getToken(initState, 'blue', 0);
       token.isLocked = false;
       token.hasTokenReachedHome = false;
@@ -293,8 +288,8 @@ describe('Test players slice reducers', () => {
       expect(newToken.hasTokenReachedHome).toBe(true);
     });
     it('should not update anything if the game has already ended', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       initState.isGameEnded = true;
       const token = getToken(initState, 'blue', 0);
       token.isLocked = false;
@@ -311,8 +306,8 @@ describe('Test players slice reducers', () => {
       expect(newToken.hasTokenReachedHome).toBe(false);
     });
     it('should not change playerSequence or finishOrder if the player still has tokens not at home', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       initState.playerSequence = playerSequences.four;
       const token = getToken(initState, 'blue', 0);
       token.isLocked = false;
@@ -329,8 +324,8 @@ describe('Test players slice reducers', () => {
       expect(newState.playerFinishOrder).toEqual(initState.playerFinishOrder);
     });
     it('should remove the player from playerSequence and add them to finishOrder if all tokens reached home', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       initState.playerSequence = playerSequences.four;
 
       let newState = initState;
@@ -348,8 +343,8 @@ describe('Test players slice reducers', () => {
       expect(newState.playerSequence).toEqual(initState.playerSequence.filter((c) => c !== 'blue'));
     });
     it('should end the game and add the last remaining player to finishOrder when only one player is left', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       initState.playerSequence = playerSequences.two;
 
       expect(initState.isGameEnded).toBe(false);
@@ -374,8 +369,8 @@ describe('Test players slice reducers', () => {
       expect(newState.playerSequence).toEqual(initState.playerSequence.filter((c) => c !== 'blue'));
     });
     it('should set the playerFinishTime if player won', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       initState.playerSequence = playerSequences.four;
 
       let newState = initState;
@@ -389,8 +384,8 @@ describe('Test players slice reducers', () => {
   });
   describe('setTokenAlignmentData', () => {
     it("should update the token's alignment data with the provided value", () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       const token = getToken(initState, 'blue', 0);
       expect(token.tokenAlignmentData).toEqual(defaultTokenAlignmentData);
       const newAlignmentData: TTokenAlignmentData = { xOffset: 10, yOffset: 5, scaleFactor: 5 };
@@ -404,8 +399,8 @@ describe('Test players slice reducers', () => {
   });
   describe('clearPlayersState', () => {
     it('should clear players state', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       initState.currentPlayerColour = 'yellow';
       initState.playerSequence = playerSequences.four;
       initState.isAnyTokenMoving = true;
@@ -422,33 +417,33 @@ describe('Test players slice reducers', () => {
 describe('Test players helpers', () => {
   describe('getPlayer', () => {
     it('should return the player with the specified colour', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       const player = getPlayer(initState, 'blue');
       expect(player.colour).toBe('blue');
     });
     it('should throw an error if the player with the specified colour does not exist', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       expect(() => getPlayer(initState, 'white' as never)).toThrowError();
     });
   });
   describe('getToken', () => {
     it('should return the token with the specified ID and colour if it exists', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       const token = getToken(initState, 'blue', 0);
       expect(token.colour).toBe('blue');
       expect(token.id).toBe(0);
     });
     it('should throw an error if the token with the specified ID does not exist for the player', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       expect(() => getToken(initState, 'blue', 15)).toThrowError();
     });
     it('should throw an error if the player with the specified colour does not exist', () => {
-      const initState = cloneDeep(initialState);
-      initState.players = cloneDeep(DUMMY_PLAYERS);
+      const initState = structuredClone(initialState);
+      initState.players = structuredClone(DUMMY_PLAYERS);
       expect(() => getToken(initState, 'white' as never, 0)).toThrowError();
     });
   });

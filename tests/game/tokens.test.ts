@@ -17,7 +17,6 @@ import {
   isTokenMovable,
   tokensWithCoord,
 } from '../../src/game/tokens/logic';
-import { cloneDeep } from 'lodash-es';
 import { DUMMY_TOKEN } from '../fixtures/token.dummy';
 import { getHomeCoordForColour } from '../../src/game/coords/logic';
 
@@ -153,7 +152,7 @@ describe('Test tokens/alignment', () => {
 describe('Test tokens/logic', () => {
   describe('isAnyTokenActiveOfColour', () => {
     it('returns true if any player has an active token of the specified colour', () => {
-      const players = cloneDeep(DUMMY_PLAYERS);
+      const players = structuredClone(DUMMY_PLAYERS);
       const player = players.find((p) => p.colour === 'blue');
       player!.tokens[0].isActive = true;
       expect(isAnyTokenActiveOfColour('blue', players)).toBe(true);
@@ -164,15 +163,15 @@ describe('Test tokens/logic', () => {
     });
     it('returns false if the specified player is missing or has no tokens', () => {
       expect(isAnyTokenActiveOfColour('white' as never, DUMMY_PLAYERS)).toBe(false);
-      (cloneDeep(DUMMY_PLAYERS).find((p) => p.colour === 'blue')!.tokens as unknown as undefined) =
-        undefined;
+      (structuredClone(DUMMY_PLAYERS).find((p) => p.colour === 'blue')!
+        .tokens as unknown as undefined) = undefined;
       expect(isAnyTokenActiveOfColour('blue', DUMMY_PLAYERS)).toBe(false);
     });
   });
 
   describe('tokensWithCoord', () => {
     it('returns all tokens from all players with the specified coordinate', () => {
-      const players = cloneDeep(DUMMY_PLAYERS);
+      const players = structuredClone(DUMMY_PLAYERS);
       const bluePlayerTokens = (players.find((p) => p.colour === 'blue') as TPlayer).tokens;
       const greenPlayerTokens = (players.find((p) => p.colour === 'green') as TPlayer).tokens;
       const commonCoord = { x: 6, y: 11 };

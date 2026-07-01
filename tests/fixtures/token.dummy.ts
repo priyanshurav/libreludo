@@ -10,4 +10,5 @@ export const DUMMY_TOKEN: TToken = {
   isActive: false,
   isLocked: true,
   tokenAlignmentData: defaultTokenAlignmentData,
+  direction: 'forward',
 };
