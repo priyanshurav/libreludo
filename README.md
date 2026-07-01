@@ -43,6 +43,7 @@
 - 🚀 **Fast & Lightweight** – Built with Vite for high performance
 - 📱 **Responsive** – Optimized for mobile, tablet, and desktop
 - 📶 **Offline Support** – Play anywhere, even without an internet connection
+- 💾 **Auto-Save Progress** – Your game state is saved automatically, so you can pick up right where you left off
 
 ---
 
