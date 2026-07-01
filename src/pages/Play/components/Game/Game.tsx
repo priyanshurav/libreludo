@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { registerNewPlayer, setPlayerSequence } from '../../../../state/slices/playersSlice';
-import { type TPlayerColour } from '../../../../types';
 import Board from '../Board/Board';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { hydrateRootState, type AppDispatch, type RootState } from '../../../../state/store';
@@ -13,68 +12,79 @@ import bg from '../../../../assets/bg.jpg';
 import { usePageLeaveBlocker } from '../../../../hooks/usePageLeaveBlocker';
 import { addToGameInactiveTime, setGameStartTime } from '../../../../state/slices/sessionSlice';
 import styles from './Game.module.css';
-import { useGameStorage } from '../../../../hooks/useGameStorage';
-import { useChangeTurn } from '../../../../hooks/useChangeTurn';
-import { useHandlePostDiceRoll } from '../../../../hooks/useHandlePostDiceRoll';
+import { retrieveState } from '../../../../game/storage/retrieveState';
+import { deleteSaveFromStorage, saveExists } from '../../../../game/storage/storage';
+import { useExecuteBotMove } from '../../../../hooks/useExecuteBotMove';
+import { useRollDice } from '../../../../hooks/useRollDice';
+import { playerSequences } from '../../../../game/players/constants';
 
 export const EXIT_MESSAGE = 'Are you sure you want to exit?';
 
 type Props = {
   initData: TPlayerInitData[];
-  loadSave: boolean;
 };
 
-function Game({ initData, loadSave }: Props) {
+function Game({ initData }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const boardTileSize = useSelector((state: RootState) => state.board.boardTileSize);
-  const { playerSequence, isGameEnded, playerFinishOrder, currentPlayerColour } = useSelector(
+  const { isGameEnded, playerFinishOrder, currentPlayerColour, players } = useSelector(
     (state: RootState) => state.players
   );
-  const { retrieveState, saveState, deleteState } = useGameStorage();
   const playersRegisteredInitiallyRef = useRef(true);
   const gameInactiveStartTime = useRef(0);
   const navigate = useNavigate();
   const store = useStore<RootState>();
-  const changeTurnFn = useChangeTurn();
-  const handlePostDiceRoll = useHandlePostDiceRoll();
+  const executeBotMove = useExecuteBotMove();
+  const rollDice = useRollDice();
 
   usePageLeaveBlocker(!isGameEnded && import.meta.env.PROD);
 
   useEffect(() => {
-    if (initData.length !== 0 && !loadSave) return;
-    const { success, result } = retrieveState();
-    if (success) {
-      store.dispatch(hydrateRootState(result));
-    } else {
-      throw result;
+    if (saveExists()) {
+      const { success, result } = retrieveState(store.getState());
+      if (success) {
+        store.dispatch(hydrateRootState(result));
+      } else {
+        throw result;
+      }
     }
-  }, [retrieveState, initData.length, loadSave, store]);
+  }, [initData.length, store]);
   useEffect(() => {
-    if (isGameEnded) deleteState();
-  }, [isGameEnded, deleteState]);
-  useEffect(() => {
-    if (initData.length === 0) return;
-    dispatch(setPlayerSequence({ playerCount: playerCountToWord(initData.length) }));
-    dispatch(setGameStartTime(Date.now()));
-  }, [dispatch, initData.length]);
+    if (isGameEnded) deleteSaveFromStorage();
+  }, [isGameEnded]);
 
   useEffect(() => {
-    if (initData.length === 0) return;
+    if (initData.length === 0 || saveExists()) return;
+    const playerCountWord = playerCountToWord(initData.length);
+    const calculatedSequence = playerSequences[playerCountWord];
+
+    dispatch(setPlayerSequence({ playerCount: playerCountWord }));
+    dispatch(setGameStartTime(Date.now()));
+
     for (let i = 0; i < initData.length; i++) {
-      if (!playerSequence.length || !playersRegisteredInitiallyRef.current) return;
       dispatch(
         registerNewPlayer({
           name: initData[i].name,
-          colour: playerSequence[i],
+          colour: calculatedSequence[i],
           isBot: initData[i].isBot,
         })
       );
-      dispatch(registerDice(playerSequence[i]));
+      dispatch(registerDice(calculatedSequence[i]));
     }
     playersRegisteredInitiallyRef.current = false;
-    if (!currentPlayerColour) changeTurnFn();
-    else saveState();
-  }, [dispatch, playerSequence, initData, changeTurnFn, currentPlayerColour, saveState]);
+  }, [dispatch, initData]);
+
+  useEffect(() => {
+    if (players.length === 0) return;
+    const currentPlayer = store
+      .getState()
+      .players.players.find((p) => p.colour === currentPlayerColour);
+    if (currentPlayer?.isBot) {
+      rollDice(currentPlayerColour, (diceNumber) =>
+        executeBotMove(currentPlayerColour, diceNumber)
+      );
+    }
+  }, [currentPlayerColour, executeBotMove, rollDice, store, players.length]);
 
   useEffect(() => {
     const handlePageVisibilityChange = () => {
@@ -91,12 +101,6 @@ function Game({ initData, loadSave }: Props) {
     return () => document.removeEventListener('visibilitychange', handlePageVisibilityChange);
   }, [dispatch, isGameEnded]);
 
-  const handleDiceRoll = async (colour: TPlayerColour, diceNumber: number) => {
-    if (initData.length === 0 && !loadSave) return;
-    const res = await handlePostDiceRoll(colour, diceNumber);
-    if (res?.shouldChangeTurn) changeTurnFn();
-  };
-
   const handleExitBtnClick = () => navigate('/');
 
   return (
@@ -109,7 +113,7 @@ function Game({ initData, loadSave }: Props) {
         } as React.CSSProperties
       }
     >
-      <Board onDiceClick={handleDiceRoll} />
+      <Board />
       <button
         type="button"
         aria-label="Exit button"
