@@ -14,7 +14,7 @@ import styles from './PlayerSetup.module.css';
 import { Tooltip } from 'react-tooltip';
 import { useResizeObserver } from '../../hooks/useResizeObserver';
 import { validateStoredState } from '../../game/storage/validator';
-import { retrieveSaveFromStorage } from '../../game/storage/storage';
+import { deleteSaveFromStorage, retrieveSaveFromStorage } from '../../game/storage/storage';
 import { SAVE_VERSION } from '../../game/storage/constants';
 
 const toastIds = {
@@ -71,23 +71,26 @@ function PlayerSetup() {
 
   const handlePlayBtnClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
+    deleteSaveFromStorage(); // this is to prevent the old game from getting loaded
     const playerInitData = playersData.slice(0, playerCount);
+    const areAllPlayersBot = playerInitData.every((d) => d.isBot);
     const isAnyNameEmpty = playerInitData.some(
       (d) => d.name === '' || [...d.name].every((c) => c === ' ')
     );
-    if (isAnyNameEmpty)
-      return toast('Player name must not be empty', {
+    if (isAnyNameEmpty) {
+      toast('Player name must not be empty', {
         type: 'error',
         toastId: toastIds.playerNameEmpty,
       });
-    const areAllPlayersBot = playerInitData.every((d) => d.isBot);
-    if (areAllPlayersBot)
-      return toast('There must be at least one human player', {
+    } else if (areAllPlayersBot) {
+      toast('There must be at least one human player', {
         type: 'error',
         toastId: toastIds.allBotPlayer,
       });
-    setIsLoading(true);
-    navigate('/play', { state: { initData: playerInitData } });
+    } else {
+      setIsLoading(true);
+      navigate('/play', { state: { initData: playerInitData } });
+    }
   };
 
   const handleLoadLinkClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -105,7 +108,7 @@ function PlayerSetup() {
       });
     } else {
       setIsLoading(true);
-      navigate('/play', { state: 'LOAD_SAVE' });
+      navigate('/play');
     }
   };
   return isLoading ? (
