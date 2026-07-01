@@ -15,11 +15,12 @@ import { isAnyTokenActiveOfColour } from '../../../../game/tokens/logic';
 import styles from './Dice.module.css';
 import clsx from 'clsx';
 import { useRollDice } from '../../../../hooks/useRollDice';
+import { useHandlePostDiceRoll } from '../../../../hooks/useHandlePostDiceRoll';
+import { useChangeTurn } from '../../../../hooks/useChangeTurn';
 
 type Props = {
   colour: TPlayerColour;
   playerName: string;
-  onDiceClick: (colour: TPlayerColour, diceNumber: number) => void;
 };
 
 function getDiceImage(diceNumber: number | undefined): string {
@@ -41,7 +42,7 @@ function getDiceImage(diceNumber: number | undefined): string {
   }
 }
 
-function Dice({ colour, onDiceClick, playerName }: Props) {
+function Dice({ colour, playerName }: Props) {
   const {
     isAnyTokenMoving,
     isGameEnded,
@@ -55,6 +56,8 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
     () => isAnyTokenActiveOfColour(colour, players),
     [colour, players]
   );
+  const handlePostDiceRoll = useHandlePostDiceRoll();
+  const changeTurnFn = useChangeTurn();
   const rollDice = useRollDice();
   const isBot = players.find((p) => p.colour === colour)?.isBot;
   const isCurrentPlayer = currentPlayer === colour;
@@ -68,10 +71,11 @@ function Dice({ colour, onDiceClick, playerName }: Props) {
 
   const handleDiceClick = useCallback(() => {
     if (isDiceDisabled) return;
-    rollDice(colour, (diceNumber) => {
-      onDiceClick(colour, diceNumber);
+    rollDice(colour, async (diceNumber) => {
+      const res = await handlePostDiceRoll(colour, diceNumber);
+      if (res?.shouldChangeTurn) changeTurnFn();
     });
-  }, [colour, isDiceDisabled, onDiceClick, rollDice]);
+  }, [colour, handlePostDiceRoll, isDiceDisabled, rollDice, changeTurnFn]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
