@@ -9,13 +9,14 @@ import type {
   TPlayerNameAndColour,
   TCoordinate,
   TPlayerCount,
+  TTokenDirection,
 } from '../../types';
 import type { TToken, TTokenColourAndId, TTokenAlignmentData } from '../../types';
 import { playerSequences } from '../../game/players/constants';
 
 type TPlayerState = {
   players: TPlayer[];
-  currentPlayerColour: TPlayerColour | null;
+  currentPlayerColour: TPlayerColour;
   playerSequence: TPlayerColour[];
   isAnyTokenMoving: boolean;
   isGameEnded: boolean;
@@ -24,7 +25,7 @@ type TPlayerState = {
 
 export const initialState: TPlayerState = {
   players: [],
-  currentPlayerColour: null,
+  currentPlayerColour: 'blue',
   playerSequence: [],
   isAnyTokenMoving: false,
   isGameEnded: false,
@@ -66,25 +67,24 @@ const reducers = {
     });
   },
 
-  changeCoordsOfToken: (
+  updateTokenCoordinatesAndDirection: (
     state: TPlayerState,
     action: PayloadAction<{
       colour: TPlayerColour;
       id: number;
       newCoords: TCoordinate;
+      direction: TTokenDirection;
     }>
   ) => {
     const token = getToken(state, action.payload.colour, action.payload.id);
 
     token.coordinates = action.payload.newCoords;
+    token.direction = action.payload.direction;
   },
 
   changeTurn: (state: TPlayerState) => {
     const { currentPlayerColour, playerSequence } = state;
-    if (!currentPlayerColour) {
-      state.currentPlayerColour = 'blue';
-      return;
-    }
+
     const currentPlayerIndex = playerSequence.indexOf(currentPlayerColour);
     const nextPlayerIndex =
       currentPlayerIndex === playerSequence.length - 1 ? 0 : currentPlayerIndex + 1;
@@ -128,6 +128,7 @@ const reducers = {
     if (!token.isLocked)
       throw new Error(ERRORS.tokenAlreadyUnlocked(action.payload.colour, action.payload.id));
     token.isLocked = false;
+    token.direction = 'forward';
     token.coordinates = TOKEN_START_COORDINATES[action.payload.colour];
   },
   lockToken: (state: TPlayerState, action: PayloadAction<TTokenColourAndId>) => {
@@ -135,6 +136,7 @@ const reducers = {
     if (token.isLocked)
       throw new Error(ERRORS.tokenAlreadyLocked(action.payload.colour, action.payload.id));
     token.isLocked = true;
+    token.direction = 'forward';
     token.coordinates = { ...token.initialCoords };
   },
 
@@ -192,7 +194,7 @@ const playersSlice = createSlice({
 
 export const {
   registerNewPlayer,
-  changeCoordsOfToken,
+  updateTokenCoordinatesAndDirection,
   setPlayerSequence,
   changeTurn,
   activateTokens,
