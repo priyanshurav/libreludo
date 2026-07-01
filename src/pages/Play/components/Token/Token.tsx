@@ -1,21 +1,26 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { deactivateAllTokens, setIsAnyTokenMoving } from '../../../../state/slices/playersSlice';
+import {
+  deactivateAllTokens,
+  getToken,
+  setIsAnyTokenMoving,
+} from '../../../../state/slices/playersSlice';
 import { type TPlayer, type TPlayerColour, type TTokenClickData } from '../../../../types';
 import { type TToken } from '../../../../types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import type { AppDispatch, RootState } from '../../../../state/store';
 import TokenImage from '../../../../assets/token.svg?react';
 import { useCoordsToPosition } from '../../../../hooks/useCoordsToPosition';
-import { setTokenTransitionTime } from '../../../../utils/setTokenTransitionTime';
 import { useMoveAndCaptureToken } from '../../../../hooks/useMoveAndCaptureToken';
 import { playerColours } from '../../../../game/players/constants';
-import { FORWARD_TOKEN_TRANSITION_TIME } from '../../../../game/tokens/constants';
+import { transitionStates } from '../../../../game/tokens/constants';
 import styles from './Token.module.css';
 import clsx from 'clsx';
-import { getTokenDOMId } from '../../../../game/tokens/logic';
+import { getGloballyUniqueTokenId } from '../../../../game/tokens/logic';
 import { useChangeTurn } from '../../../../hooks/useChangeTurn';
 import { useUnlockAndAlignTokens } from '../../../../hooks/useUnlockAndAlignTokens';
-import { useGameStorage } from '../../../../hooks/useGameStorage';
+import { saveState } from '../../../../game/storage/saveState';
+import { animate, motion, useMotionValue } from 'framer-motion';
+import { tokenMotionRegistry } from '../../../../game/movement/tokenMotionRegistry';
 
 type Props = {
   colour: TPlayerColour;
@@ -32,14 +37,15 @@ function Token({ colour, id, tokenClickData }: Props) {
   const tokenElRef = useRef<HTMLButtonElement | null>(null);
   const changeTurnFn = useChangeTurn();
   const unlockAndAlignTokens = useUnlockAndAlignTokens();
-  const { saveState } = useGameStorage();
+  const store = useStore<RootState>();
+  const isExternallyAnimating = useRef(false);
   const { numberOfConsecutiveSix, tokens: playerTokens } = useMemo(
     () => players.find((v) => v.colour === colour),
     [players, colour]
   ) as TPlayer;
   const token = useMemo(() => playerTokens.find((t) => t.id === id), [playerTokens, id]) as TToken;
 
-  const { coordinates, isActive, isLocked, tokenAlignmentData } = token;
+  const { coordinates, isActive, isLocked, tokenAlignmentData, direction } = token;
 
   const { scaleFactor } = tokenAlignmentData;
   const getPosition = useCoordsToPosition();
@@ -48,16 +54,58 @@ function Token({ colour, id, tokenClickData }: Props) {
     state.dice.dice.find((d) => d.colour === colour)
   )?.diceNumber;
   const moveAndCapture = useMoveAndCaptureToken();
+  const motionX = useMotionValue<number>(x);
+  const motionY = useMotionValue<number>(y);
 
-  const unlock = () => {
+  useEffect(() => {
+    if (isExternallyAnimating.current) return;
+    Promise.all([
+      animate(motionX, x, {
+        duration: direction ? transitionStates[direction].durationMs / 1000 : 0,
+        ease: direction ? transitionStates[direction].timingFn : undefined,
+      }),
+      animate(motionY, y, {
+        duration: direction ? transitionStates[direction].durationMs / 1000 : 0,
+        ease: direction ? transitionStates[direction].timingFn : undefined,
+      }),
+    ]);
+  }, [direction, motionX, motionY, x, y]);
+  useEffect(() => {
+    tokenMotionRegistry.set(getGloballyUniqueTokenId(colour, id), {
+      x: motionX,
+      y: motionY,
+      setExternallyAnimating: (v) => {
+        isExternallyAnimating.current = v;
+      },
+      animateTo: (x, y, transition) =>
+        Promise.all([animate(motionX, x, transition), animate(motionY, y, transition)]).then(
+          () => {}
+        ),
+    });
+    return () => {
+      tokenMotionRegistry.delete(getGloballyUniqueTokenId(colour, id));
+    };
+  }, [colour, id, motionX, motionY]);
+
+  const unlock = async () => {
     dispatch(setIsAnyTokenMoving(true));
-    setTokenTransitionTime(FORWARD_TOKEN_TRANSITION_TIME, token);
     unlockAndAlignTokens({ colour, id });
     dispatch(deactivateAllTokens(colour));
-    setTimeout(() => {
-      dispatch(setIsAnyTokenMoving(false));
-      saveState();
-    }, FORWARD_TOKEN_TRANSITION_TIME);
+    const updatedToken = getToken(store.getState().players, colour, id);
+    const { x: targetX, y: targetY } = getPosition(
+      updatedToken.coordinates,
+      updatedToken.tokenAlignmentData
+    );
+    const entry = tokenMotionRegistry.get(getGloballyUniqueTokenId(colour, id));
+    if (!entry) return;
+    entry.setExternallyAnimating(true);
+    await entry.animateTo(targetX, targetY, {
+      duration: transitionStates.forward.durationMs / 1000,
+      ease: transitionStates.forward.timingFn,
+    });
+    entry.setExternallyAnimating(false);
+    dispatch(setIsAnyTokenMoving(false));
+    saveState(store.getState());
   };
 
   const executeTokenMove = useCallback(async () => {
@@ -70,7 +118,17 @@ function Token({ colour, id, tokenClickData }: Props) {
     if ((diceNumber !== 6 || numberOfConsecutiveSix >= 3) && !isCaptured && !hasTokenReachedHome) {
       return changeTurnFn();
     }
-  }, [changeTurnFn, diceNumber, isActive, isLocked, moveAndCapture, numberOfConsecutiveSix, token]);
+    saveState(store.getState());
+  }, [
+    changeTurnFn,
+    diceNumber,
+    isActive,
+    isLocked,
+    moveAndCapture,
+    numberOfConsecutiveSix,
+    store,
+    token,
+  ]);
 
   useEffect(() => {
     const prevClickData = tokenClickDataRef.current;
@@ -90,22 +148,26 @@ function Token({ colour, id, tokenClickData }: Props) {
   };
 
   return (
-    <button
-      id={getTokenDOMId(colour, id)}
+    <motion.button
+      id={getGloballyUniqueTokenId(colour, id)}
       className={styles.token}
       tabIndex={isActive ? undefined : -1}
       onFocus={() => setIsCurrentlyFocused(true)}
       onBlur={() => setIsCurrentlyFocused(false)}
       disabled={!isActive}
-      ref={tokenElRef}
       onClick={handleTokenClick}
-      style={
-        {
-          '--token-height': `${tokenHeight}px`,
-          '--token-width': `${tokenWidth}px`,
-          transform: `translate(${x}, ${y}) scale(${scaleFactor})`,
-        } as React.CSSProperties
-      }
+      ref={tokenElRef}
+      animate={{ scale: scaleFactor }}
+      transition={{
+        duration: direction ? transitionStates[direction].durationMs / 1000 : 0,
+        ease: direction ? transitionStates[direction].timingFn : undefined,
+      }}
+      style={{
+        height: tokenHeight,
+        width: tokenWidth,
+        x: motionX,
+        y: motionY,
+      }}
     >
       <span className={clsx(styles.bouncer, { [styles.active]: isActive && !isCurrentlyFocused })}>
         <TokenImage
@@ -118,7 +180,7 @@ function Token({ colour, id, tokenClickData }: Props) {
           }
         />
       </span>
-    </button>
+    </motion.button>
   );
 }
 

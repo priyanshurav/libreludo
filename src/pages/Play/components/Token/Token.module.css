@@ -2,13 +2,9 @@
   position: absolute;
   z-index: 10;
   will-change: transform;
-  transform: translateZ(0);
-  height: calc(var(--token-height));
   background: none;
   border: none;
   outline: none;
-  width: calc(var(--token-width));
-  transition: transform var(--token-transition-time) var(--token-transition-timing-fn);
 }
 .token * {
   user-select: none;
