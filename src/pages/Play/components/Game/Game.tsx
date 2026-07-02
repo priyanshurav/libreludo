@@ -21,7 +21,7 @@ import { playerSequences } from '../../../../game/players/constants';
 export const EXIT_MESSAGE = 'Are you sure you want to exit?';
 
 type Props = {
-  initData: TPlayerInitData[];
+  initData: TPlayerInitData[] | undefined;
 };
 
 function Game({ initData }: Props) {
@@ -48,13 +48,14 @@ function Game({ initData }: Props) {
         throw error;
       }
     }
-  }, [initData.length, store]);
+  }, [store]);
+
   useEffect(() => {
     if (isGameEnded) deleteSaveFromStorage();
   }, [isGameEnded]);
 
   useEffect(() => {
-    if (initData.length === 0 || saveExists()) return;
+    if (!initData || saveExists()) return;
     const playerCountWord = playerCountToWord(initData.length);
     const calculatedSequence = playerSequences[playerCountWord];
 

@@ -15,11 +15,8 @@ function Play() {
     return () => cleanup();
   }, [cleanup]);
 
-  if (initData?.length !== 0 || saveExists()) {
-    return <Game initData={initData || []} />;
-  } else {
-    return <Navigate to="/setup" />;
-  }
+  if (!initData && !saveExists()) return <Navigate to="/setup" />;
+  return <Game initData={initData} />;
 }
 
 export default Play;
