@@ -137,6 +137,36 @@
   font-size: calc(var(--dialog-width) / 35);
   margin-bottom: calc(var(--dialog-width) / 50);
 }
+
+.gh-follow-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #21262d;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+  display: flex;
+  text-decoration: none;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  gap: 8px;
+  border-bottom-left-radius: 5px;
+  transition: background-color 0.15s ease;
+}
+.gh-follow-btn:hover {
+  background-color: #30363d;
+}
+.gh-follow-btn:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px #ffffff,
+    0 0 0 4px #1f2937;
+}
+.gh-follow-btn svg {
+  width: 16px;
+}
+
 @media only screen and (max-width: calc(1.8 / 1.5 * 60vh)) {
   .player-setup-dialog {
     height: auto;

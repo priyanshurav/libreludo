@@ -8,13 +8,13 @@ import { useCleanup } from '../../hooks/useCleanup';
 import { playerCountToWord } from '../../game/players/logic';
 import { playerSequences } from '../../game/players/constants';
 import bg from '../../assets/bg.jpg';
-import GitHubButton from 'react-github-btn';
 import HomeIcon from '../../assets/icons/home.svg?react';
 import styles from './PlayerSetup.module.css';
 import { Tooltip } from 'react-tooltip';
 import { useResizeObserver } from '../../hooks/useResizeObserver';
 import { validateStoredState } from '../../game/storage/validator';
 import { deleteSaveFromStorage, retrieveSaveFromStorage } from '../../game/storage/storage';
+import GitHubLogo from '../../assets/icons/github-mark-white.svg?react';
 import { SAVE_VERSION } from '../../game/storage/constants';
 
 const toastIds = {
@@ -126,15 +126,11 @@ function PlayerSetup() {
         }
       >
         <div className={styles.playerCountSelector}>
-          <button className={styles.playerCount} onClick={() => setPlayerCount(2)}>
-            2
-          </button>
-          <button className={styles.playerCount} onClick={() => setPlayerCount(3)}>
-            3
-          </button>
-          <button className={styles.playerCount} onClick={() => setPlayerCount(4)}>
-            4
-          </button>
+          {[2, 3, 4].map((n) => (
+            <button className={styles.playerCount} key={n} onClick={() => setPlayerCount(n)}>
+              {n}
+            </button>
+          ))}
         </div>
         <div className={styles.playerInputs}>
           {playerSequence.map((c, index) => (
@@ -169,16 +165,16 @@ function PlayerSetup() {
       <Link to="/" className={styles.goToHome}>
         <HomeIcon />
       </Link>
-      <div style={{ position: 'absolute', top: 0, right: 0 }}>
-        <GitHubButton
-          href="https://github.com/priyanshurav"
-          data-color-scheme="no-preference: light; light: light; dark: dark;"
-          data-size="large"
-          aria-label="Follow @priyanshurav on GitHub"
-        >
-          Follow @priyanshurav
-        </GitHubButton>
-      </div>
+      <a
+        href="https://github.com/priyanshurav"
+        rel="noopener noreferrer"
+        target="_blank"
+        className={styles.ghFollowBtn}
+        aria-label="Follow @priyanshurav on GitHub"
+      >
+        <GitHubLogo aria-hidden="true" />
+        Follow&nbsp;@priyanshurav
+      </a>
       <ToastContainer position="top-center" />
       <Tooltip
         id="bot-status-tooltip"
