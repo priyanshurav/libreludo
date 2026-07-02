@@ -1,17 +1,17 @@
 import type { TPlayerNameAndColour } from '../../../../types';
 import Confetti from 'react-confetti';
-import { useWindowSize } from 'react-use';
 import GameFinishPlayerItem from '../GameFinishPlayerItem/GameFinishPlayerItem';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import styles from './GameFinishedScreen.module.css';
+import { useWindowDimensions } from '../../../../hooks/useWindowDimensions';
 
 type Props = {
   playerFinishOrder: TPlayerNameAndColour[];
 };
 
 function GameFinishedScreen({ playerFinishOrder }: Props) {
-  const { width, height } = useWindowSize();
+  const { width, height } = useWindowDimensions();
   return (
     <AnimatePresence>
       <motion.div className={styles.gameFinishedScreen}>
