@@ -2,7 +2,6 @@ import { useDispatch, useStore } from 'react-redux';
 import {
   deactivateAllTokens,
   getToken,
-  lockToken,
   markTokenAsReachedHome,
 } from '../state/slices/playersSlice';
 import { type TToken } from '../types';
@@ -15,6 +14,7 @@ import { calculateSequence } from '../game/movement/calculateSequence';
 import { type RootState } from '../state/store';
 import { ERRORS } from '../utils/errors';
 import { saveState } from '../game/storage/saveState';
+import { isCoordASafeSpot } from '../game/coords/logic';
 
 export function useMoveAndCaptureToken() {
   const moveToken = useMoveTokenForward();
@@ -36,20 +36,14 @@ export function useMoveAndCaptureToken() {
       saveState(nextState);
       await moveToken(moveSequence, token);
       if (moveSequence.length === 0) return null;
-      await captureToken(captureData, token);
-      const { colour, id, hasTokenReachedHome } = getToken(
-        nextState.players,
-        token.colour,
-        token.id
-      );
+      if (!isCoordASafeSpot(moveSequence[moveSequence.length - 1], token.colour))
+        await captureToken(captureData, token);
+      const { hasTokenReachedHome } = getToken(nextState.players, token.colour, token.id);
       const hasPlayerWon = nextState.players.players
         .find((p) => p.colour === token.colour)!
         .tokens.every((t) => t.hasTokenReachedHome);
-      captureData.forEach((d) => {
-        const { colour, id } = d.token;
-        dispatch(lockToken({ colour, id }));
-      });
-      if (hasTokenReachedHome) dispatch(markTokenAsReachedHome({ colour, id }));
+      if (hasTokenReachedHome)
+        dispatch(markTokenAsReachedHome({ colour: token.colour, id: token.id }));
       return {
         isCaptured: captureData.length !== 0,
         hasTokenReachedHome,
