@@ -95,14 +95,14 @@ function PlayerSetup() {
 
   const handleLoadLinkClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
-    const { success, result } = validateStoredState(retrieveSaveFromStorage());
+    const { success, data } = validateStoredState(retrieveSaveFromStorage());
     if (!success) {
       toast("Save file does not exist or it's corrupted", {
         type: 'error',
         toastId: toastIds.corruptedSave,
       });
-    } else if (result.version !== SAVE_VERSION) {
-      toast(`Incompatible save: v${result.version} (requires v${SAVE_VERSION})`, {
+    } else if (data.version !== SAVE_VERSION) {
+      toast(`Incompatible save: v${data.version} (requires v${SAVE_VERSION})`, {
         type: 'error',
         toastId: toastIds.incompatibleSave,
       });

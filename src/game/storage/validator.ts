@@ -1,15 +1,12 @@
 import * as z from 'zod';
 import { type TStoredStateSchema, schema } from './schema';
+import type { TResult } from '../../types/storage';
 
-type TSchemaValidatorResult =
-  | { success: true; result: TStoredStateSchema }
-  | { success: false; result: z.ZodError };
-
-export const validateStoredState = (state: unknown): TSchemaValidatorResult => {
+export const validateStoredState = (state: unknown): TResult<TStoredStateSchema, z.ZodError> => {
   const { success, data, error } = z.safeParse(schema, state);
   if (success) {
-    return { success: true, result: data };
+    return { success: true, data, error: null };
   } else {
-    return { success: false, result: error };
+    return { success: false, data: null, error };
   }
 };

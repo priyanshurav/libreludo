@@ -9,25 +9,21 @@ import type { RootState } from '../../state/store';
 import { initialState as initialDiceState } from '../../state/slices/diceSlice';
 import { defaultTokenAlignmentData, getTokenAlignmentData } from '../tokens/alignment';
 import { tokensWithCoord } from '../tokens/logic';
+import type { TResult } from '../../types/storage';
 
-type TRetrievedStateResult =
-  | { success: true; result: RootState }
-  | { success: false; result: Error };
+export const retrieveState = (currentState: RootState): TResult<RootState, Error> => {
+  const { success, data, error } = validateStoredState(retrieveSaveFromStorage());
 
-export const retrieveState = (currentState: RootState): TRetrievedStateResult => {
-  const { success, result } = validateStoredState(retrieveSaveFromStorage());
-  if (!success) {
-    return { success: false, result: result };
-  }
+  if (!success) return { success: false, error, data: null };
 
-  const numberOfPlayers = result.players.length;
+  const numberOfPlayers = data.players.length;
   const playerSequence = playerSequences[playerCountToWord(numberOfPlayers)];
 
   const newState: RootState = {
     board: { ...currentState.board },
     dice: structuredClone(initialDiceState),
     players: {
-      currentPlayerColour: result.currentPlayerColour,
+      currentPlayerColour: data.currentPlayerColour,
       players: [],
       playerSequence,
       isAnyTokenMoving: false,
@@ -35,12 +31,12 @@ export const retrieveState = (currentState: RootState): TRetrievedStateResult =>
       playerFinishOrder: [],
     },
     session: {
-      ...result.session,
-      gameInactiveTime: Date.now() - result.saveTime + result.session.gameInactiveTime,
+      ...data.session,
+      gameInactiveTime: Date.now() - data.saveTime + data.session.gameInactiveTime,
     },
   };
 
-  for (const d of result.dice) {
+  for (const d of data.dice) {
     newState.dice.dice.push({
       ...d,
       isPlaceholderShowing: false,
@@ -51,7 +47,7 @@ export const retrieveState = (currentState: RootState): TRetrievedStateResult =>
     newState.dice.rollBag[key as TPlayerColour] = generateRollBag();
   }
 
-  for (const p of result.players) {
+  for (const p of data.players) {
     const tokens: TToken[] = p.tokens.map((t, i) => {
       return {
         ...t,
@@ -81,11 +77,11 @@ export const retrieveState = (currentState: RootState): TRetrievedStateResult =>
     tokensInCoord.forEach((t, i) => (t.tokenAlignmentData = algData[i]));
   }
 
-  for (const colour of result.playerFinishOrder) {
+  for (const colour of data.playerFinishOrder) {
     newState.players.playerFinishOrder.push({
       colour,
       name: newState.players.players.find((p) => p.colour === colour)?.name as string,
     });
   }
-  return { success: true, result: newState };
+  return { success: true, data: newState, error: null };
 };

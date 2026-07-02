@@ -41,11 +41,11 @@ function Game({ initData }: Props) {
 
   useEffect(() => {
     if (saveExists()) {
-      const { success, result } = retrieveState(store.getState());
+      const { success, data, error } = retrieveState(store.getState());
       if (success) {
-        store.dispatch(hydrateRootState(result));
+        store.dispatch(hydrateRootState(data));
       } else {
-        throw result;
+        throw error;
       }
     }
   }, [initData.length, store]);
