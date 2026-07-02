@@ -31,12 +31,10 @@
     "react": "^19.2.3",
     "react-confetti": "^6.4.0",
     "react-dom": "^19.2.3",
-    "react-github-btn": "^1.4.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.11.0",
     "react-toastify": "^11.0.5",
     "react-tooltip": "^5.30.0",
-    "react-use": "^17.6.0",
     "workbox-window": "^7.4.1",
     "zod": "^4.4.3"
   },
