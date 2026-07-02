@@ -26,8 +26,7 @@ export const saveState = (currentState: RootState): void => {
         isLocked: t.isLocked,
         isActive: t.isActive,
         hasTokenReachedHome: t.hasTokenReachedHome,
-        tokenAlignmentData: t.tokenAlignmentData,
-      };
+      } satisfies TStoredTokenSchema;
     });
 
     const playerToBeStored: TStoredPlayerSchema = {

@@ -1,5 +1,5 @@
 import type { RootState } from '../../state/store';
-import type { TCoordinate, TSequenceCalculationResult, TToken } from '../../types';
+import type { TSequenceCalculationResult, TToken } from '../../types';
 import playersReducer, {
   changeTurn,
   deactivateAllTokens,
@@ -9,9 +9,8 @@ import playersReducer, {
   updateTokenCoordinatesAndDirection,
 } from '../../state/slices/playersSlice';
 import { areCoordsEqual } from '../coords/logic';
-import { defaultTokenAlignmentData, getTokenAlignmentData } from '../tokens/alignment';
+import { defaultTokenAlignmentData } from '../tokens/alignment';
 import { TOKEN_SAFE_COORDINATES } from '../tokens/constants';
-import { tokensWithCoord } from '../tokens/logic';
 import { tokenPaths } from '../tokens/paths';
 
 export const calculateSequence = (
@@ -72,29 +71,6 @@ export const calculateSequence = (
           }
         });
       }
-    });
-  }
-
-  const allTokens = nextState.players.players.flatMap((p) => p.tokens);
-  const uniqueCoords = [
-    ...new Set(allTokens.map(({ coordinates }) => `${coordinates.x},${coordinates.y}`)),
-  ].map((c) => {
-    const [x, y] = c.split(',');
-    return { x: parseFloat(x), y: parseFloat(y) } as TCoordinate;
-  });
-
-  for (const coord of uniqueCoords) {
-    const tokensInCoord = tokensWithCoord(coord, nextState.players.players);
-    const algData = getTokenAlignmentData(tokensInCoord.length);
-    tokensInCoord.forEach((t, i) => {
-      nextState.players = playersReducer(
-        nextState.players,
-        setTokenAlignmentData({
-          colour: t.colour,
-          id: t.id,
-          newAlignmentData: algData[i],
-        })
-      );
     });
   }
 

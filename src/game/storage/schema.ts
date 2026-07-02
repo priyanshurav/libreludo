@@ -13,11 +13,6 @@ const tokenSchema = z.object({
   isLocked: z.boolean(),
   isActive: z.boolean(),
   hasTokenReachedHome: z.boolean(),
-  tokenAlignmentData: z.object({
-    xOffset: z.number(),
-    yOffset: z.number(),
-    scaleFactor: z.number(),
-  }),
 });
 
 const diceSchema = z.object({

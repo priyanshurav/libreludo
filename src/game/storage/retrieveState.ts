@@ -1,5 +1,5 @@
 import { generateRollBag } from '../../state/slices/diceSlice';
-import type { TPlayerColour, TToken } from '../../types';
+import type { TCoordinate, TPlayerColour, TToken } from '../../types';
 import { playerSequences } from '../players/constants';
 import { playerCountToWord } from '../players/logic';
 import { TOKEN_LOCKED_COORDINATES } from '../tokens/constants';
@@ -7,6 +7,8 @@ import { retrieveSaveFromStorage } from './storage';
 import { validateStoredState } from './validator';
 import type { RootState } from '../../state/store';
 import { initialState as initialDiceState } from '../../state/slices/diceSlice';
+import { defaultTokenAlignmentData, getTokenAlignmentData } from '../tokens/alignment';
+import { tokensWithCoord } from '../tokens/logic';
 
 type TRetrievedStateResult =
   | { success: true; result: RootState }
@@ -56,12 +58,27 @@ export const retrieveState = (currentState: RootState): TRetrievedStateResult =>
         colour: p.colour,
         initialCoords: TOKEN_LOCKED_COORDINATES[p.colour][i],
         direction: null,
+        tokenAlignmentData: defaultTokenAlignmentData,
       };
     });
     newState.players.players.push({
       ...p,
       tokens,
     });
+  }
+
+  const allTokens = newState.players.players.flatMap((p) => p.tokens);
+  const uniqueCoords = [
+    ...new Set(allTokens.map(({ coordinates }) => `${coordinates.x},${coordinates.y}`)),
+  ].map((c) => {
+    const [x, y] = c.split(',');
+    return { x: parseFloat(x), y: parseFloat(y) } as TCoordinate;
+  });
+
+  for (const coord of uniqueCoords) {
+    const tokensInCoord = tokensWithCoord(coord, newState.players.players);
+    const algData = getTokenAlignmentData(tokensInCoord.length);
+    tokensInCoord.forEach((t, i) => (t.tokenAlignmentData = algData[i]));
   }
 
   for (const colour of result.playerFinishOrder) {
