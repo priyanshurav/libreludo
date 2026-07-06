@@ -6,9 +6,6 @@
   align-items: center;
   background-color: #f1f1f1;
 }
-.not-found-dialog > * {
-  text-align: center;
-}
 
 .not-found-dialog {
   background-color: #fff;
@@ -18,84 +15,75 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
 
-.not-found-dialog h1 {
-  color: #e5152a;
-  font-size: 5em;
-}
+  & > * {
+    text-align: center;
+  }
 
-.not-found-dialog .go-to-home-btn {
-  background-color: var(--color-primary);
-  color: white;
-  border: none;
-  font-size: 1.4em;
-  padding: 0.8em;
-  border-radius: 0.7em;
-  text-decoration: none;
-  margin-top: 1.3em;
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
-  cursor: pointer;
-}
+  & h1 {
+    color: #e5152a;
+    font-size: 5em;
+  }
 
-.not-found-dialog .go-to-home-btn:hover,
-.not-found-dialog .go-to-home-btn:focus-visible {
-  background-color: var(--color-primary-hover);
-  transform: scale(1.05);
+  & .go-to-home-btn {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    font-size: 1.4em;
+    padding: 0.8em;
+    border-radius: 0.7em;
+    text-decoration: none;
+    margin-top: 1.3em;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      background-color: var(--color-primary-hover);
+      transform: scale(1.05);
+    }
+  }
+
+  @media only screen and (min-width: 3840px) {
+    font-size: 3rem;
+  }
+
+  @media only screen and (min-width: 2560px) {
+    font-size: 2.25rem;
+  }
+
+  @media only screen and (min-width: 1600px) {
+    font-size: 1.5rem;
+  }
+
+  @media only screen and (max-width: 768px) {
+    font-size: 1rem;
+    max-width: 90vw;
+  }
+
+  @media only screen and (max-width: 600px) {
+    font-size: 0.85rem;
+    padding: 25px;
+  }
+
+  @media only screen and (max-width: 450px) {
+    font-size: 0.75rem;
+    padding: 20px;
+  }
+
+  @media only screen and (max-width: 320px) {
+    font-size: 0.6rem;
+    padding: 15px;
+  }
 }
 
 .oops {
   font-size: 1.2em;
   padding-block: 10px;
 }
+
 .message {
   padding-block: 10px;
-}
-
-@media only screen and (min-width: 3840px) {
-  .not-found-dialog {
-    font-size: 3rem;
-  }
-}
-
-@media only screen and (min-width: 2560px) {
-  .not-found-dialog {
-    font-size: 2.25rem;
-  }
-}
-
-@media only screen and (min-width: 1600px) {
-  .not-found-dialog {
-    font-size: 1.5rem;
-  }
-}
-
-@media only screen and (max-width: 768px) {
-  .not-found-dialog {
-    font-size: 1rem;
-    max-width: 90vw;
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  .not-found-dialog {
-    font-size: 0.85rem;
-    padding: 25px;
-  }
-}
-
-@media only screen and (max-width: 450px) {
-  .not-found-dialog {
-    font-size: 0.75rem;
-    padding: 20px;
-  }
-}
-
-@media only screen and (max-width: 320px) {
-  .not-found-dialog {
-    font-size: 0.6rem;
-    padding: 15px;
-  }
 }

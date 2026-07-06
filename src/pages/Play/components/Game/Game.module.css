@@ -6,6 +6,7 @@
   width: 100vw;
   height: 100vh;
 }
+
 .exit-btn {
   position: absolute;
   top: 0;
@@ -22,8 +23,9 @@
   align-items: center;
   cursor: pointer;
   transition: background-color 200ms ease;
-}
-.exit-btn:hover,
-.exit-btn:focus-visible {
-  background-color: #dc0000;
+
+  &:hover,
+  &:focus-visible {
+    background-color: #dc0000;
+  }
 }

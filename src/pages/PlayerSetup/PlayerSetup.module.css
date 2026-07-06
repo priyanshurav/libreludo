@@ -5,6 +5,7 @@
   justify-content: center;
   align-items: center;
 }
+
 .player-setup-dialog {
   position: relative;
   display: flex;
@@ -19,7 +20,13 @@
   -moz-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.75);
   -webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.75);
+
+  @media only screen and (max-width: calc(1.8 / 1.5 * 60vh)) {
+    height: auto;
+    width: 92vw;
+  }
 }
+
 .player-count-selector {
   position: relative;
   height: 9%;
@@ -27,20 +34,21 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   border-bottom: 1px solid #aaa;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    height: 12.5%;
+    width: calc(var(--dialog-width) / 3);
+    background-color: var(--color-primary);
+    border-radius: 10px;
+    transform: translateX(calc(var(--dialog-width) / 3 * (var(--player-count) - 2)));
+    transition: transform 250ms ease;
+    z-index: 10;
+  }
 }
 
-.player-count-selector::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  height: 12.5%;
-  width: calc(var(--dialog-width) / 3);
-  background-color: var(--color-primary);
-  border-radius: 10px;
-  transform: translateX(calc(var(--dialog-width) / 3 * (var(--player-count) - 2)));
-  transition: transform 250ms ease;
-  z-index: 10;
-}
 .player-count {
   background: none;
   border: none;
@@ -49,15 +57,17 @@
     background-color 250ms ease-in-out,
     font-size 100ms ease;
   user-select: none;
-}
-.player-count:hover {
-  background-color: #ddd;
-  cursor: pointer;
+
+  &:hover {
+    background-color: #ddd;
+    cursor: pointer;
+  }
+
+  &:active {
+    font-size: calc(var(--dialog-width) / 26);
+  }
 }
 
-.player-count:active {
-  font-size: calc(var(--dialog-width) / 26);
-}
 .player-inputs {
   padding-top: calc(var(--dialog-width) / 20);
   flex: 1;
@@ -84,12 +94,13 @@
     transform 0.2s ease;
   text-decoration: none;
   cursor: pointer;
-}
-.play-btn:hover,
-.play-btn:active,
-.play-btn:focus-visible {
-  background-color: var(--color-primary-hover);
-  transform: scale(1.05);
+
+  &:hover,
+  &:active,
+  &:focus-visible {
+    background-color: var(--color-primary-hover);
+    transform: scale(1.05);
+  }
 }
 
 .version {
@@ -120,16 +131,16 @@
   transition:
     background-color 0.2s ease,
     transform 0.1s ease;
-}
 
-.go-to-home > svg {
-  height: 1.6rem;
-}
+  & > svg {
+    height: 1.6rem;
+  }
 
-.go-to-home:hover,
-.go-to-home:active,
-.go-to-home:focus-visible {
-  background-color: var(--color-primary-hover);
+  &:hover,
+  &:active,
+  &:focus-visible {
+    background-color: var(--color-primary-hover);
+  }
 }
 
 .load-game {
@@ -153,23 +164,19 @@
   gap: 8px;
   border-bottom-left-radius: 5px;
   transition: background-color 0.15s ease;
-}
-.gh-follow-btn:hover {
-  background-color: #30363d;
-}
-.gh-follow-btn:focus-visible {
-  outline: none;
-  box-shadow:
-    0 0 0 2px #ffffff,
-    0 0 0 4px #1f2937;
-}
-.gh-follow-btn svg {
-  width: 16px;
-}
 
-@media only screen and (max-width: calc(1.8 / 1.5 * 60vh)) {
-  .player-setup-dialog {
-    height: auto;
-    width: 92vw;
+  &:hover {
+    background-color: #30363d;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px #ffffff,
+      0 0 0 4px #1f2937;
+  }
+
+  & svg {
+    width: 16px;
   }
 }

@@ -22,13 +22,33 @@
   align-items: center;
   justify-content: space-between;
   overflow: hidden;
-}
 
-.error-dialog > div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  & > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  @media only screen and (min-width: 3840px) {
+    font-size: 3rem;
+  }
+
+  @media only screen and (min-width: 2560px) {
+    font-size: 2.25rem;
+  }
+
+  @media only screen and (min-width: 1600px) {
+    font-size: 1.5rem;
+  }
+
+  @media only screen and (max-width: 600px) {
+    font-size: 0.8rem;
+  }
+
+  @media only screen and (max-width: 450px) {
+    font-size: 0.6rem;
+  }
 }
 
 .start-new-game-btn {
@@ -44,28 +64,29 @@
     background-color 0.2s ease,
     transform 0.2s ease;
   cursor: pointer;
-}
 
-.error-dialog .start-new-game-btn:hover,
-.error-dialog .start-new-game-btn:focus-visible {
-  background-color: var(--color-primary-hover);
-  transform: scale(1.05);
+  &:hover,
+  &:focus-visible {
+    background-color: var(--color-primary-hover);
+    transform: scale(1.05);
+  }
 }
 
 .error-details {
   margin-top: 3em;
   margin-right: auto;
   width: 100%;
-}
-.error-details summary {
-  color: #4b5563;
-  cursor: pointer;
-  font-size: 0.8em;
-  margin-block: 0.5em;
-}
 
-.error-details summary:hover {
-  color: #111827;
+  & summary {
+    color: #4b5563;
+    cursor: pointer;
+    font-size: 0.8em;
+    margin-block: 0.5em;
+
+    &:hover {
+      color: #111827;
+    }
+  }
 }
 
 .error-content {
@@ -82,45 +103,17 @@
   padding-block: 0.6em;
   text-align: center;
   white-space: nowrap;
+
+  & span {
+    font-weight: bold;
+    color: #d32f2f;
+    font-size: 1.1em;
+  }
 }
-.oops span {
-  font-weight: bold;
-  color: #d32f2f;
-  font-size: 1.1em;
-}
+
 .message {
   padding-top: 1em;
   font-size: 1.1em;
   color: #4b5563;
   text-align: center;
-}
-
-@media only screen and (min-width: 3840px) {
-  .error-dialog {
-    font-size: 3rem;
-  }
-}
-
-@media only screen and (min-width: 2560px) {
-  .error-dialog {
-    font-size: 2.25rem;
-  }
-}
-
-@media only screen and (min-width: 1600px) {
-  .error-dialog {
-    font-size: 1.5rem;
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  .error-dialog {
-    font-size: 0.8rem;
-  }
-}
-
-@media only screen and (max-width: 450px) {
-  .error-dialog {
-    font-size: 0.6rem;
-  }
 }
