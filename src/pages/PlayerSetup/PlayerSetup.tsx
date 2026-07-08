@@ -13,7 +13,11 @@ import styles from './PlayerSetup.module.css';
 import { Tooltip } from 'react-tooltip';
 import { useResizeObserver } from '../../hooks/useResizeObserver';
 import { validateStoredState } from '../../game/storage/validator';
-import { deleteSaveFromStorage, retrieveSaveFromStorage } from '../../game/storage/storage';
+import {
+  deleteSaveFromStorage,
+  retrieveSaveFromStorage,
+  saveExists,
+} from '../../game/storage/storage';
 import GitHubLogo from '../../assets/icons/github-mark-white.svg?react';
 import { SAVE_VERSION } from '../../game/storage/constants';
 
@@ -71,12 +75,19 @@ function PlayerSetup() {
 
   const handlePlayBtnClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
+    if (saveExists()) {
+      const res = confirm('Start a new game? Your current save will be lost');
+      if (!res) return;
+    }
+
     deleteSaveFromStorage(); // this is to prevent the old game from getting loaded
+
     const playerInitData = playersData.slice(0, playerCount);
     const areAllPlayersBot = playerInitData.every((d) => d.isBot);
     const isAnyNameEmpty = playerInitData.some(
       (d) => d.name === '' || [...d.name].every((c) => c === ' ')
     );
+
     if (isAnyNameEmpty) {
       toast('Player name must not be empty', {
         type: 'error',
