@@ -26,7 +26,7 @@ export const calculateSequence = (
   const initialCoordIndex = tokenPath.findIndex((v) => areCoordsEqual(v, coordinates));
   const finalCoordIndex = initialCoordIndex + diceNumber;
   const moveSequence: TSequenceCalculationResult['moveSequence'] = tokenPath.slice(
-    initialCoordIndex,
+    initialCoordIndex + 1,
     finalCoordIndex + 1
   );
 
