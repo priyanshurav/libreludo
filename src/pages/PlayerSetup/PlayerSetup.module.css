@@ -147,6 +147,11 @@
   color: #595959;
   font-size: calc(var(--dialog-width) / 35);
   margin-bottom: calc(var(--dialog-width) / 50);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .gh-follow-btn {
