@@ -1,15 +1,12 @@
 import * as z from 'zod';
 import type { TPlayerColour } from '../../types';
+import { MAX_PLAYER_NAME_LENGTH } from '../players/constants';
 
-const coloursSchema = z.union(
-  (['blue', 'red', 'green', 'yellow'] satisfies TPlayerColour[]).map((s) => z.literal(s))
-);
-
-const coordsSchema = z.object({ x: z.number(), y: z.number() });
+const coloursSchema = z.literal(['blue', 'red', 'green', 'yellow'] satisfies TPlayerColour[]);
 
 const tokenSchema = z.object({
   id: z.number(),
-  coordinates: coordsSchema,
+  coordinates: z.object({ x: z.number(), y: z.number() }),
   isLocked: z.boolean(),
   isActive: z.boolean(),
   hasTokenReachedHome: z.boolean(),
@@ -21,21 +18,21 @@ const diceSchema = z.object({
 });
 
 const playerSchema = z.object({
-  name: z.string(),
+  name: z.string().max(MAX_PLAYER_NAME_LENGTH).min(1),
   colour: coloursSchema,
   isBot: z.boolean(),
   numberOfConsecutiveSix: z.number(),
   playerFinishTime: z.number(),
-  tokens: tokenSchema.array(),
+  tokens: tokenSchema.array().length(4),
 });
 
 export const schema = z.object({
   version: z.number(),
   saveTime: z.number(),
   currentPlayerColour: coloursSchema,
-  playerFinishOrder: coloursSchema.array(),
-  players: playerSchema.array(),
-  dice: diceSchema.array(),
+  playerFinishOrder: coloursSchema.array().max(4),
+  players: playerSchema.array().max(4).min(2),
+  dice: diceSchema.array().max(4).min(2),
   session: z.object({
     gameStartTime: z.number(),
     gameInactiveTime: z.number(),
