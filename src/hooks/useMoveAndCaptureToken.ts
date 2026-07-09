@@ -14,7 +14,6 @@ import { calculateSequence } from '../game/movement/calculateSequence';
 import { type RootState } from '../state/store';
 import { ERRORS } from '../utils/errors';
 import { saveState } from '../game/storage/saveState';
-import { isCoordASafeSpot } from '../game/coords/logic';
 
 export function useMoveAndCaptureToken() {
   const moveToken = useMoveTokenForward();
@@ -36,8 +35,7 @@ export function useMoveAndCaptureToken() {
       saveState(nextState);
       await moveToken(moveSequence, token);
       if (moveSequence.length === 0) return null;
-      if (!isCoordASafeSpot(moveSequence[moveSequence.length - 1], token.colour))
-        await captureToken(captureData, token);
+      if (captureData.length !== 0) await captureToken(captureData, token);
       const { hasTokenReachedHome } = getToken(nextState.players, token.colour, token.id);
       const hasPlayerWon = nextState.players.players
         .find((p) => p.colour === token.colour)!
