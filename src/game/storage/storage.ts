@@ -3,9 +3,13 @@ import type { TStoredStateSchema } from './schema';
 import { SAVE_GAME_KEY } from './constants';
 
 export const storeSaveInStorage = (state: TStoredStateSchema): void => {
-  const json = JSON.stringify(state);
-  const compressed = compressToBase64(json);
-  localStorage.setItem(SAVE_GAME_KEY, compressed);
+  try {
+    const json = JSON.stringify(state);
+    const compressed = compressToBase64(json);
+    localStorage.setItem(SAVE_GAME_KEY, compressed);
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const retrieveSaveFromStorage = (): unknown => {
@@ -15,15 +19,25 @@ export const retrieveSaveFromStorage = (): unknown => {
     const uncompressed = decompressFromBase64(rawState);
     if (!uncompressed) return null;
     return JSON.parse(uncompressed);
-  } catch {
+  } catch (e) {
+    console.error(e);
     return null;
   }
 };
 
 export const deleteSaveFromStorage = (): void => {
-  localStorage.removeItem(SAVE_GAME_KEY);
+  try {
+    localStorage.removeItem(SAVE_GAME_KEY);
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const saveExists = (): boolean => {
-  return localStorage.getItem(SAVE_GAME_KEY) !== null;
+  try {
+    return localStorage.getItem(SAVE_GAME_KEY) !== null;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
 };
