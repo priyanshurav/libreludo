@@ -1,19 +1,14 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { store } from './state/store.ts';
-import { RouterProvider } from 'react-router-dom';
-import { router } from './router.tsx';
-import { PWAUpdater } from './components/PWAUpdater/PWAUpdater.tsx';
-import './fonts.css';
-import './index.css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { HydratedRouter } from 'react-router/dom';
 
 // Disable React DevTools in production
 if (import.meta.env.PROD) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
   const hook = (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__;
   if (hook && typeof hook === 'object') {
     for (const key in hook) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       hook[key] = typeof hook[key] === 'function' ? () => {} : null;
     }
   }
@@ -29,11 +24,9 @@ console.log(
   'font-style: italic; color: white; padding-top: 5px;'
 );
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Provider store={store}>
-      <PWAUpdater />
-      <RouterProvider router={router} />
-    </Provider>
-  </StrictMode>
+ReactDOM.hydrateRoot(
+  document,
+  <React.StrictMode>
+    <HydratedRouter />
+  </React.StrictMode>
 );

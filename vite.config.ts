@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
+import { reactRouter } from '@react-router/dev/vite';
 import svgr from 'vite-plugin-svgr';
 import checker from 'vite-plugin-checker';
 import licenses from 'rollup-plugin-license';
@@ -30,7 +30,7 @@ export default defineConfig({
     __LIBRELUDO_LICENSE__: JSON.stringify(license),
   },
   plugins: [
-    react(),
+    reactRouter(),
     svgr({
       svgrOptions: {
         plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx'],
@@ -43,14 +43,14 @@ export default defineConfig({
     ViteImageOptimizer(),
     licenses({
       thirdParty: {
-        output: normalizePath(path.resolve(__dirname, 'dist', 'THIRD_PARTY_LICENSES.txt')),
+        output: normalizePath(path.resolve(__dirname, 'build/client', 'THIRD_PARTY_LICENSES.txt')),
       },
     }),
     viteStaticCopy({
       targets: [
         {
           src: normalizePath(path.resolve(__dirname, 'LICENSE')),
-          dest: normalizePath(path.resolve(__dirname, 'dist')),
+          dest: normalizePath(path.resolve(__dirname, 'build/client')),
           rename: 'LICENSE.txt',
         },
       ],

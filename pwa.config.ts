@@ -1,6 +1,7 @@
 import type { VitePWAOptions } from 'vite-plugin-pwa';
 
 export const pwaOptions: Partial<VitePWAOptions> = {
+  outDir: 'build/client',
   registerType: 'prompt',
   filename: 'sw.js',
   injectRegister: false,
@@ -29,11 +30,8 @@ export const pwaOptions: Partial<VitePWAOptions> = {
     ],
   },
   workbox: {
-    globPatterns: [
-      'assets/**/*.{js,css,ico,png,jpg,jpeg,svg,webp,gif,woff2,woff,ttf,eot,json}',
-      '*.html',
-      'icons/**/*.{png,svg,ico}',
-    ],
+    globDirectory: 'build/client',
+    globPatterns: ['**/*.{js,css,html,ico,png,jpg,jpeg,svg,webp,gif,woff2,woff,ttf,eot,json}'],
     globIgnores: ['icons/favicon.png', 'icons/favicon.svg'],
     navigateFallbackDenylist: [
       /sitemap\.xml$/,
