@@ -12,6 +12,7 @@ coverage
 dist
 build
 dist-ssr
+.react-router
 *.local
 
 # Editor directories and files
