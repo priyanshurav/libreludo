@@ -1,5 +1,5 @@
 import { generateRollBag } from '../../state/slices/diceSlice';
-import type { TCoordinate, TPlayerColour, TToken } from '../../types';
+import type { TPlayerColour, TToken } from '../../types';
 import { playerSequences } from '../players/constants';
 import { playerCountToWord } from '../players/logic';
 import { TOKEN_LOCKED_COORDINATES } from '../tokens/constants';
@@ -68,7 +68,7 @@ export const retrieveState = (currentState: RootState): TResult<RootState, Error
     ...new Set(allTokens.map(({ coordinates }) => `${coordinates.x},${coordinates.y}`)),
   ].map((c) => {
     const [x, y] = c.split(',');
-    return { x: parseFloat(x), y: parseFloat(y) } as TCoordinate;
+    return { x: parseFloat(x), y: parseFloat(y) };
   });
 
   for (const coord of uniqueCoords) {

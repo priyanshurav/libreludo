@@ -1,11 +1,11 @@
-import { compressToBase64, decompressFromBase64 } from 'lz-string';
+import LZString from 'lz-string';
 import type { TStoredStateSchema } from './schema';
 import { SAVE_GAME_KEY } from './constants';
 
 export const storeSaveInStorage = (state: TStoredStateSchema): void => {
   try {
     const json = JSON.stringify(state);
-    const compressed = compressToBase64(json);
+    const compressed = LZString.compressToBase64(json);
     localStorage.setItem(SAVE_GAME_KEY, compressed);
   } catch (e) {
     console.error(e);
@@ -16,7 +16,7 @@ export const retrieveSaveFromStorage = (): unknown => {
   try {
     const rawState = localStorage.getItem(SAVE_GAME_KEY);
     if (!rawState) return null;
-    const uncompressed = decompressFromBase64(rawState);
+    const uncompressed = LZString.decompressFromBase64(rawState);
     if (!uncompressed) return null;
     return JSON.parse(uncompressed);
   } catch (e) {

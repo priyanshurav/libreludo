@@ -1,4 +1,3 @@
-import type { TPlayerColour } from '../../types';
 import { SAVE_VERSION } from './constants';
 import type { TStoredStateSchema, TStoredTokenSchema, TStoredPlayerSchema } from './schema';
 import { storeSaveInStorage } from './storage';
@@ -14,7 +13,7 @@ export const saveState = (currentState: RootState): void => {
     dice: [],
     players: [],
     session: { ...currentState.session },
-    currentPlayerColour: currentState.players.currentPlayerColour as TPlayerColour,
+    currentPlayerColour: currentState.players.currentPlayerColour,
     playerFinishOrder: currentState.players.playerFinishOrder.map((p) => p.colour),
   };
 
