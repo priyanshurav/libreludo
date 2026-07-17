@@ -1,6 +1,6 @@
 export const ERRORS = {
   boardDoesNotExist: () => 'The board does not exist',
-  invalidNumberOfPlayers: (received: unknown) =>
+  invalidNumberOfPlayers: (received: string | number) =>
     `Number of player can only be either two, three or four. Received: ${received}`,
   playerDoesNotExist: (playerColour: string) => `Player with colour ${playerColour} does not exist`,
   playerAlreadyExists: (playerColour: string) =>
@@ -18,4 +18,5 @@ export const ERRORS = {
   tokenAlreadyUnlocked: (playerColour: string, id: number) =>
     `Token with colour ${playerColour} and ID ${id} is already unlocked`,
   numberOfStepsNegative: () => `Number of steps cannot be negative`,
+  gameEnded: () => 'Game has ended',
 };
