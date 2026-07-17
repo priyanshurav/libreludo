@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, type MetaFunction } from 'react-router';
 import { useEffect } from 'react';
 import { useCleanup } from '../../hooks/useCleanup';
 import GitHubLogo from '../../assets/icons/github-mark-white.svg?react';
@@ -6,33 +6,34 @@ import LicenseIcon from '../../assets/icons/license.svg?react';
 import ShareIcon from '../../assets/icons/share.svg?react';
 import styles from './HomePage.module.css';
 import clsx from 'clsx';
+import { logError } from '../../utils/logError';
 
-function HomePage() {
+export default function HomePage() {
   const cleanup = useCleanup();
 
-  const share: React.MouseEventHandler<HTMLButtonElement> = async () => {
+  const share = async () => {
     const shareData: ShareData = {
       title: 'LibreLudo',
       text: 'Play Ludo locally with friends on LibreLudo!',
       url: 'https://libreludo.org/',
     };
 
-    if (navigator.share) {
-      try {
+    try {
+      if (navigator.share) {
         await navigator.share(shareData);
-      } catch (err) {
-        console.error(err);
+      } else {
+        await navigator.clipboard.writeText('https://libreludo.org/');
+        alert('Link copied to clipboard!');
       }
-    } else {
-      navigator.clipboard.writeText('https://libreludo.org/');
-      alert('Link copied to clipboard!');
+    } catch (e) {
+      logError('HomePage.share')(e);
     }
   };
 
   useEffect(() => {
-    document.title = 'LibreLudo | Free and Open Source Ludo Game';
     cleanup();
   }, [cleanup]);
+
   return (
     <div className={styles.pageContainer}>
       <main className={styles.homePage}>
@@ -40,7 +41,7 @@ function HomePage() {
           <h1>
             <span>Welcome to</span> LibreLudo
           </h1>
-          <p>Roll the dice, compete with friends, and send your tokens home first.</p>
+          <p>An ad-free, open-source Ludo game with local multiplayer and bot opponents</p>
           <nav className={styles.ctaButtons}>
             <Link className={clsx(styles.ctaButton, styles.playNowBtn)} to="/setup">
               🔥 Play Now!
@@ -52,31 +53,28 @@ function HomePage() {
         </section>
         <div className={styles.information}>
           <section className={styles.whyPlayLibreludo}>
-            <h2>🔥 Why Play LibreLudo?</h2>
+            <h2>🔥 Why LibreLudo?</h2>
             <ul>
-              <li>Smooth, modern interface for easy gameplay.</li>
-              <li>Family-friendly: perfect for kids and adults alike.</li>
-              <li>Works great on mobile and desktop devices.</li>
-              <li>No registration—play instantly!</li>
+              <li>Free and open source. No paywall, ever.</li>
+              <li>No sign-up. Open the page and play.</li>
+              <li>No ads, no tracking.</li>
+              <li>Works on phone, tablet, or desktop.</li>
             </ul>
           </section>
+
           <section className={styles.history}>
             <h2>📜 History of Ludo</h2>
             <dl>
               <dt>Origins</dt>
-              <dd>
-                Ludo is based on the ancient Indian game Pachisi, played as early as the 6th century
-                CE.
-              </dd>
-              <dt>Modern Development</dt>
-              <dd>
-                In 1896, a simpler version called "Ludo" was patented in England, using dice and a
-                square board.
-              </dd>
+              <dd>Descended from Pachisi, played in India since the 6th century CE.</dd>
+              <dt>Modern Version</dt>
+              <dd>Patented in England in 1896 as a dice-and-fixed-board game.</dd>
               <dt>Gameplay</dt>
-              <dd>Players race colored tokens from start to finish based on dice rolls.</dd>
-              <dt>Worldwide Popularity</dt>
-              <dd>Today, Ludo is enjoyed globally in both board and digital forms.</dd>
+              <dd>
+                Move four tokens home by dice roll, sending rivals back when you land on them.
+              </dd>
+              <dt>Today</dt>
+              <dd>Still a household staple, now played as often online as on a physical board.</dd>
             </dl>
           </section>
         </div>
@@ -151,4 +149,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export const meta: MetaFunction = () => [{ title: 'LibreLudo | Free and Open Source Ludo Game' }];
