@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { registerNewPlayer, setPlayerSequence } from '../../../../state/slices/playersSlice';
 import Board from '../Board/Board';
 import { useDispatch, useSelector, useStore } from 'react-redux';
@@ -6,7 +6,7 @@ import { hydrateRootState, type AppDispatch, type RootState } from '../../../../
 import { registerDice } from '../../../../state/slices/diceSlice';
 import GameFinishedScreen from '../GameFinishedScreen/GameFinishedScreen';
 import type { TPlayerInitData } from '../../../../types';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { playerCountToWord } from '../../../../game/players/logic';
 import bg from '../../../../assets/bg.jpg';
 import { usePageLeaveBlocker } from '../../../../hooks/usePageLeaveBlocker';
@@ -25,7 +25,7 @@ type Props = {
   initData: TPlayerInitData[] | undefined;
 };
 
-function Game({ initData }: Props) {
+export default function Game({ initData }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const boardTileSize = useSelector((state: RootState) => state.board.boardTileSize);
   const { isGameEnded, playerFinishOrder, currentPlayerColour, players } = useSelector(
@@ -128,5 +128,3 @@ function Game({ initData }: Props) {
     </div>
   );
 }
-
-export default Game;

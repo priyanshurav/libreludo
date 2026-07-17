@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, type MetaFunction } from 'react-router';
 import Game from './components/Game/Game';
 import { useEffect } from 'react';
 import { useCleanup } from '../../hooks/useCleanup';
@@ -7,13 +7,12 @@ import { isStorageSupported, saveExists } from '../../game/storage/storage';
 
 let hasWarnedAboutStorage = false;
 
-function Play() {
+export default function Play() {
   const cleanup = useCleanup();
   const location = useLocation();
   const { initData } = (location.state as { initData: TPlayerInitData[] }) ?? {};
 
   useEffect(() => {
-    document.title = 'Play LibreLudo';
     return () => cleanup();
   }, [cleanup]);
 
@@ -25,8 +24,7 @@ function Play() {
     }
   }, []);
 
-  if (!initData && !saveExists()) return <Navigate to="/setup" />;
-  return <Game initData={initData} />;
+  return !initData && !saveExists() ? <Navigate to="/setup" /> : <Game initData={initData} />;
 }
 
-export default Play;
+export const meta: MetaFunction = () => [{ title: 'Play LibreLudo' }];

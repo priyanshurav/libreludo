@@ -38,7 +38,7 @@ function getRankImage(rank: number): string {
   }
 }
 
-function GameFinishPlayerItem({ colour, isLast, name, rank }: Props) {
+export default function GameFinishPlayerItem({ colour, isLast, name, rank }: Props) {
   const { boardTileSize } = useSelector((state: RootState) => state.board);
   const { players } = useSelector((state: RootState) => state.players);
   const { gameStartTime, gameInactiveTime } = useSelector((state: RootState) => state.session);
@@ -69,5 +69,3 @@ function GameFinishPlayerItem({ colour, isLast, name, rank }: Props) {
     </AnimatePresence>
   );
 }
-
-export default GameFinishPlayerItem;

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   deactivateAllTokens,
   getToken,
@@ -29,7 +29,7 @@ type Props = {
   tokenClickData: TTokenClickData | null;
 };
 
-function Token({ colour, id, tokenClickData }: Props) {
+export default function Token({ colour, id, tokenClickData }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const { tokenHeight, tokenWidth } = useSelector((state: RootState) => state.board);
   const { players } = useSelector((state: RootState) => state.players);
@@ -195,5 +195,3 @@ function Token({ colour, id, tokenClickData }: Props) {
     </motion.button>
   );
 }
-
-export default Token;

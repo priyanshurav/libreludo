@@ -12,7 +12,7 @@ import type { TTokenClickData } from '../../../../types/tokens';
 import styles from './Board.module.css';
 import { useResizeObserver } from '../../../../hooks/useResizeObserver';
 
-function Board() {
+export default function Board() {
   const { players, currentPlayerColour } = useSelector((state: RootState) => state.players);
   const { boardTileSize, boardSideLength } = useSelector((state: RootState) => state.board);
   const { dice } = useSelector((state: RootState) => state.dice);
@@ -81,5 +81,3 @@ function Board() {
     </div>
   );
 }
-
-export default Board;

@@ -1,9 +1,9 @@
-import { isRouteErrorResponse, useRouteError } from 'react-router-dom';
+import { isRouteErrorResponse, useRouteError, type MetaFunction } from 'react-router';
 import styles from './ErrorBoundary.module.css';
 import { useEffect } from 'react';
 import { useCleanup } from '../../hooks/useCleanup';
 
-function ErrorBoundary() {
+export default function ErrorBoundary() {
   const error = useRouteError();
   const cleanup = useCleanup();
 
@@ -30,9 +30,9 @@ function ErrorBoundary() {
   };
 
   useEffect(() => {
-    document.title = 'Oops! Something went wrong';
     cleanup();
   }, [cleanup]);
+
   return (
     <div className={styles.errorContainer}>
       <div className={styles.errorDialog}>
@@ -59,4 +59,4 @@ function ErrorBoundary() {
   );
 }
 
-export default ErrorBoundary;
+export const meta: MetaFunction = () => [{ title: 'Oops! Something went wrong' }];

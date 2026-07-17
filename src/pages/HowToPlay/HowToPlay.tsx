@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, type MetaFunction } from 'react-router';
 import { useEffect } from 'react';
 import Note from '../../components/Note/Note';
 import styles from './HowToPlay.module.css';
@@ -6,10 +6,9 @@ import { useCleanup } from '../../hooks/useCleanup';
 
 const H = ({ c }: { c: string }) => <span aria-hidden="true">{c}</span>;
 
-function HowToPlay() {
+export default function HowToPlay() {
   const cleanup = useCleanup();
   useEffect(() => {
-    document.title = 'LibreLudo - How to Play';
     cleanup();
   }, [cleanup]);
   return (
@@ -253,4 +252,4 @@ function HowToPlay() {
   );
 }
 
-export default HowToPlay;
+export const meta: MetaFunction = () => [{ title: 'LibreLudo - How to Play' }];

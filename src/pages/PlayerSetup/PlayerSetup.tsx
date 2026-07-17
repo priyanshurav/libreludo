@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import PlayerInput from './components/PlayerInput/PlayerInput';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, type MetaFunction } from 'react-router';
 import type { TPlayerInitData } from '../../types';
 import { ToastContainer, toast } from 'react-toastify';
 import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
@@ -48,7 +48,7 @@ const DEFAULT_PLAYER_DATA: TPlayerInitData[] = [
   },
 ];
 
-function PlayerSetup() {
+export default function PlayerSetup() {
   const [playerCount, setPlayerCount] = useState(2);
   const [dialogWidth, setDialogWidth] = useState(0);
   const [playersData, setPlayersData] = useState<TPlayerInitData[]>(DEFAULT_PLAYER_DATA);
@@ -62,7 +62,6 @@ function PlayerSetup() {
   );
 
   useEffect(() => {
-    document.title = 'LibreLudo - Player Setup';
     cleanup();
   }, [cleanup]);
 
@@ -125,6 +124,7 @@ function PlayerSetup() {
       navigate('/play')?.catch(logError('PlayerSetup.navigate'));
     }
   };
+
   return isLoading ? (
     <LoadingScreen />
   ) : (
@@ -200,4 +200,4 @@ function PlayerSetup() {
   );
 }
 
-export default PlayerSetup;
+export const meta: MetaFunction = () => [{ title: 'LibreLudo - Player Setup' }];
