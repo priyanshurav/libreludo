@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useBlocker } from 'react-router-dom';
+import { useBlocker } from 'react-router';
 import { EXIT_MESSAGE } from '../pages/Play/components/Game/Game';
 
 export const usePageLeaveBlocker = (shouldBlock: boolean) => {
