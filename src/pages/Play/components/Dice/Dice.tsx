@@ -43,7 +43,7 @@ function getDiceImage(diceNumber: number | undefined): string {
   }
 }
 
-function Dice({ colour, playerName }: Props) {
+export default function Dice({ colour, playerName }: Props) {
   const {
     isAnyTokenMoving,
     isGameEnded,
@@ -70,12 +70,11 @@ function Dice({ colour, playerName }: Props) {
     isPlaceholderShowing ||
     isBot;
 
-  const handleDiceClick = useCallback(() => {
+  const handleDiceClick = useCallback(async () => {
     if (isDiceDisabled) return;
-    rollDice(colour, async (diceNumber) => {
-      const res = await handlePostDiceRoll(colour, diceNumber);
-      if (res?.shouldChangeTurn) changeTurnFn();
-    });
+    const diceNumber = await rollDice(colour);
+    const res = await handlePostDiceRoll(colour, diceNumber);
+    if (res?.shouldChangeTurn) changeTurnFn();
   }, [colour, handlePostDiceRoll, isDiceDisabled, rollDice, changeTurnFn]);
 
   useEffect(() => {
@@ -109,5 +108,3 @@ function Dice({ colour, playerName }: Props) {
     </div>
   );
 }
-
-export default Dice;
