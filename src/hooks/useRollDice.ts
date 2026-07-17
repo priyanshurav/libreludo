@@ -5,6 +5,7 @@ import type { TPlayerColour } from '../types';
 import { setIsPlaceholderShowing, renewRollBag, setDiceNumber } from '../state/slices/diceSlice';
 import { saveState } from '../game/storage/saveState';
 import { sleep } from '../utils/sleep';
+import { ERRORS } from '../utils/errors';
 
 const DICE_PLACEHOLDER_DELAY = 1000;
 
@@ -12,12 +13,11 @@ export const useRollDice = () => {
   const store = useStore<RootState>();
   const dispatch = useDispatch<AppDispatch>();
   return useCallback(
-    async (colour: TPlayerColour, onDiceRoll: (diceNumber: number) => void) => {
-      if (store.getState().players.isGameEnded) return;
+    async (colour: TPlayerColour): Promise<number> => {
+      if (store.getState().players.isGameEnded) throw new Error(ERRORS.gameEnded());
       dispatch(setIsPlaceholderShowing({ colour, isPlaceholderShowing: true }));
       await sleep(DICE_PLACEHOLDER_DELAY);
       const diceState = store.getState().dice;
-      const dice = diceState.dice.find((d) => d.colour === colour);
       if (diceState.rollBag[colour].length === 0) dispatch(renewRollBag(colour));
       const bag = store.getState().dice.rollBag[colour];
       const index = Math.floor(Math.random() * bag.length);
@@ -25,7 +25,7 @@ export const useRollDice = () => {
       dispatch(setIsPlaceholderShowing({ colour, isPlaceholderShowing: false }));
       dispatch(setDiceNumber({ colour, randomIndex: index }));
       saveState(store.getState());
-      if (dice) onDiceRoll(diceNumber);
+      return diceNumber;
     },
     [dispatch, store]
   );
