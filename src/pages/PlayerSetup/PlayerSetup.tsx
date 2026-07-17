@@ -20,6 +20,7 @@ import {
 } from '../../game/storage/storage';
 import GitHubLogo from '../../assets/icons/github-mark-white.svg?react';
 import { SAVE_VERSION } from '../../game/storage/constants';
+import { logError } from '../../utils/logError';
 
 const toastIds = {
   allBotPlayer: 'all-bot-player',
@@ -100,7 +101,9 @@ function PlayerSetup() {
       });
     } else {
       setIsLoading(true);
-      navigate('/play', { state: { initData: playerInitData } });
+      navigate('/play', { state: { initData: playerInitData } })?.catch(
+        logError('PlayerSetup.navigate')
+      );
     }
   };
 
@@ -119,7 +122,7 @@ function PlayerSetup() {
       });
     } else {
       setIsLoading(true);
-      navigate('/play');
+      navigate('/play')?.catch(logError('PlayerSetup.navigate'));
     }
   };
   return isLoading ? (

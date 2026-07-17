@@ -17,6 +17,7 @@ import clsx from 'clsx';
 import { useRollDice } from '../../../../hooks/useRollDice';
 import { useHandlePostDiceRoll } from '../../../../hooks/useHandlePostDiceRoll';
 import { useChangeTurn } from '../../../../hooks/useChangeTurn';
+import { logError } from '../../../../utils/logError';
 
 type Props = {
   colour: TPlayerColour;
@@ -80,7 +81,7 @@ function Dice({ colour, playerName }: Props) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.repeat || e.key.toLowerCase() !== 'd' || isDiceDisabled) return;
-      handleDiceClick();
+      handleDiceClick().catch(logError('Dice.handleKeyDown'));
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);

@@ -17,6 +17,7 @@ import { deleteSaveFromStorage, saveExists } from '../../../../game/storage/stor
 import { useExecuteBotMove } from '../../../../hooks/useExecuteBotMove';
 import { useRollDice } from '../../../../hooks/useRollDice';
 import { playerSequences } from '../../../../game/players/constants';
+import { logError } from '../../../../utils/logError';
 
 export const EXIT_MESSAGE = 'Are you sure you want to exit?';
 
@@ -81,9 +82,9 @@ function Game({ initData }: Props) {
       .getState()
       .players.players.find((p) => p.colour === currentPlayerColour);
     if (currentPlayer?.isBot) {
-      rollDice(currentPlayerColour, (diceNumber) =>
-        executeBotMove(currentPlayerColour, diceNumber)
-      );
+      rollDice(currentPlayerColour)
+        .then((diceNumber) => executeBotMove(currentPlayerColour, diceNumber))
+        .catch(logError('Game.botTurnEffect'));
     }
   }, [currentPlayerColour, executeBotMove, rollDice, store, players.length]);
 

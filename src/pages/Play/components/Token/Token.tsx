@@ -21,6 +21,7 @@ import { useUnlockAndAlignTokens } from '../../../../hooks/useUnlockAndAlignToke
 import { saveState } from '../../../../game/storage/saveState';
 import { animate, motion, useMotionValue } from 'framer-motion';
 import { tokenMotionRegistry } from '../../../../game/movement/tokenMotionRegistry';
+import { logError } from '../../../../utils/logError';
 
 type Props = {
   colour: TPlayerColour;
@@ -68,7 +69,7 @@ function Token({ colour, id, tokenClickData }: Props) {
         duration: direction ? transitionStates[direction].durationMs / 1000 : 0,
         ease: direction ? transitionStates[direction].timingFn : undefined,
       }),
-    ]);
+    ]).catch(logError('Token.animate'));
   }, [direction, motionX, motionY, x, y]);
   useEffect(() => {
     tokenMotionRegistry.set(getGloballyUniqueTokenId(colour, id), {
@@ -88,37 +89,48 @@ function Token({ colour, id, tokenClickData }: Props) {
   }, [colour, id, motionX, motionY]);
 
   const unlock = async () => {
-    dispatch(setIsAnyTokenMoving(true));
-    unlockAndAlignTokens({ colour, id });
-    dispatch(deactivateAllTokens(colour));
-    const updatedToken = getToken(store.getState().players, colour, id);
-    const { x: targetX, y: targetY } = getPosition(
-      updatedToken.coordinates,
-      updatedToken.tokenAlignmentData
-    );
-    const entry = tokenMotionRegistry.get(getGloballyUniqueTokenId(colour, id));
-    if (!entry) return;
-    entry.setExternallyAnimating(true);
-    await entry.animateTo(targetX, targetY, {
-      duration: transitionStates.forward.durationMs / 1000,
-      ease: transitionStates.forward.timingFn,
-    });
-    entry.setExternallyAnimating(false);
-    dispatch(setIsAnyTokenMoving(false));
-    saveState(store.getState());
+    try {
+      dispatch(setIsAnyTokenMoving(true));
+      unlockAndAlignTokens({ colour, id });
+      dispatch(deactivateAllTokens(colour));
+      const updatedToken = getToken(store.getState().players, colour, id);
+      const { x: targetX, y: targetY } = getPosition(
+        updatedToken.coordinates,
+        updatedToken.tokenAlignmentData
+      );
+      const entry = tokenMotionRegistry.get(getGloballyUniqueTokenId(colour, id));
+      if (!entry) return;
+      entry.setExternallyAnimating(true);
+      await entry.animateTo(targetX, targetY, {
+        duration: transitionStates.forward.durationMs / 1000,
+        ease: transitionStates.forward.timingFn,
+      });
+      entry.setExternallyAnimating(false);
+      dispatch(setIsAnyTokenMoving(false));
+      saveState(store.getState());
+    } catch (e) {
+      logError('Token.unlock')(e);
+    }
   };
 
   const executeTokenMove = useCallback(async () => {
-    if (!isActive || diceNumber === -1 || !diceNumber || isLocked) return;
-
-    const moveData = await moveAndCapture(token, diceNumber);
-    if (!moveData) return;
-    const { hasTokenReachedHome, isCaptured, hasPlayerWon } = moveData;
-    if (hasPlayerWon) return changeTurnFn();
-    if ((diceNumber !== 6 || numberOfConsecutiveSix >= 3) && !isCaptured && !hasTokenReachedHome) {
-      return changeTurnFn();
+    try {
+      if (!isActive || diceNumber === -1 || !diceNumber || isLocked) return;
+      const moveData = await moveAndCapture(token, diceNumber);
+      if (!moveData) return;
+      const { hasTokenReachedHome, isCaptured, hasPlayerWon } = moveData;
+      if (hasPlayerWon) return changeTurnFn();
+      if (
+        (diceNumber !== 6 || numberOfConsecutiveSix >= 3) &&
+        !isCaptured &&
+        !hasTokenReachedHome
+      ) {
+        return changeTurnFn();
+      }
+      saveState(store.getState());
+    } catch (e) {
+      logError('Token.executeTokenMove')(e);
     }
-    saveState(store.getState());
   }, [
     changeTurnFn,
     diceNumber,
@@ -137,14 +149,14 @@ function Token({ colour, id, tokenClickData }: Props) {
     if (!newTokenClickData || prevClickData?.timestamp === newTokenClickData.timestamp) return;
     tokenClickDataRef.current = newTokenClickData;
 
-    if (newTokenClickData.colour === colour && newTokenClickData.id === id) executeTokenMove();
+    if (newTokenClickData.colour === colour && newTokenClickData.id === id) void executeTokenMove();
   }, [colour, executeTokenMove, id, tokenClickData]);
 
   const handleTokenClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     if (e.detail === 0) e.stopPropagation();
-    if (isLocked && isActive && diceNumber !== -1 && diceNumber) unlock();
+    if (isLocked && isActive && diceNumber !== -1 && diceNumber) void unlock();
     tokenElRef.current?.blur?.();
-    executeTokenMove();
+    void executeTokenMove();
   };
 
   return (
