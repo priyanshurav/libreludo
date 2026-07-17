@@ -10,7 +10,6 @@ import diceReducer, {
   setIsPlaceholderShowing,
   type TDiceState,
 } from '../../src/state/slices/diceSlice';
-import type { TDice } from '../../src/types';
 
 describe('Test dice slice reducers', () => {
   describe('registerDice', () => {
@@ -21,7 +20,7 @@ describe('Test dice slice reducers', () => {
         colour: 'blue',
         diceNumber: 1,
         isPlaceholderShowing: false,
-      } as TDice);
+      });
     });
   });
   describe('setIsPlaceholderShowing', () => {

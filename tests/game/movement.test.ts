@@ -6,7 +6,7 @@ import { TOKEN_LOCKED_COORDINATES } from '../../src/game/tokens/constants';
 import { tokenPaths } from '../../src/game/tokens/paths';
 import { getPlayer, getToken } from '../../src/state/slices/playersSlice';
 import type { RootState } from '../../src/state/store';
-import type { TToken, TTokenDirection } from '../../src/types';
+import type { TToken } from '../../src/types';
 import { DUMMY_PLAYERS } from '../fixtures/players.dummy';
 import { DUMMY_STATE } from '../fixtures/state.dummy';
 
@@ -61,7 +61,7 @@ describe('Test game/movement', () => {
         const state = buildState();
         const mover = getToken(state.players, 'blue', 0);
         placeOnPath(mover, 2);
-        mover.direction = 'backward' as TTokenDirection;
+        mover.direction = 'backward';
 
         const { nextState } = calculateSequence(state, mover, 3);
 
