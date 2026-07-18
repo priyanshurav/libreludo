@@ -1,4 +1,4 @@
-name: Continuous Deployment
+name: Deploy to Cloudflare Pages
 
 on:
   release:
@@ -40,4 +40,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=libreludo --branch=main
+          command: pages deploy build/client --project-name=libreludo --branch=main
