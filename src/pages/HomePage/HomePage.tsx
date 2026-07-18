@@ -7,6 +7,7 @@ import ShareIcon from '../../assets/icons/share.svg?react';
 import styles from './HomePage.module.css';
 import clsx from 'clsx';
 import { logError } from '../../utils/logError';
+import { H } from '../../components/H/H';
 
 export default function HomePage() {
   const cleanup = useCleanup();
@@ -44,40 +45,44 @@ export default function HomePage() {
           <p>An ad-free, open-source Ludo game with local multiplayer and bot opponents</p>
           <nav className={styles.ctaButtons}>
             <Link className={clsx(styles.ctaButton, styles.playNowBtn)} to="/setup">
-              🔥 Play Now!
+              <H c="🔥" /> Play Now!
             </Link>
             <Link className={clsx(styles.ctaButton, styles.howToPlayBtn)} to="/how-to-play">
               How to Play
             </Link>
           </nav>
         </section>
-        <div className={styles.information}>
-          <section className={styles.whyPlayLibreludo}>
-            <h2>🔥 Why LibreLudo?</h2>
-            <ul>
-              <li>Free and open source. No paywall, ever.</li>
-              <li>No sign-up. Open the page and play.</li>
-              <li>No ads, no tracking.</li>
-              <li>Works on phone, tablet, or desktop.</li>
-            </ul>
-          </section>
+        <section className={styles.features}>
+          <div className={styles.block}>
+            <h3>
+              <H c="⚡" /> Instant Play
+            </h3>
+            <p>No sign-ups. Open the page and jump straight into a game.</p>
+          </div>
 
-          <section className={styles.history}>
-            <h2>📜 History of Ludo</h2>
-            <dl>
-              <dt>Origins</dt>
-              <dd>Descended from Pachisi, played in India since the 6th century CE.</dd>
-              <dt>Modern Version</dt>
-              <dd>Patented in England in 1896 as a dice-and-fixed-board game.</dd>
-              <dt>Gameplay</dt>
-              <dd>
-                Move four tokens home by dice roll, sending rivals back when you land on them.
-              </dd>
-              <dt>Today</dt>
-              <dd>Still a household staple, now played as often online as on a physical board.</dd>
-            </dl>
-          </section>
-        </div>
+          <div className={styles.block}>
+            <h3>
+              <H c="🚫" /> Zero Ads
+            </h3>
+            <p>No pop-ups, no unskippable videos between turns. Just the game.</p>
+          </div>
+          <div className={styles.block}>
+            <h3>
+              <H c="🔒" /> 100% Private
+            </h3>
+            <p>Nothing leaves your device. No servers, no trackers, no accounts.</p>
+          </div>
+
+          <div className={styles.block}>
+            <h3>
+              <H c="📖" /> Open Source
+            </h3>
+            <p>
+              Free forever, with the full source code on GitHub for anyone to inspect or contribute
+              to.
+            </p>
+          </div>
+        </section>
       </main>
       <footer>
         <div className={styles.text}>
