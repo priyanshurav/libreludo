@@ -97,17 +97,7 @@ export default function HomePage() {
             </a>
           </p>
           <small className={styles.copyright}>
-            Copyright &copy; 2025&ndash;{new Date().getFullYear()} Priyanshu Rav &{' '}
-            <a
-              href="https://github.com/priyanshurav/libreludo/graphs/contributors"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="View LibreLudo Contributors on GitHub"
-              title="View LibreLudo Contributors on GitHub"
-            >
-              Contributors
-            </a>{' '}
-            &middot;{' '}
+            Copyright &copy; 2025&ndash;{new Date().getFullYear()} Priyanshu Rav &middot;{' '}
             <a
               href="/LICENSE.txt"
               target="_blank"
