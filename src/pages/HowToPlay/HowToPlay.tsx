@@ -3,8 +3,7 @@ import { useEffect } from 'react';
 import Note from '../../components/Note/Note';
 import styles from './HowToPlay.module.css';
 import { useCleanup } from '../../hooks/useCleanup';
-
-const H = ({ c }: { c: string }) => <span aria-hidden="true">{c}</span>;
+import { H } from '../../components/H/H';
 
 export default function HowToPlay() {
   const cleanup = useCleanup();

@@ -1,5 +1,6 @@
 import type React from 'react';
 import styles from './Note.module.css';
+import { H } from '../H/H';
 
 type TLabelType = 'important' | 'bonus';
 
@@ -12,13 +13,15 @@ function getLabel(type: TLabelType): React.ReactElement {
     case 'important':
       return (
         <>
-          <span aria-hidden="true">⚠️</span>&nbsp;Important:
+          <H c="⚠️" />
+          &nbsp;Important:
         </>
       );
     case 'bonus':
       return (
         <>
-          <span aria-hidden="true">⭐</span>&nbsp;Bonus:
+          <H c="⭐" />
+          &nbsp;Bonus:
         </>
       );
   }
