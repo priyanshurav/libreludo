@@ -1,2 +1,2 @@
-/** Hides emoji from screen readers so they don't get read out loud */
+/** Renders decorative content, hidden from screen readers so it isn't announced */
 export const H = ({ c }: { c: string }) => <span aria-hidden="true">{c}</span>;
