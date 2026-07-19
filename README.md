@@ -51,7 +51,7 @@
 
 - **React** + **Vite**
 - **Redux Toolkit** for state
-- **React Router DOM** for routing
+- **React Router** for prerendering and routing
 - **TypeScript**
 - **Vitest + React Testing Library** for testing
 - **Cloudflare** for hosting
