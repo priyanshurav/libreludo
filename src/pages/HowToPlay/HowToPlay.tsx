@@ -241,6 +241,10 @@ export default function HowToPlay() {
             <li>
               <H c="🎲" /> Plan for exact rolls - Needed to reach home
             </li>
+            <li>
+              <H c="💾" /> Your progress auto-saves - Close the tab anytime and pick up where you
+              left off
+            </li>
           </ul>
         </section>
       </main>
