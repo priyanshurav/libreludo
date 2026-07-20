@@ -43,14 +43,16 @@ export default defineConfig({
     ViteImageOptimizer(),
     licenses({
       thirdParty: {
-        output: normalizePath(path.resolve(__dirname, 'build/client', 'THIRD_PARTY_LICENSES.txt')),
+        output: normalizePath(
+          path.resolve(import.meta.dirname, 'build/client/THIRD_PARTY_LICENSES.txt')
+        ),
       },
     }),
     viteStaticCopy({
       targets: [
         {
-          src: normalizePath(path.resolve(__dirname, 'LICENSE')),
-          dest: normalizePath(path.resolve(__dirname, 'build/client')),
+          src: normalizePath(path.resolve(import.meta.dirname, 'LICENSE')),
+          dest: normalizePath(path.resolve(import.meta.dirname, 'build/client')),
           rename: 'LICENSE.txt',
         },
       ],
