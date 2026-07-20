@@ -3,7 +3,6 @@ import PlayerInput from './components/PlayerInput/PlayerInput';
 import { Link, useNavigate, type MetaFunction } from 'react-router';
 import type { TPlayerInitData } from '../../types';
 import { ToastContainer, toast } from 'react-toastify';
-import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
 import { useCleanup } from '../../hooks/useCleanup';
 import { playerCountToWord } from '../../game/players/logic';
 import { playerSequences } from '../../game/players/constants';
@@ -51,8 +50,8 @@ const DEFAULT_PLAYER_DATA: TPlayerInitData[] = [
 export default function PlayerSetup() {
   const [playerCount, setPlayerCount] = useState(2);
   const [dialogWidth, setDialogWidth] = useState(0);
+  const [btnsDisabled, setBtnsDisabled] = useState(false);
   const [playersData, setPlayersData] = useState<TPlayerInitData[]>(DEFAULT_PLAYER_DATA);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [dialogNode, setDialogNode] = useState<HTMLElement | null>(null);
   const cleanup = useCleanup();
@@ -74,60 +73,71 @@ export default function PlayerSetup() {
   useResizeObserver(dialogNode, onResize);
 
   const handlePlayBtnClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    e.preventDefault();
-    if (saveExists()) {
-      const res = confirm('Start a new game? Your current save will be lost');
-      if (!res) return;
-    }
+    try {
+      e.preventDefault();
+      if (btnsDisabled) return;
+      setBtnsDisabled(true);
 
-    deleteSaveFromStorage(); // this is to prevent the old game from getting loaded
+      if (saveExists()) {
+        const res = confirm('Start a new game? Your current save will be lost');
+        if (!res) return setBtnsDisabled(false);
+      }
 
-    const playerInitData = playersData.slice(0, playerCount);
-    const areAllPlayersBot = playerInitData.every((d) => d.isBot);
-    const isAnyNameEmpty = playerInitData.some(
-      (d) => d.name === '' || [...d.name].every((c) => c === ' ')
-    );
+      deleteSaveFromStorage(); // this is to prevent the old game from getting loaded
 
-    if (isAnyNameEmpty) {
-      toast('Player name must not be empty', {
-        type: 'error',
-        toastId: toastIds.playerNameEmpty,
-      });
-    } else if (areAllPlayersBot) {
-      toast('There must be at least one human player', {
-        type: 'error',
-        toastId: toastIds.allBotPlayer,
-      });
-    } else {
-      setIsLoading(true);
-      navigate('/play', { state: { initData: playerInitData } })?.catch(
-        logError('PlayerSetup.navigate')
+      const playerInitData = playersData.slice(0, playerCount);
+      const areAllPlayersBot = playerInitData.every((d) => d.isBot);
+      const isAnyNameEmpty = playerInitData.some(
+        (d) => d.name === '' || [...d.name].every((c) => c === ' ')
       );
+
+      if (isAnyNameEmpty) {
+        toast('Player name must not be empty', {
+          type: 'error',
+          toastId: toastIds.playerNameEmpty,
+        });
+      } else if (areAllPlayersBot) {
+        toast('There must be at least one human player', {
+          type: 'error',
+          toastId: toastIds.allBotPlayer,
+        });
+      } else {
+        return void navigate('/play', { state: { initData: playerInitData } });
+      }
+      setBtnsDisabled(false);
+    } catch (e) {
+      logError('PlayerSetup.handlePlayBtnClick')(e);
+      setBtnsDisabled(false);
     }
   };
 
   const handleLoadLinkClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    e.preventDefault();
-    const { success, data } = validateStoredState(retrieveSaveFromStorage());
-    if (!success) {
-      toast("Save file does not exist or it's corrupted", {
-        type: 'error',
-        toastId: toastIds.corruptedSave,
-      });
-    } else if (data.version !== SAVE_VERSION) {
-      toast(`Incompatible save: v${data.version} (requires v${SAVE_VERSION})`, {
-        type: 'error',
-        toastId: toastIds.incompatibleSave,
-      });
-    } else {
-      setIsLoading(true);
-      navigate('/play')?.catch(logError('PlayerSetup.navigate'));
+    try {
+      e.preventDefault();
+      if (btnsDisabled) return;
+      setBtnsDisabled(true);
+      const { success, data } = validateStoredState(retrieveSaveFromStorage());
+      if (!success) {
+        toast("Save file does not exist or it's corrupted", {
+          type: 'error',
+          toastId: toastIds.corruptedSave,
+        });
+      } else if (data.version !== SAVE_VERSION) {
+        toast(`Incompatible save: v${data.version} (requires v${SAVE_VERSION})`, {
+          type: 'error',
+          toastId: toastIds.incompatibleSave,
+        });
+      } else {
+        return void navigate('/play');
+      }
+      setBtnsDisabled(false);
+    } catch (e) {
+      logError('PlayerSetup.handleLoadLinkClick')(e);
+      setBtnsDisabled(false);
     }
   };
 
-  return isLoading ? (
-    <LoadingScreen />
-  ) : (
+  return (
     <div className={styles.playerSetup} style={{ backgroundImage: `url(${bg})` }}>
       <main
         className={styles.playerSetupDialog}
@@ -163,7 +173,12 @@ export default function PlayerSetup() {
           ))}
         </div>
 
-        <Link className={styles.playBtn} to="/play" onClick={handlePlayBtnClick}>
+        <Link
+          className={styles.playBtn}
+          to="/play"
+          onClick={handlePlayBtnClick}
+          aria-disabled={btnsDisabled}
+        >
           PLAY
         </Link>
         <Link
@@ -171,6 +186,7 @@ export default function PlayerSetup() {
           to="/play"
           title="Load last game"
           onClick={handleLoadLinkClick}
+          aria-disabled={btnsDisabled}
         >
           or, load last game
         </Link>

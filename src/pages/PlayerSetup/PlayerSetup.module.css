@@ -101,6 +101,18 @@
     background-color: var(--color-primary-hover);
     transform: scale(1.05);
   }
+
+  &[aria-disabled='true'] {
+    opacity: 0.45;
+    cursor: not-allowed;
+
+    &:hover,
+    &:active,
+    &:focus-visible {
+      background-color: var(--color-primary);
+      transform: none;
+    }
+  }
 }
 
 .version {
@@ -151,6 +163,15 @@
 
   &:hover {
     text-decoration: underline;
+  }
+
+  &[aria-disabled='true'] {
+    opacity: 0.4;
+    cursor: not-allowed;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 }
 
