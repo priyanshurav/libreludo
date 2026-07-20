@@ -6,7 +6,7 @@
   "license": "AGPL-3.0-only",
   "scripts": {
     "dev": "react-router dev",
-    "build": "tsc -b && react-router build",
+    "build": "react-router build && shx cp build/client/__spa-fallback.html build/client/404.html",
     "lint": "eslint .",
     "preview": "wrangler pages dev ./build/client",
     "type-check": "tsc --noEmit --project ./tsconfig.app.json",
@@ -58,6 +58,7 @@
     "jsdom": "^27.4.0",
     "rollup-plugin-license": "^3.7.1",
     "sharp": "^0.34.5",
+    "shx": "^0.4.0",
     "svgo": "^4.0.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.63.0",
