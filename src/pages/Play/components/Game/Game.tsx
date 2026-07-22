@@ -18,6 +18,7 @@ import { useExecuteBotMove } from '../../../../hooks/useExecuteBotMove';
 import { useRollDice } from '../../../../hooks/useRollDice';
 import { playerSequences } from '../../../../game/players/constants';
 import { logError } from '../../../../utils/logError';
+import { saveState } from '../../../../game/storage/saveState';
 
 export const EXIT_MESSAGE = 'Are you sure you want to exit?';
 
@@ -93,15 +94,25 @@ export default function Game({ initData }: Props) {
       if (isGameEnded) return;
       if (document.visibilityState === 'hidden') {
         gameInactiveStartTime.current = Date.now();
+        try {
+          saveState(store.getState());
+        } catch {
+          console.warn('Skipped saving: game state is transitional.');
+        }
       } else if (document.visibilityState === 'visible' && gameInactiveStartTime.current > 0) {
         const now = Date.now();
         dispatch(addToGameInactiveTime(now - gameInactiveStartTime.current));
+        try {
+          saveState(store.getState());
+        } catch {
+          console.warn('Skipped saving: game state is transitional.');
+        }
         gameInactiveStartTime.current = 0;
       }
     };
     document.addEventListener('visibilitychange', handlePageVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handlePageVisibilityChange);
-  }, [dispatch, isGameEnded]);
+  }, [dispatch, isGameEnded, store]);
 
   const handleExitBtnClick = () => navigate('/');
 
