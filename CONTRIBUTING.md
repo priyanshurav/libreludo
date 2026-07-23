@@ -1,6 +1,6 @@
 # Contributing to LibreLudo
 
-Thanks for taking the time to contribute to **LibreLudo**. Contributions of all kinds are welcome — fixing bugs, improving the UI, adding features, writing tests, or even improving documentation.
+Thanks for taking the time to contribute to **LibreLudo**. Contributions of all kinds are welcome, whether that's fixing bugs, improving the UI, adding features, writing tests, or even improving documentation.
 
 ---
 
@@ -8,10 +8,8 @@ Thanks for taking the time to contribute to **LibreLudo**. Contributions of all 
 
 LibreLudo is designed to be a fast, privacy-respecting PWA. To keep the codebase clean and performant, please keep the following boundaries in mind before starting work:
 
-- Architecture: We use React, TypeScript, and Redux Toolkit. Ensure changes align with existing reducer patterns (avoid scattering global state locally) and maintain strict type safety.
-
+- Architecture: We use React, TypeScript, React Router (in framework mode), and Redux Toolkit. Ensure changes align with existing reducer patterns (avoid scattering global state locally), keep route files consistent with the existing structure under `src/pages`, and maintain strict type safety.
 - Dependencies: We actively minimize external dependencies to keep the app lightweight. If your feature requires a new npm package, please open an issue to discuss it first.
-
 - Privacy First: We are committed to an ad-free, untracked experience. PRs introducing telemetry, analytics, or any form of data collection will not be merged.
 
 ---
@@ -22,8 +20,7 @@ A quick check before starting helps keep things organized.
 
 - Look through the existing issues to see if someone has already reported the problem or suggested the idea.
 - If you're planning a **larger change or new feature**, it's usually better to open an issue first so the approach can be discussed before work begins.
-
-This helps avoid duplicated effort.
+  This helps avoid duplicated effort.
 
 ---
 
@@ -35,8 +32,7 @@ If you've found a bug, please open an issue and include:
 - Steps to reproduce it
 - What you expected to happen vs. what actually happened
 - Browser and OS (including versions)
-
-The more detail you include, the faster it can be understood and resolved.
+  The more detail you include, the faster it can be understood and resolved.
 
 ---
 
@@ -48,7 +44,7 @@ This project strictly uses **[pnpm](https://pnpm.io/)** as its package manager.
 
 ## Local setup
 
-LibreLudo requires <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">Node.js 20+</a>.
+LibreLudo requires <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">Node.js 22.22+</a>.
 
 ```bash
 # Fork the repository on GitHub, then clone your fork
@@ -116,7 +112,7 @@ Commits must follow the **Conventional Commits** format.
 
 Providing a scope is encouraged, but not mandatory.
 
-```
+```text
 <type>([scope]): <short description>
 
 [body]
@@ -141,7 +137,7 @@ The body is optional but helpful when the reason behind the change isn't obvious
 
 ### Example commits
 
-```
+```text
 feat(board): animate token movement
 fix(dice): correct roll distribution
 refactor(game-state): simplify turn reducer
@@ -163,8 +159,7 @@ When you're ready to submit your work:
 4. Push the branch to your fork
 5. Open a Pull Request against `main`
 6. Add a short explanation of what the change does and why it was needed
-
-A review may request changes before the PR is merged.
+   A review may request changes before the PR is merged.
 
 ---
 
