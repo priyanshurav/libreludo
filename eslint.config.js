@@ -88,7 +88,10 @@ export default tseslint.config(
       'react/no-unescaped-entities': 'off',
     },
   },
-
+  {
+    files: ['scripts/**/*.mjs'],
+    ...tseslint.configs.disableTypeChecked,
+  },
   {
     files: ['*.config.{js,ts}', 'vite.config.ts'],
     languageOptions: {
