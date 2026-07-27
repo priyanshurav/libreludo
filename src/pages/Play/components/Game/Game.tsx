@@ -6,10 +6,9 @@ import { hydrateRootState, type AppDispatch, type RootState } from '../../../../
 import { registerDice } from '../../../../state/slices/diceSlice';
 import GameFinishedScreen from '../GameFinishedScreen/GameFinishedScreen';
 import type { TPlayerInitData } from '../../../../types';
-import { useNavigate } from 'react-router';
+import { useBlocker, useNavigate } from 'react-router';
 import { playerCountToWord } from '../../../../game/players/logic';
 import bg from '../../../../assets/bg.jpg';
-import { usePageLeaveBlocker } from '../../../../hooks/usePageLeaveBlocker';
 import { addToGameInactiveTime, setGameStartTime } from '../../../../state/slices/sessionSlice';
 import styles from './Game.module.css';
 import { retrieveState } from '../../../../game/storage/retrieveState';
@@ -39,7 +38,12 @@ export default function Game({ initData }: Props) {
   const executeBotMove = useExecuteBotMove();
   const rollDice = useRollDice();
 
-  usePageLeaveBlocker(!isGameEnded && import.meta.env.PROD);
+  useBlocker(({ currentLocation, nextLocation }) => {
+    if (isGameEnded || import.meta.env.DEV || currentLocation.pathname === nextLocation.pathname)
+      return false;
+    const userWantsToLeave = confirm(EXIT_MESSAGE);
+    return !userWantsToLeave;
+  });
 
   useEffect(() => {
     if (saveExists()) {
