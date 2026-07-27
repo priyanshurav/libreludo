@@ -28,4 +28,10 @@ const headerFile = `/*
 	${cspHeaderWithHashes}
 `;
 
-writeFileSync(path.join(process.cwd(), 'build/client/_headers'), headerFile, { encoding: 'utf8' });
+const headerFilePath = path.join(process.cwd(), 'build/client/_headers');
+
+writeFileSync(headerFilePath, headerFile, { encoding: 'utf8' });
+
+console.log(
+  `\n✅ Successfully wrote CSP header to ${path.relative(process.cwd(), headerFilePath)}`
+);
