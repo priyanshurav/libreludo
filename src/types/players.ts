@@ -17,7 +17,7 @@ export type TPlayer = {
 };
 
 export type TCoordinate = {
-  // The origin is located at the top-left corner of the board
+  // The origin is the top-leftmost tile of the board
   x: number;
   y: number;
 };
