@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import PlayerInput from './components/PlayerInput/PlayerInput';
 import { Link, useNavigate, type MetaFunction } from 'react-router';
 import type { TPlayerInitData } from '../../types';
@@ -6,11 +6,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useCleanup } from '../../hooks/useCleanup';
 import { playerCountToWord } from '../../game/players/logic';
 import { playerSequences } from '../../game/players/constants';
-import bg from '../../assets/bg.jpg';
 import HomeIcon from '../../assets/icons/home.svg?react';
 import styles from './PlayerSetup.module.css';
 import { Tooltip } from 'react-tooltip';
-import { useResizeObserver } from '../../hooks/useResizeObserver';
 import { validateStoredState } from '../../game/storage/validator';
 import {
   deleteSaveFromStorage,
@@ -49,11 +47,9 @@ const DEFAULT_PLAYER_DATA: TPlayerInitData[] = [
 
 export default function PlayerSetup() {
   const [playerCount, setPlayerCount] = useState(2);
-  const [dialogWidth, setDialogWidth] = useState(0);
   const [btnsDisabled, setBtnsDisabled] = useState(false);
   const [playersData, setPlayersData] = useState<TPlayerInitData[]>(DEFAULT_PLAYER_DATA);
   const navigate = useNavigate();
-  const [dialogNode, setDialogNode] = useState<HTMLElement | null>(null);
   const cleanup = useCleanup();
   const playerSequence = useMemo(
     () => playerSequences[playerCountToWord(playerCount)],
@@ -63,14 +59,6 @@ export default function PlayerSetup() {
   useEffect(() => {
     cleanup();
   }, [cleanup]);
-
-  const onResize = useCallback(() => {
-    if (!dialogNode) return;
-    const dialogWidth = dialogNode.getBoundingClientRect().width;
-    setDialogWidth(dialogWidth);
-  }, [dialogNode]);
-
-  useResizeObserver(dialogNode, onResize);
 
   const handlePlayBtnClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     try {
@@ -138,16 +126,10 @@ export default function PlayerSetup() {
   };
 
   return (
-    <div className={styles.playerSetup} style={{ backgroundImage: `url(${bg})` }}>
+    <div className={styles.playerSetup}>
       <main
         className={styles.playerSetupDialog}
-        ref={setDialogNode}
-        style={
-          {
-            '--dialog-width': `${dialogWidth}px`,
-            '--player-count': playerCount,
-          } as React.CSSProperties
-        }
+        style={{ '--player-count': playerCount } as React.CSSProperties}
       >
         <div className={styles.playerCountSelector}>
           {[2, 3, 4].map((n) => (

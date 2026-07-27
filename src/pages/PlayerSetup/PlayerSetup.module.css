@@ -4,6 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url('../../assets/bg.jpg');
 }
 
 .player-setup-dialog {
@@ -15,6 +16,7 @@
   width: auto;
   aspect-ratio: 1.8 / 1.5;
   background-color: white;
+  container-type: inline-size;
   border-radius: 3%;
   overflow: hidden;
   -moz-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.75);
@@ -40,10 +42,10 @@
     position: absolute;
     bottom: 0;
     height: 12.5%;
-    width: calc(var(--dialog-width) / 3);
+    width: 33.33cqw;
     background-color: var(--color-primary);
     border-radius: 10px;
-    transform: translateX(calc(var(--dialog-width) / 3 * (var(--player-count) - 2)));
+    transform: translateX(calc(33.33cqw * (var(--player-count) - 2)));
     transition: transform 250ms ease;
     z-index: 10;
   }
@@ -52,7 +54,7 @@
 .player-count {
   background: none;
   border: none;
-  font-size: calc(var(--dialog-width) / 23);
+  font-size: 4.35cqw;
   transition:
     background-color 250ms ease-in-out,
     font-size 100ms ease;
@@ -64,12 +66,12 @@
   }
 
   &:active {
-    font-size: calc(var(--dialog-width) / 26);
+    font-size: 3.85cqw;
   }
 }
 
 .player-inputs {
-  padding-top: calc(var(--dialog-width) / 20);
+  padding-top: 5cqw;
   flex: 1;
   min-height: 0;
   display: flex;
@@ -83,12 +85,12 @@
   background-color: var(--color-primary);
   color: white;
   border: none;
-  font-size: calc(var(--dialog-width) / 17);
-  margin-top: calc(var(--dialog-width) / 35);
-  margin-bottom: calc(var(--dialog-width) / 50);
-  padding-block: calc(var(--dialog-width) / 40);
-  padding-inline: calc(var(--dialog-width) / 20);
-  border-radius: calc(var(--dialog-width) / 45);
+  font-size: 5.9cqw;
+  margin-top: 2.85cqw;
+  margin-bottom: 2cqw;
+  padding-block: 2.5cqw;
+  padding-inline: 5cqw;
+  border-radius: 2.25cqw;
   transition:
     background-color 0.2s ease,
     transform 0.2s ease;
@@ -119,8 +121,8 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  padding: calc(var(--dialog-width) / 60);
-  font-size: calc(var(--dialog-width) / 30);
+  padding: 1.7cqw;
+  font-size: 3.33cqw;
   color: #595959;
 }
 
@@ -157,8 +159,8 @@
 
 .load-game {
   color: #595959;
-  font-size: calc(var(--dialog-width) / 35);
-  margin-bottom: calc(var(--dialog-width) / 50);
+  font-size: 2.85cqw;
+  margin-bottom: 2cqw;
   text-decoration: none;
 
   &:hover {

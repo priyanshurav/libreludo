@@ -11,7 +11,7 @@
   align-self: center;
 }
 .player-input-colour-dot {
-  width: calc(var(--dialog-width) * 0.065);
+  width: 6.5cqw;
   border-radius: 1000px;
   height: auto;
   aspect-ratio: 1 / 1;
@@ -19,12 +19,12 @@
 }
 .bot-status-btn {
   background-color: var(--color-primary);
-  width: calc(var(--dialog-width) / 11.5);
+  width: 8.7cqw;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
-  border-radius: calc(var(--dialog-width) / 70);
+  border-radius: 1.45cqw;
   height: auto;
   aspect-ratio: 1 / 1;
   cursor: pointer;
@@ -36,10 +36,10 @@
   background-color: var(--color-primary-hover);
 }
 .player-name-input {
-  padding: calc(var(--dialog-width) / 49) calc(var(--dialog-width) / 35);
-  font-size: calc(var(--dialog-width) / 28);
+  padding: 2cqw 2.85cqw;
+  font-size: 3.6cqw;
   border: 1px solid #ccc;
-  border-radius: calc(var(--dialog-width) / 62);
+  border-radius: 1.61cqw;
   outline: none;
   transition: border-color 200ms ease-in-out;
   width: 100%;
