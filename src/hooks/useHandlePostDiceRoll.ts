@@ -9,15 +9,16 @@ import {
   deactivateAllTokens,
 } from '../state/slices/playersSlice';
 import type { TMoveData, TPlayerColour } from '../types';
-import { sleep } from '../utils/sleep';
 import { useMoveAndCaptureToken } from './useMoveAndCaptureToken';
 import { useCallback } from 'react';
 import { saveState } from '../game/storage/saveState';
+import { useUnlockAndAlignTokens } from './useUnlockAndAlignTokens';
 
 export const useHandlePostDiceRoll = () => {
   const store = useStore<RootState>();
   const dispatch = useDispatch<AppDispatch>();
   const moveAndCapture = useMoveAndCaptureToken();
+  const unlockToken = useUnlockAndAlignTokens();
   return useCallback(
     async (
       colour: TPlayerColour,
@@ -39,17 +40,23 @@ export const useHandlePostDiceRoll = () => {
       if (player.numberOfConsecutiveSix === 3) {
         dispatch(resetNumberOfConsecutiveSix(colour));
         dispatch(deactivateAllTokens(colour));
-        if (player.isBot) await sleep(500);
         return { moveData: null, shouldChangeTurn: true };
       }
 
-      const areUnlockableTokensPresent =
-        diceNumber === 6 &&
-        player.tokens.some((t) => areCoordsEqual(t.coordinates, t.initialCoords));
-
-      if (areUnlockableTokensPresent) return { moveData: null, shouldChangeTurn: false };
+      const lockedTokens = player.tokens.filter((t) =>
+        areCoordsEqual(t.coordinates, t.initialCoords)
+      );
+      const areUnlockableTokensPresent = diceNumber === 6 && lockedTokens.length !== 0;
 
       const movableTokens = player.tokens.filter((t) => isTokenMovable(t, diceNumber));
+
+      if (diceNumber === 6 && lockedTokens.length === 1 && movableTokens.length === 0) {
+        unlockToken({ colour: lockedTokens[0].colour, id: lockedTokens[0].id });
+        dispatch(deactivateAllTokens(lockedTokens[0].colour));
+        return { moveData: null, shouldChangeTurn: false };
+      }
+
+      if (areUnlockableTokensPresent) return { moveData: null, shouldChangeTurn: false };
 
       const areAllTokensInSameCoord =
         movableTokens.length === 0
@@ -59,24 +66,22 @@ export const useHandlePostDiceRoll = () => {
       if (areAllTokensInSameCoord) {
         const moveData = await moveAndCapture(movableTokens[0], diceNumber);
         if (!moveData) {
-          if (player.isBot) await sleep(500);
           return { moveData, shouldChangeTurn: true };
         }
         const { hasTokenReachedHome, isCaptured, hasPlayerWon } = moveData;
         if (hasPlayerWon) {
           return { moveData: null, shouldChangeTurn: true };
         }
-        if (!hasTokenReachedHome && !isCaptured && diceNumber !== 6 && !player.isBot) {
+        if (!hasTokenReachedHome && !isCaptured && diceNumber !== 6) {
           return { moveData: null, shouldChangeTurn: true };
         }
         return { moveData, shouldChangeTurn: false };
       }
       if (!isAnyTokenActiveOfColour(colour, players)) {
-        if (player.isBot) await sleep(500);
         return { moveData: null, shouldChangeTurn: true };
       }
       return { moveData: null, shouldChangeTurn: false };
     },
-    [dispatch, moveAndCapture, store]
+    [dispatch, moveAndCapture, store, unlockToken]
   );
 };
