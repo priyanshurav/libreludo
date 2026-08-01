@@ -6,7 +6,7 @@
   "license": "AGPL-3.0-only",
   "scripts": {
     "dev": "react-router dev",
-    "build": "react-router build && shx cp build/client/__spa-fallback.html build/client/404.html && node scripts/generate-csp.mjs",
+    "build": "react-router build && shx cp build/client/404/index.html build/client/404.html && node scripts/generate-csp.mjs",
     "lint": "eslint .",
     "preview": "wrangler pages dev ./build/client",
     "type-check": "tsc --noEmit --project ./tsconfig.app.json",
