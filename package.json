@@ -6,7 +6,7 @@
   "license": "AGPL-3.0-only",
   "scripts": {
     "dev": "react-router dev",
-    "build": "react-router build && shx cp build/client/404/index.html build/client/404.html && node scripts/generate-csp.mjs",
+    "build": "react-router build && shx cp build/client/404/index.html build/client/404.html",
     "lint": "eslint .",
     "preview": "wrangler pages dev ./build/client",
     "type-check": "tsc --noEmit --project ./tsconfig.app.json",
@@ -50,7 +50,6 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.4",
     "@vitest/coverage-istanbul": "^4.1.10",
-    "cheerio": "^1.2.0",
     "eslint": "^9.39.5",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
