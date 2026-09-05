@@ -70,7 +70,7 @@ export default function HomePage() {
             <h3>
               <H c="🔒" /> 100% Private
             </h3>
-            <p>Nothing leaves your device. No servers, no trackers, no accounts.</p>
+            <p>Your game data stays on your device. No accounts, tracking, or ads.</p>
           </div>
 
           <div className={styles.block}>
