@@ -7,7 +7,7 @@ import dice6 from '../../../../assets/dice/6.svg';
 import dicePlaceholder from '../../../../assets/dice/dice_placeholder.gif';
 import { useCallback, useEffect, useMemo } from 'react';
 import { type TPlayerColour } from '../../../../types';
-import { useSelector } from 'react-redux';
+import { useSelector, useStore } from 'react-redux';
 import type { RootState } from '../../../../state/store';
 import { ERRORS } from '../../../../utils/errors';
 import { playerColours } from '../../../../game/players/constants';
@@ -18,6 +18,7 @@ import { useRollDice } from '../../../../hooks/useRollDice';
 import { useHandlePostDiceRoll } from '../../../../hooks/useHandlePostDiceRoll';
 import { useChangeTurn } from '../../../../hooks/useChangeTurn';
 import { logError } from '../../../../utils/logError';
+import { saveState } from '../../../../game/storage/saveState';
 
 type Props = {
   colour: TPlayerColour;
@@ -60,6 +61,7 @@ export default function Dice({ colour, playerName }: Props) {
   const handlePostDiceRoll = useHandlePostDiceRoll();
   const changeTurnFn = useChangeTurn();
   const rollDice = useRollDice();
+  const store = useStore<RootState>();
   const isBot = players.find((p) => p.colour === colour)?.isBot;
   const isCurrentPlayer = currentPlayer === colour;
   const isDiceDisabled =
@@ -74,8 +76,9 @@ export default function Dice({ colour, playerName }: Props) {
     if (isDiceDisabled) return;
     const diceNumber = await rollDice(colour);
     const res = await handlePostDiceRoll(colour, diceNumber);
+    saveState(store.getState());
     if (res?.shouldChangeTurn) changeTurnFn();
-  }, [colour, handlePostDiceRoll, isDiceDisabled, rollDice, changeTurnFn]);
+  }, [isDiceDisabled, rollDice, colour, handlePostDiceRoll, store, changeTurnFn]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
