@@ -21,6 +21,7 @@ export const useExecuteBotMove = () => {
   return useCallback(
     async function executeBotMove(colour: TPlayerColour, diceNumber: number) {
       try {
+        if (diceNumber === -1) return changeTurnFn();
         const allTokens = store.getState().players.players.flatMap((p) => p.tokens);
         const bestToken = selectBestTokenForBot(colour, diceNumber, allTokens);
         if (!bestToken) return changeTurnFn();

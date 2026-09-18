@@ -2,12 +2,7 @@ import { useDispatch, useStore } from 'react-redux';
 import type { AppDispatch, RootState } from '../state/store';
 import { areCoordsEqual } from '../game/coords/logic';
 import { isTokenMovable, isAnyTokenActiveOfColour } from '../game/tokens/logic';
-import {
-  incrementNumberOfConsecutiveSix,
-  resetNumberOfConsecutiveSix,
-  activateTokens,
-  deactivateAllTokens,
-} from '../state/slices/playersSlice';
+import { activateTokens, deactivateAllTokens } from '../state/slices/playersSlice';
 import type { TMoveData, TPlayerColour } from '../types';
 import { useMoveAndCaptureToken } from './useMoveAndCaptureToken';
 import { useCallback } from 'react';
@@ -18,7 +13,7 @@ export const useHandlePostDiceRoll = () => {
   const store = useStore<RootState>();
   const dispatch = useDispatch<AppDispatch>();
   const moveAndCapture = useMoveAndCaptureToken();
-  const unlockToken = useUnlockAndAlignTokens();
+  const unlockAndAlignTokens = useUnlockAndAlignTokens();
   return useCallback(
     async (
       colour: TPlayerColour,
@@ -28,21 +23,16 @@ export const useHandlePostDiceRoll = () => {
       moveData: TMoveData | null;
     } | null> => {
       if (store.getState().players.isGameEnded) return null;
-      if (diceNumber === 6) dispatch(incrementNumberOfConsecutiveSix(colour));
-      else dispatch(resetNumberOfConsecutiveSix(colour));
 
       dispatch(activateTokens({ all: diceNumber === 6, colour, diceNumber }));
       saveState(store.getState());
-      const players = store.getState().players.players;
-      const player = players.find((p) => p.colour === colour);
-      if (!player) return null;
-
-      if (player.numberOfConsecutiveSix === 3) {
-        dispatch(resetNumberOfConsecutiveSix(colour));
+      if (diceNumber === -1) {
         dispatch(deactivateAllTokens(colour));
         return { moveData: null, shouldChangeTurn: true };
       }
-
+      const players = store.getState().players.players;
+      const player = players.find((p) => p.colour === colour);
+      if (!player) return null;
       const lockedTokens = player.tokens.filter((t) =>
         areCoordsEqual(t.coordinates, t.initialCoords)
       );
@@ -51,7 +41,7 @@ export const useHandlePostDiceRoll = () => {
       const movableTokens = player.tokens.filter((t) => isTokenMovable(t, diceNumber));
 
       if (diceNumber === 6 && lockedTokens.length === 1 && movableTokens.length === 0) {
-        unlockToken({ colour: lockedTokens[0].colour, id: lockedTokens[0].id });
+        unlockAndAlignTokens({ colour: lockedTokens[0].colour, id: lockedTokens[0].id });
         dispatch(deactivateAllTokens(lockedTokens[0].colour));
         return { moveData: null, shouldChangeTurn: false };
       }
@@ -82,6 +72,6 @@ export const useHandlePostDiceRoll = () => {
       }
       return { moveData: null, shouldChangeTurn: false };
     },
-    [dispatch, moveAndCapture, store, unlockToken]
+    [dispatch, moveAndCapture, store, unlockAndAlignTokens]
   );
 };
