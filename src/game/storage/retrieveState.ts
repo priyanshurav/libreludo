@@ -17,7 +17,6 @@ export const retrieveState = (currentState: RootState): TResult<RootState, Error
   if (!success) return { success: false, error, data: null };
 
   const numberOfPlayers = data.players.length;
-  const playerSequence = playerSequences[playerCountToWord(numberOfPlayers)];
 
   const newState: RootState = {
     board: { ...currentState.board },
@@ -25,7 +24,7 @@ export const retrieveState = (currentState: RootState): TResult<RootState, Error
     players: {
       currentPlayerColour: data.currentPlayerColour,
       players: [],
-      playerSequence,
+      playerSequence: playerSequences[playerCountToWord(numberOfPlayers)],
       isAnyTokenMoving: false,
       isGameEnded: false,
       playerFinishOrder: [],
@@ -83,5 +82,6 @@ export const retrieveState = (currentState: RootState): TResult<RootState, Error
       name: newState.players.players.find((p) => p.colour === colour)?.name as string,
     });
   }
+
   return { success: true, data: newState, error: null };
 };
