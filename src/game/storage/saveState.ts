@@ -5,6 +5,7 @@ import type { RootState } from '../../state/store';
 
 export const saveState = (currentState: RootState): void => {
   if (currentState.players.isAnyTokenMoving) throw new Error('Cannot save while tokens are moving');
+  if (currentState.players.isGameEnded) throw new Error('Cannot save a finished game');
   const players = currentState.players.players;
   const dice = currentState.dice.dice;
   const toBeStored: TStoredStateSchema = {
