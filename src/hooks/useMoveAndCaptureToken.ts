@@ -14,6 +14,7 @@ import { calculateSequence } from '../game/movement/calculateSequence';
 import { type RootState } from '../state/store';
 import { ERRORS } from '../utils/errors';
 import { saveState } from '../game/storage/saveState';
+import { deleteSaveFromStorage } from '../game/storage/storage';
 
 export function useMoveAndCaptureToken() {
   const moveToken = useMoveTokenForward();
@@ -32,7 +33,11 @@ export function useMoveAndCaptureToken() {
         token,
         diceNumber
       );
-      saveState(nextState);
+      if (nextState.players.isGameEnded) {
+        deleteSaveFromStorage();
+      } else {
+        saveState(nextState);
+      }
       await moveToken(moveSequence, token);
       if (moveSequence.length === 0) return null;
       if (captureData.length !== 0) await captureToken(captureData, token);

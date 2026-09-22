@@ -12,7 +12,7 @@ import bg from '../../../../assets/bg.jpg';
 import { addToGameInactiveTime, setGameStartTime } from '../../../../state/slices/sessionSlice';
 import styles from './Game.module.css';
 import { retrieveState } from '../../../../game/storage/retrieveState';
-import { deleteSaveFromStorage, saveExists } from '../../../../game/storage/storage';
+import { saveExists } from '../../../../game/storage/storage';
 import { useExecuteBotMove } from '../../../../hooks/useExecuteBotMove';
 import { useRollDice } from '../../../../hooks/useRollDice';
 import { playerSequences } from '../../../../game/players/constants';
@@ -57,10 +57,6 @@ export default function Game({ initData }: Props) {
   }, [store]);
 
   useEffect(() => {
-    if (isGameEnded) deleteSaveFromStorage();
-  }, [isGameEnded]);
-
-  useEffect(() => {
     if (!initData || saveExists()) return;
     const playerCountWord = playerCountToWord(initData.length);
     const calculatedSequence = playerSequences[playerCountWord];
@@ -100,8 +96,8 @@ export default function Game({ initData }: Props) {
         gameInactiveStartTime.current = Date.now();
         try {
           saveState(store.getState());
-        } catch {
-          console.warn('Skipped saving: game state is transitional.');
+        } catch (e) {
+          console.warn(`Skipped saving. Reason: ${(e as Error).message}`);
         }
       } else if (document.visibilityState === 'visible' && gameInactiveStartTime.current > 0) {
         const now = Date.now();
