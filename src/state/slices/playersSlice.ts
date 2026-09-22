@@ -82,14 +82,8 @@ const reducers = {
     token.direction = action.payload.direction;
   },
 
-  changeTurn: (state: TPlayerState) => {
-    const { currentPlayerColour, playerSequence } = state;
-
-    const currentPlayerIndex = playerSequence.indexOf(currentPlayerColour);
-    const nextPlayerIndex =
-      currentPlayerIndex === playerSequence.length - 1 ? 0 : currentPlayerIndex + 1;
-
-    state.currentPlayerColour = playerSequence[nextPlayerIndex];
+  changeTurn: (state: TPlayerState, action: PayloadAction<TPlayerColour>) => {
+    state.currentPlayerColour = action.payload;
   },
 
   setPlayerSequence: (
@@ -162,12 +156,13 @@ const reducers = {
     const hasPlayerWon = player.tokens.every((t) => t.hasTokenReachedHome);
     if (!hasPlayerWon) return;
     player.playerFinishTime = Date.now();
-    state.playerSequence = state.playerSequence.filter((p) => p !== action.payload.colour);
     state.playerFinishOrder.push({ name: player.name, colour: action.payload.colour });
-    if (state.playerSequence.length === 1) {
+    if (state.playerFinishOrder.length === state.playerSequence.length - 1) {
+      const finishedColours = state.playerFinishOrder.map((p) => p.colour);
+      const lastColour = state.playerSequence.find((c) => !finishedColours.includes(c))!;
       state.playerFinishOrder.push({
-        name: getPlayer(state, state.playerSequence[0]).name,
-        colour: state.playerSequence[0],
+        name: getPlayer(state, lastColour).name,
+        colour: lastColour,
       });
       state.isGameEnded = true;
     }

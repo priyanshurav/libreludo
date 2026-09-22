@@ -12,6 +12,7 @@ import { areCoordsEqual } from '../coords/logic';
 import { defaultTokenAlignmentData } from '../tokens/alignment';
 import { TOKEN_SAFE_COORDINATES } from '../tokens/constants';
 import { tokenPaths } from '../tokens/paths';
+import { getNextPlayer } from '../players/logic';
 
 export const calculateSequence = (
   state: RootState,
@@ -86,7 +87,16 @@ export const calculateSequence = (
     ? updatedPlayer.tokens.every((t) => t.hasTokenReachedHome)
     : false;
   if (hasPlayerWon || (captureData.length === 0 && !hasTokenReachedHome && diceNumber !== 6)) {
-    nextState.players = playersReducer(nextState.players, changeTurn());
+    nextState.players = playersReducer(
+      nextState.players,
+      changeTurn(
+        getNextPlayer(
+          nextState.players.playerSequence,
+          nextState.players.playerFinishOrder,
+          nextState.players.currentPlayerColour
+        )!
+      )
+    );
   }
 
   return { nextState, moveSequence, captureData };
