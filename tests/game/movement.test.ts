@@ -315,7 +315,7 @@ describe('Test game/movement', () => {
         expect(
           getPlayer(nextState.players, 'blue').tokens.every((t) => t.hasTokenReachedHome)
         ).toBe(true);
-        expect(nextState.players.playerSequence).toEqual(['red', 'green', 'yellow']);
+        expect(nextState.players.playerSequence).toEqual(state.players.playerSequence);
         expect(nextState.players.currentPlayerColour).toBe('red');
       });
 

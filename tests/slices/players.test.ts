@@ -61,19 +61,12 @@ describe('Test players slice reducers', () => {
     });
   });
   describe('changeTurn', () => {
-    it('should update currentPlayerColour to the next in playerSequence', () => {
+    it('should update currentPlayerColour to the provided colour', () => {
       const initData = structuredClone(initialState);
       initData.playerSequence = playerSequences.four;
       initData.currentPlayerColour = initData.playerSequence[0];
-      const newState = playersReducer(initData, changeTurn());
-      expect(newState.currentPlayerColour).toBe(initData.playerSequence[1]);
-    });
-    it('should cycle to the first player if current player is the last in sequence', () => {
-      const initData = structuredClone(initialState);
-      initData.playerSequence = playerSequences.four;
-      initData.currentPlayerColour = initData.playerSequence[initData.playerSequence.length - 1];
-      const newState = playersReducer(initData, changeTurn());
-      expect(newState.currentPlayerColour).toBe(initData.playerSequence[0]);
+      const newState = playersReducer(initData, changeTurn('green'));
+      expect(newState.currentPlayerColour).toBe('green');
     });
   });
   describe('setPlayerSequence', () => {
@@ -323,7 +316,7 @@ describe('Test players slice reducers', () => {
       expect(newState.playerSequence).toEqual(initState.playerSequence);
       expect(newState.playerFinishOrder).toEqual(initState.playerFinishOrder);
     });
-    it('should remove the player from playerSequence and add them to finishOrder if all tokens reached home', () => {
+    it('should add player to finishOrder if all tokens reached home', () => {
       const initState = structuredClone(initialState);
       initState.players = structuredClone(DUMMY_PLAYERS);
       initState.playerSequence = playerSequences.four;
@@ -340,7 +333,7 @@ describe('Test players slice reducers', () => {
       });
 
       expect(newState.playerFinishOrder).toEqual([{ name: player.name, colour: player.colour }]);
-      expect(newState.playerSequence).toEqual(initState.playerSequence.filter((c) => c !== 'blue'));
+      expect(newState.playerSequence).toEqual(initState.playerSequence);
     });
     it('should end the game and add the last remaining player to finishOrder when only one player is left', () => {
       const initState = structuredClone(initialState);
@@ -366,7 +359,7 @@ describe('Test players slice reducers', () => {
         { name: greenPlayer.name, colour: greenPlayer.colour },
       ]);
       expect(newState.isGameEnded).toBe(true);
-      expect(newState.playerSequence).toEqual(initState.playerSequence.filter((c) => c !== 'blue'));
+      expect(newState.playerSequence).toEqual(initState.playerSequence);
     });
     it('should set the playerFinishTime if player won', () => {
       const initState = structuredClone(initialState);
