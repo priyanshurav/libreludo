@@ -30,7 +30,7 @@ describe('Test coords/logic', () => {
       expect(getHomeCoordForColour(colour)).toEqual(tokenPath[tokenPath.length - 1]);
     });
     it('throws an error for invalid player colour', () => {
-      expect(() => getHomeCoordForColour('black' as never)).toThrowError();
+      expect(() => getHomeCoordForColour('black' as never)).toThrow();
     });
   });
   describe('isCoordASafeSpot', () => {

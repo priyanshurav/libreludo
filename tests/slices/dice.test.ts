@@ -93,10 +93,10 @@ describe('Test dice helpers', () => {
         ],
         rollBag: { blue: [], red: [], green: [], yellow: [] },
       };
-      expect(() => getDice(state, 'white' as never)).toThrowError();
+      expect(() => getDice(state, 'white' as never)).toThrow();
     });
     it('should throw an error if the dice state is empty', () => {
-      expect(() => getDice(initialState, 'blue')).toThrowError();
+      expect(() => getDice(initialState, 'blue')).toThrow();
     });
   });
 

@@ -10,9 +10,9 @@ describe('Test players/logic', () => {
       expect(playerCountToWord(4)).toBe('four');
     });
     it('should throw error for unsupported player counts', () => {
-      expect(() => playerCountToWord(1)).toThrowError();
-      expect(() => playerCountToWord(5)).toThrowError();
-      expect(() => playerCountToWord(6)).toThrowError();
+      expect(() => playerCountToWord(1)).toThrow();
+      expect(() => playerCountToWord(5)).toThrow();
+      expect(() => playerCountToWord(6)).toThrow();
     });
   });
   describe('getNextPlayer', () => {

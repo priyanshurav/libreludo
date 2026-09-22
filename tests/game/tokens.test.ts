@@ -119,7 +119,7 @@ describe('Test tokens/factory', () => {
       });
     });
     it('should throw error if player colour is invalid', () => {
-      expect(() => genLockedTokens('white' as never)).toThrowError();
+      expect(() => genLockedTokens('white' as never)).toThrow();
     });
   });
 });
@@ -132,9 +132,9 @@ describe('Test tokens/alignment', () => {
       expect(getTokenAlignmentData(16)).toEqual(tokenAlignmentData[16]);
     });
     it('throws error for invalid token count', () => {
-      expect(() => getTokenAlignmentData(17)).toThrowError();
-      expect(() => getTokenAlignmentData(0)).toThrowError();
-      expect(() => getTokenAlignmentData(-1)).toThrowError();
+      expect(() => getTokenAlignmentData(17)).toThrow();
+      expect(() => getTokenAlignmentData(0)).toThrow();
+      expect(() => getTokenAlignmentData(-1)).toThrow();
     });
   });
   describe('applyAlignmentData', () => {
@@ -144,7 +144,7 @@ describe('Test tokens/alignment', () => {
         { ...DUMMY_TOKEN, colour: 'blue', id: 1, coordinates: { x: 8, y: 13 } },
         { ...DUMMY_TOKEN, colour: 'green', id: 0, coordinates: { x: 11, y: 8 } },
       ];
-      expect(() => applyAlignmentData(tokens, vi.fn())).toThrowError();
+      expect(() => applyAlignmentData(tokens, vi.fn())).toThrow();
     });
   });
 });

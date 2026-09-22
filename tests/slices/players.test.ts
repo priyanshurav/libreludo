@@ -40,9 +40,7 @@ describe('Test players slice reducers', () => {
     it('should throw an error if a player with the same colour already exists', () => {
       const playerInitData = { name: 'Player 1', colour: 'blue', isBot: false };
       const newState = playersReducer(initialState, registerNewPlayer(playerInitData as never));
-      expect(() =>
-        playersReducer(newState, registerNewPlayer(playerInitData as never))
-      ).toThrowError();
+      expect(() => playersReducer(newState, registerNewPlayer(playerInitData as never))).toThrow();
     });
   });
   describe('changeCoordsOfToken', () => {
@@ -211,7 +209,7 @@ describe('Test players slice reducers', () => {
       token.isLocked = false;
       expect(() =>
         playersReducer(initState, unlockToken({ colour: token.colour, id: token.id }))
-      ).toThrowError();
+      ).toThrow();
     });
   });
   describe('lockToken', () => {
@@ -233,7 +231,7 @@ describe('Test players slice reducers', () => {
       token.isLocked = true;
       expect(() =>
         playersReducer(initState, lockToken({ colour: token.colour, id: token.id }))
-      ).toThrowError();
+      ).toThrow();
     });
   });
   describe('incrementNumberOfConsecutiveSix', () => {
@@ -418,7 +416,7 @@ describe('Test players helpers', () => {
     it('should throw an error if the player with the specified colour does not exist', () => {
       const initState = structuredClone(initialState);
       initState.players = structuredClone(DUMMY_PLAYERS);
-      expect(() => getPlayer(initState, 'white' as never)).toThrowError();
+      expect(() => getPlayer(initState, 'white' as never)).toThrow();
     });
   });
   describe('getToken', () => {
@@ -432,12 +430,12 @@ describe('Test players helpers', () => {
     it('should throw an error if the token with the specified ID does not exist for the player', () => {
       const initState = structuredClone(initialState);
       initState.players = structuredClone(DUMMY_PLAYERS);
-      expect(() => getToken(initState, 'blue', 15)).toThrowError();
+      expect(() => getToken(initState, 'blue', 15)).toThrow();
     });
     it('should throw an error if the player with the specified colour does not exist', () => {
       const initState = structuredClone(initialState);
       initState.players = structuredClone(DUMMY_PLAYERS);
-      expect(() => getToken(initState, 'white' as never, 0)).toThrowError();
+      expect(() => getToken(initState, 'white' as never, 0)).toThrow();
     });
   });
 });
