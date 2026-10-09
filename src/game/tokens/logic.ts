@@ -18,6 +18,10 @@ export function getAvailableSteps({ colour, coordinates }: TToken): number {
   return getDistanceInTokenPath(colour, coordinates, getHomeCoordForColour(colour));
 }
 
+export function getStepsFromStart(token: TToken): number {
+  return 56 - getAvailableSteps(token);
+}
+
 export function isTokenMovable(token: TToken, diceNumber?: number): boolean {
   if (!diceNumber) return !token.isLocked && !token.hasTokenReachedHome;
   return !token.isLocked && !token.hasTokenReachedHome && getAvailableSteps(token) >= diceNumber;
@@ -26,3 +30,19 @@ export function isTokenMovable(token: TToken, diceNumber?: number): boolean {
 export function getGloballyUniqueTokenId(colour: TPlayerColour, id: number): string {
   return `${colour}_${id}`;
 }
+export const getTokenAriaLabel = (
+  colour: TPlayerColour,
+  id: number,
+  isLocked: boolean,
+  hasTokenReachedHome: boolean,
+  stepsFromStart: number
+): string => {
+  const baseLabel = `${colour} token ${id + 1}`;
+  if (isLocked && hasTokenReachedHome) {
+    return `${baseLabel}, at home`;
+  } else if (isLocked && !hasTokenReachedHome) {
+    return `${baseLabel}, locked in base`;
+  } else {
+    return `${baseLabel}, ${stepsFromStart} steps from start`;
+  }
+};

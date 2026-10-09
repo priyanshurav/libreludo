@@ -1,5 +1,5 @@
 import { describe, it, expect, assert, vi } from 'vitest';
-import { expandTokenPath, getIntegersBetween } from '../../src/game/tokens/paths';
+import { expandTokenPath, getIntegersBetween, tokenPaths } from '../../src/game/tokens/paths';
 import type { TCoordinate, TPlayer, TToken, TTokenPath } from '../../src/types';
 import { playerSequences } from '../../src/game/players/constants';
 import { genLockedTokens } from '../../src/game/tokens/factory';
@@ -13,6 +13,8 @@ import { TOKEN_LOCKED_COORDINATES } from '../../src/game/tokens/constants';
 import { DUMMY_PLAYERS } from '../fixtures/players.dummy';
 import {
   getAvailableSteps,
+  getStepsFromStart,
+  getTokenAriaLabel,
   isAnyTokenActiveOfColour,
   isTokenMovable,
   tokensWithCoord,
@@ -203,6 +205,35 @@ describe('Test tokens/logic', () => {
         coordinates: getHomeCoordForColour('blue'),
       };
       expect(getAvailableSteps(token)).toBe(0);
+    });
+  });
+  describe('getStepsFromStart', () => {
+    it('returns the correct number of steps taken from start for a token at a given coordinate and colour', () => {
+      const token: TToken = { ...DUMMY_TOKEN, colour: 'blue', coordinates: { x: 6, y: 9 } };
+      expect(getStepsFromStart(token)).toBe(4);
+    });
+    it('returns zero if the token is at home', () => {
+      const token: TToken = {
+        ...DUMMY_TOKEN,
+        colour: 'blue',
+        coordinates: tokenPaths.blue[0],
+      };
+      expect(getStepsFromStart(token)).toBe(0);
+    });
+  });
+  describe('getTokenAriaLabel', () => {
+    it('returns the "locked in base" label when the token is locked and has not reached home', () => {
+      expect(getTokenAriaLabel('blue', 0, true, false, 0)).toBe('blue token 1, locked in base');
+    });
+
+    it('returns the "at home" label when the token is locked and has reached home', () => {
+      expect(getTokenAriaLabel('green', 2, true, true, 56)).toBe('green token 3, at home');
+    });
+
+    it('returns the steps-from-start label when the token is unlocked', () => {
+      expect(getTokenAriaLabel('red', 1, false, false, 12)).toBe(
+        'red token 2, 12 steps from start'
+      );
     });
   });
   describe('isTokenMovable', () => {
