@@ -94,11 +94,17 @@ export default function Dice({ colour, playerName }: Props) {
         className={clsx(styles.dice, {
           [styles.active]: !isDiceDisabled,
         })}
-        tabIndex={isDiceDisabled ? -1 : undefined}
         title={!isDiceDisabled ? 'Roll Dice (Press D)' : undefined}
         disabled={isDiceDisabled}
         style={{ '--player-colour': playerColours[colour] } as React.CSSProperties}
         type="button"
+        aria-label={
+          isPlaceholderShowing
+            ? `${playerName} is rolling`
+            : `${playerName}'s dice, showing ${diceNumber}${
+                !isDiceDisabled ? '. Press to roll' : ''
+              }`
+        }
         onClick={handleDiceClick}
       >
         <img

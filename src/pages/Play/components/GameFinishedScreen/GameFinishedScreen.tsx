@@ -5,13 +5,19 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router';
 import styles from './GameFinishedScreen.module.css';
 import { useWindowDimensions } from '../../../../hooks/useWindowDimensions';
+import { useEffect, useRef } from 'react';
 
 type Props = {
   playerFinishOrder: TPlayerNameAndColour[];
 };
 
 export default function GameFinishedScreen({ playerFinishOrder }: Props) {
+  const playAgainRef = useRef<HTMLAnchorElement | null>(null);
   const { width, height } = useWindowDimensions();
+
+  useEffect(() => {
+    playAgainRef.current?.focus();
+  }, []);
   return (
     <AnimatePresence>
       <motion.div className={styles.gameFinishedScreen}>
@@ -22,15 +28,20 @@ export default function GameFinishedScreen({ playerFinishOrder }: Props) {
           transition={{ duration: 0.2 }}
           className={styles.gameFinishedBackdrop}
         />
-        <Confetti width={width} height={height} style={{ zIndex: 20 }} />
+        <Confetti width={width} height={height} style={{ zIndex: 20 }} aria-hidden="true" />
         <motion.div
           className={styles.gameFinishedDialog}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
           transition={{ duration: 0.2 }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="game-finished-heading"
         >
-          <span className={styles.gameFinishedText}>GAME FINISHED!</span>
+          <span id="game-finished-heading" className={styles.gameFinishedText}>
+            GAME FINISHED!
+          </span>
           <section className={styles.gameResult}>
             {playerFinishOrder.map((p, i) => (
               <GameFinishPlayerItem
@@ -42,7 +53,7 @@ export default function GameFinishedScreen({ playerFinishOrder }: Props) {
               />
             ))}
           </section>
-          <Link className={styles.playAgainBtn} to="/setup">
+          <Link className={styles.playAgainBtn} ref={playAgainRef} to="/setup">
             Play Again!
           </Link>
         </motion.div>

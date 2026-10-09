@@ -15,7 +15,11 @@ import { playerColours } from '../../../../game/players/constants';
 import { transitionStates } from '../../../../game/tokens/constants';
 import styles from './Token.module.css';
 import clsx from 'clsx';
-import { getGloballyUniqueTokenId } from '../../../../game/tokens/logic';
+import {
+  getGloballyUniqueTokenId,
+  getStepsFromStart,
+  getTokenAriaLabel,
+} from '../../../../game/tokens/logic';
 import { useChangeTurn } from '../../../../hooks/useChangeTurn';
 import { useUnlockAndAlignTokens } from '../../../../hooks/useUnlockAndAlignTokens';
 import { saveState } from '../../../../game/storage/saveState';
@@ -46,7 +50,8 @@ export default function Token({ colour, id, tokenClickData }: Props) {
   ) as TPlayer;
   const token = useMemo(() => playerTokens.find((t) => t.id === id), [playerTokens, id]) as TToken;
 
-  const { coordinates, isActive, isLocked, tokenAlignmentData, direction } = token;
+  const { coordinates, isActive, isLocked, hasTokenReachedHome, tokenAlignmentData, direction } =
+    token;
 
   const { scaleFactor } = tokenAlignmentData;
   const getPosition = useCoordsToPosition();
@@ -163,13 +168,19 @@ export default function Token({ colour, id, tokenClickData }: Props) {
     <motion.button
       id={getGloballyUniqueTokenId(colour, id)}
       className={styles.token}
-      tabIndex={isActive ? undefined : -1}
       onFocus={() => setIsCurrentlyFocused(true)}
       onBlur={() => setIsCurrentlyFocused(false)}
       disabled={!isActive}
       onClick={handleTokenClick}
       ref={tokenElRef}
       animate={{ scale: scaleFactor }}
+      aria-label={getTokenAriaLabel(
+        colour,
+        id,
+        isLocked,
+        hasTokenReachedHome,
+        getStepsFromStart(token)
+      )}
       transition={{
         duration: direction ? transitionStates[direction].durationMs / 1000 : 0,
         ease: direction ? transitionStates[direction].timingFn : undefined,
