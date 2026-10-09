@@ -18,12 +18,14 @@ function PlayerInput({ colour, isBot, name, onBotStatusChange, onNameChange }: P
     <div className={styles.playerInput}>
       <span
         className={styles.playerInputColourDot}
+        aria-hidden="true"
         style={{ backgroundColor: playerColours[colour] }}
       />
       <input
         type="text"
         placeholder="Enter player name"
         className={styles.playerNameInput}
+        aria-label={`Name for ${colour} player`}
         value={name}
         onChange={(e) => onNameChange(e.target.value.slice(0, MAX_PLAYER_NAME_LENGTH))}
       />
@@ -31,10 +33,12 @@ function PlayerInput({ colour, isBot, name, onBotStatusChange, onNameChange }: P
         className={styles.botStatusBtn}
         data-tooltip-id="bot-status-tooltip"
         data-tooltip-content={isBot ? 'Bot' : 'Human'}
-        aria-label="Toggle Ludo bot on or off"
+        aria-pressed={isBot}
+        type="button"
+        aria-label={`Bot for ${colour} player`}
         onClick={() => onBotStatusChange(!isBot)}
       >
-        {isBot ? <BotIcon /> : <HumanIcon />}
+        {isBot ? <BotIcon aria-hidden="true" /> : <HumanIcon aria-hidden="true" />}
       </button>
     </div>
   );

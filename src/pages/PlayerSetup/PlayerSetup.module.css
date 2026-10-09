@@ -104,7 +104,7 @@
     transform: scale(1.05);
   }
 
-  &[aria-disabled='true'] {
+  &:disabled {
     opacity: 0.45;
     cursor: not-allowed;
 
@@ -167,7 +167,7 @@
     text-decoration: underline;
   }
 
-  &[aria-disabled='true'] {
+  &:disabled {
     opacity: 0.4;
     cursor: not-allowed;
 

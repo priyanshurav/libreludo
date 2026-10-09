@@ -60,9 +60,8 @@ export default function PlayerSetup() {
     cleanup();
   }, [cleanup]);
 
-  const handlePlayBtnClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const handlePlayBtnClick = () => {
     try {
-      e.preventDefault();
       if (btnsDisabled) return;
       setBtnsDisabled(true);
 
@@ -99,9 +98,8 @@ export default function PlayerSetup() {
     }
   };
 
-  const handleLoadLinkClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const handleLoadLinkClick = () => {
     try {
-      e.preventDefault();
       if (btnsDisabled) return;
       setBtnsDisabled(true);
       const { success, data } = validateStoredState(retrieveSaveFromStorage());
@@ -129,11 +127,19 @@ export default function PlayerSetup() {
     <div className={styles.playerSetup}>
       <main
         className={styles.playerSetupDialog}
+        aria-label="Game Setup"
         style={{ '--player-count': playerCount } as React.CSSProperties}
       >
-        <div className={styles.playerCountSelector}>
+        <div className={styles.playerCountSelector} aria-label="Number of players" role="group">
           {[2, 3, 4].map((n) => (
-            <button className={styles.playerCount} key={n} onClick={() => setPlayerCount(n)}>
+            <button
+              className={styles.playerCount}
+              key={n}
+              onClick={() => setPlayerCount(n)}
+              aria-pressed={playerCount === n}
+              aria-label={`${n} players`}
+              type="button"
+            >
               {n}
             </button>
           ))}
@@ -155,34 +161,34 @@ export default function PlayerSetup() {
           ))}
         </div>
 
-        <Link
+        <button
+          type="button"
           className={styles.playBtn}
-          to="/play"
           onClick={handlePlayBtnClick}
-          aria-disabled={btnsDisabled}
+          disabled={btnsDisabled}
         >
           PLAY
-        </Link>
-        <Link
+        </button>
+        <button
+          type="button"
           className={styles.loadGame}
-          to="/play"
           title="Load last game"
           onClick={handleLoadLinkClick}
-          aria-disabled={btnsDisabled}
+          disabled={btnsDisabled}
         >
           or, load last game
-        </Link>
+        </button>
         <small className={styles.version}>v{__LIBRELUDO_VERSION__}</small>
       </main>
-      <Link to="/" className={styles.goToHome}>
-        <HomeIcon />
+      <Link to="/" className={styles.goToHome} aria-label="Go to home page">
+        <HomeIcon aria-hidden="true" />
       </Link>
       <a
         href="https://github.com/priyanshurav"
         rel="noopener noreferrer"
         target="_blank"
         className={styles.ghFollowBtn}
-        aria-label="Follow @priyanshurav on GitHub"
+        aria-label="Follow @priyanshurav on GitHub (opens in a new tab)"
       >
         <GitHubLogo aria-hidden="true" />
         Follow&nbsp;@priyanshurav
