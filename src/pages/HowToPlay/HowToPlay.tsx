@@ -13,7 +13,7 @@ export default function HowToPlay() {
   return (
     <div className={styles.howToPlayContainer}>
       <main className={styles.howToPlay}>
-        <section className={styles.introduction}>
+        <div className={styles.introduction}>
           <h1>
             <H c="🎲" /> How to Play LibreLudo
           </h1>
@@ -21,9 +21,9 @@ export default function HowToPlay() {
             Welcome to the colorful world of LibreLudo! Whether you're new or need a refresher,
             here's everything you need to know to play and win.
           </p>
-        </section>
+        </div>
 
-        <section className={styles.section}>
+        <div className={styles.section}>
           <h2>
             <H c="🎯" /> Objective
           </h2>
@@ -31,9 +31,9 @@ export default function HowToPlay() {
             Be the first to move all <strong>4 of your tokens</strong> from Base to the Home
             Triangle by moving them in a clockwise path around the board.
           </p>
-        </section>
+        </div>
 
-        <section className={styles.section}>
+        <div className={styles.section}>
           <h2>
             <H c="🧩" /> Game Components
           </h2>
@@ -47,9 +47,9 @@ export default function HowToPlay() {
               Each player gets 1 six-sided die <H c="🎲" /> (numbers 1-6)
             </li>
           </ul>
-        </section>
+        </div>
 
-        <section className={styles.section}>
+        <div className={styles.section}>
           <h2>
             <H c="👥" /> Players
           </h2>
@@ -58,8 +58,8 @@ export default function HowToPlay() {
             <li>Each player picks a color</li>
             <li>Can be played solo (vs. Bot) or with friends</li>
           </ul>
-        </section>
-        <section className={styles.section}>
+        </div>
+        <div className={styles.section}>
           <h2>
             <H c="🕹️" /> Quick Start Guide
           </h2>
@@ -84,8 +84,8 @@ export default function HowToPlay() {
               Tap <strong>PLAY</strong> to start the match!
             </li>
           </ol>
-        </section>
-        <section className={styles.section}>
+        </div>
+        <div className={styles.section}>
           <h2>
             <H c="⌨️" /> Controls
           </h2>
@@ -95,8 +95,8 @@ export default function HowToPlay() {
             </li>
             <li>Click a token to move it.</li>
           </ul>
-        </section>
-        <section className={styles.section}>
+        </div>
+        <div className={styles.section}>
           <h2>
             <H c="🎮" /> Gameplay Overview
           </h2>
@@ -127,8 +127,8 @@ export default function HowToPlay() {
             If you roll three sixes in a row in Ludo, your third roll is canceled and you lose your
             turn.
           </Note>
-        </section>
-        <section className={styles.section}>
+        </div>
+        <div className={styles.section}>
           <h2>
             <H c="🧍" /> Token Rules
           </h2>
@@ -170,8 +170,8 @@ export default function HowToPlay() {
             Capturing one or more opponent tokens in a single roll grants an{' '}
             <strong>extra dice roll.</strong>
           </Note>
-        </section>
-        <section className={styles.section}>
+        </div>
+        <div className={styles.section}>
           <h2>
             <H c="⭐" /> Safe Zones
           </h2>
@@ -184,9 +184,9 @@ export default function HowToPlay() {
             </li>
             <li>Multiple tokens (even from different players) can share the same safe zone.</li>
           </ul>
-        </section>
+        </div>
 
-        <section className={styles.section}>
+        <div className={styles.section}>
           <h2>
             <H c="🏠" /> Reaching Home
           </h2>
@@ -198,9 +198,9 @@ export default function HowToPlay() {
             </li>
             <li>Tokens in the Home Triangle are safe and cannot be captured.</li>
           </ul>
-        </section>
+        </div>
 
-        <section className={styles.section}>
+        <div className={styles.section}>
           <h2>
             <H c="🏁" /> Winning the Game
           </h2>
@@ -212,9 +212,9 @@ export default function HowToPlay() {
               <strong>Final Rankings:</strong> 1st → 2nd → 3rd → Last (based on finish order).
             </li>
           </ul>
-        </section>
+        </div>
 
-        <section className={styles.section}>
+        <div className={styles.section}>
           <h2>
             <H c="💡" /> Quick Tips
           </h2>
@@ -246,7 +246,7 @@ export default function HowToPlay() {
               left off
             </li>
           </ul>
-        </section>
+        </div>
       </main>
       <Link className={styles.playNowBtn} to="/setup">
         <H c="🔥" /> Play Now

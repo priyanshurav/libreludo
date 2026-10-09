@@ -43,7 +43,8 @@ export default function HomePage() {
             <span>Welcome to</span> LibreLudo
           </h1>
           <p>An ad-free, open-source Ludo game with local multiplayer and bot opponents</p>
-          <nav className={styles.ctaButtons}>
+
+          <nav aria-label="Quick actions" className={styles.ctaButtons}>
             <Link className={clsx(styles.ctaButton, styles.playNowBtn)} to="/setup">
               <H c="🔥" /> Play Now!
             </Link>
@@ -52,31 +53,33 @@ export default function HomePage() {
             </Link>
           </nav>
         </section>
-        <section className={styles.features}>
+
+        <section className={styles.features} aria-label="Features">
           <div className={styles.block}>
-            <h3>
+            <h2>
               <H c="⚡" /> Instant Play
-            </h3>
+            </h2>
             <p>No sign-ups. Open the page and jump straight into a game.</p>
           </div>
 
           <div className={styles.block}>
-            <h3>
+            <h2>
               <H c="🚫" /> Zero Ads
-            </h3>
+            </h2>
             <p>No pop-ups, no unskippable videos between turns. Just the game.</p>
           </div>
+
           <div className={styles.block}>
-            <h3>
+            <h2>
               <H c="🔒" /> 100% Private
-            </h3>
+            </h2>
             <p>Your game data stays on your device. No accounts, tracking, or ads.</p>
           </div>
 
           <div className={styles.block}>
-            <h3>
+            <h2>
               <H c="📖" /> Open Source
-            </h3>
+            </h2>
             <p>
               Free forever, with the full source code on GitHub for anyone to inspect or contribute
               to.
@@ -84,6 +87,7 @@ export default function HomePage() {
           </div>
         </section>
       </main>
+
       <footer>
         <div className={styles.text}>
           <p className={styles.credits}>
@@ -92,7 +96,12 @@ export default function HomePage() {
               ❤️
             </span>{' '}
             by{' '}
-            <a href="https://github.com/priyanshurav" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://github.com/priyanshurav"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="@priyanshurav on GitHub (opens in a new tab)"
+            >
               @priyanshurav
             </a>
           </p>
@@ -102,41 +111,43 @@ export default function HomePage() {
               href="/LICENSE.txt"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Read the LibreLudo AGPLv3 License"
+              aria-label="Read the LibreLudo AGPLv3 License (opens in a new tab)"
               title="Read the LibreLudo AGPLv3 License"
             >
               AGPLv3
             </a>
           </small>
         </div>
+
         <div className={styles.footerActions}>
           <a
             href="https://github.com/priyanshurav/libreludo"
             target="_blank"
-            aria-label="View Source on GitHub"
+            aria-label="View Source on GitHub (opens in a new tab)"
             title="View Source on GitHub"
             className={styles.iconBtn}
             rel="noopener noreferrer"
           >
-            <GitHubLogo />
+            <GitHubLogo aria-hidden="true" />
           </a>
           <a
             href="/THIRD_PARTY_LICENSES.txt"
             target="_blank"
-            aria-label="Third Party Open Source Licenses"
+            aria-label="Third Party Open Source Licenses (opens in a new tab)"
             title="Third Party Open Source Licenses"
             className={styles.iconBtn}
             rel="noopener noreferrer"
           >
-            <LicenseIcon />
+            <LicenseIcon aria-hidden="true" />
           </a>
           <button
+            type="button"
             className={styles.iconBtn}
             aria-label="Share LibreLudo"
             title="Share LibreLudo"
             onClick={share}
           >
-            <ShareIcon />
+            <ShareIcon aria-hidden="true" />
           </button>
         </div>
       </footer>

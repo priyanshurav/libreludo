@@ -35,16 +35,17 @@ export default function ErrorBoundary() {
 
   return (
     <div className={styles.errorContainer}>
-      <div className={styles.errorDialog}>
+      <main className={styles.errorDialog}>
         <div>
-          <p className={styles.oops}>
+          <h1 className={styles.oops}>
             <span>Oops!</span> Something went wrong
-          </p>
+          </h1>
           <p className={styles.message}>
             An unexpected error interrupted the game. Tap below to restart
           </p>
         </div>
         <button
+          type="button"
           className={styles.startNewGameBtn}
           onClick={() => (window.location.href = '/setup')}
         >
@@ -54,7 +55,7 @@ export default function ErrorBoundary() {
           <summary>Show details</summary>
           <div className={styles.errorContent}>{getError(error)}</div>
         </details>
-      </div>
+      </main>
     </div>
   );
 }

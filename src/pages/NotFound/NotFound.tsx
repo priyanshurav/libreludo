@@ -13,7 +13,7 @@ export default function NotFound() {
 
   return (
     <div className={styles.notFoundContainer}>
-      <div className={styles.notFoundDialog}>
+      <main className={styles.notFoundDialog}>
         <h1>404</h1>
         <p className={styles.oops}>
           <H c="🎲" /> Oops! You've rolled the wrong number.
@@ -22,7 +22,7 @@ export default function NotFound() {
         <Link className={styles.goToHomeBtn} to="/">
           Go to Home
         </Link>
-      </div>
+      </main>
     </div>
   );
 }
