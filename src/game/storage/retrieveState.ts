@@ -11,7 +11,7 @@ import { defaultTokenAlignmentData, getTokenAlignmentData } from '../tokens/alig
 import { tokensWithCoord } from '../tokens/logic';
 import type { TResult } from '../../types/storage';
 
-export const retrieveState = (currentState: RootState): TResult<RootState, Error> => {
+export const retrieveState = (currentState: RootState): TResult<RootState, string> => {
   const { success, data, error } = validateStoredState(retrieveSaveFromStorage());
 
   if (!success) return { success: false, error, data: null };

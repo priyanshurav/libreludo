@@ -1,12 +1,31 @@
 import * as z from 'zod';
 import { type TStoredStateSchema, schema } from './schema';
 import type { TResult } from '../../types/storage';
+import { SAVE_VERSION } from './constants';
 
-export const validateStoredState = (state: unknown): TResult<TStoredStateSchema, z.ZodError> => {
-  const { success, data, error } = z.safeParse(schema, state);
-  if (success) {
-    return { success: true, data, error: null };
+const versionSchema = z.looseObject({ version: z.number().int() });
+
+export const validateStoredState = (state: unknown): TResult<TStoredStateSchema, string> => {
+  const versionPayload = z.safeParse(versionSchema, state);
+
+  if (!versionPayload.success) {
+    console.error(versionPayload.error);
+    return { success: false, data: null, error: 'Unable to load save file' };
+  }
+
+  if (versionPayload.data.version !== SAVE_VERSION)
+    return {
+      success: false,
+      data: null,
+      error: `Save version mismatch. Found: v${versionPayload.data.version} Expected: v${SAVE_VERSION}`,
+    };
+
+  const payload = z.safeParse(schema, state);
+
+  if (payload.success) {
+    return { success: true, data: payload.data, error: null };
   } else {
-    return { success: false, data: null, error };
+    console.error(payload.error);
+    return { success: false, data: null, error: 'Unable to load save file' };
   }
 };

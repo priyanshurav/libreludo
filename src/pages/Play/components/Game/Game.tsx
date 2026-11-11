@@ -51,7 +51,7 @@ export default function Game({ initData }: Props) {
       if (success) {
         store.dispatch(hydrateRootState(data));
       } else {
-        throw error;
+        throw new Error(error);
       }
     }
   }, [store]);

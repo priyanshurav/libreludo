@@ -16,14 +16,13 @@ import {
   saveExists,
 } from '../../game/storage/storage';
 import GitHubLogo from '../../assets/icons/github-mark-white.svg?react';
-import { SAVE_VERSION } from '../../game/storage/constants';
 import { logError } from '../../utils/logError';
 
 const toastIds = {
   allBotPlayer: 'all-bot-player',
   playerNameEmpty: 'player-name-empty',
-  corruptedSave: 'corrupted-save',
-  incompatibleSave: 'incompatible-save',
+  saveFileLoadError: 'save-load-error',
+  noSaveFile: 'no-save-file',
 } as const satisfies Record<string, string>;
 
 const DEFAULT_PLAYER_DATA: TPlayerInitData[] = [
@@ -102,16 +101,20 @@ export default function PlayerSetup() {
     try {
       if (btnsDisabled) return;
       setBtnsDisabled(true);
-      const { success, data } = validateStoredState(retrieveSaveFromStorage());
-      if (!success) {
-        toast("Save file does not exist or it's corrupted", {
+
+      if (!saveExists()) {
+        return toast('Save file does not exist', {
           type: 'error',
-          toastId: toastIds.corruptedSave,
+          toastId: toastIds.noSaveFile,
         });
-      } else if (data.version !== SAVE_VERSION) {
-        toast(`Incompatible save: v${data.version} (requires v${SAVE_VERSION})`, {
+      }
+
+      const { success, error } = validateStoredState(retrieveSaveFromStorage());
+
+      if (!success) {
+        toast(error, {
           type: 'error',
-          toastId: toastIds.incompatibleSave,
+          toastId: toastIds.saveFileLoadError,
         });
       } else {
         return void navigate('/play');
