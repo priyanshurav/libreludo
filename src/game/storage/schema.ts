@@ -6,14 +6,14 @@ const coloursSchema = z.literal(['blue', 'red', 'green', 'yellow'] satisfies TPl
 
 const tokenSchema = z.object({
   id: z.number(),
-  coordinates: z.object({ x: z.number(), y: z.number() }),
+  coordinates: z.object({ x: z.number().min(0).max(14), y: z.number().min(0).max(14) }),
   isLocked: z.boolean(),
   isActive: z.boolean(),
   hasTokenReachedHome: z.boolean(),
 });
 
 const diceSchema = z.object({
-  diceNumber: z.number(),
+  diceNumber: z.number().min(1).max(6),
   colour: coloursSchema,
 });
 
