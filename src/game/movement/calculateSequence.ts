@@ -87,16 +87,12 @@ export const calculateSequence = (
     ? updatedPlayer.tokens.every((t) => t.hasTokenReachedHome)
     : false;
   if (hasPlayerWon || (captureData.length === 0 && !hasTokenReachedHome && diceNumber !== 6)) {
-    nextState.players = playersReducer(
-      nextState.players,
-      changeTurn(
-        getNextPlayer(
-          nextState.players.playerSequence,
-          nextState.players.playerFinishOrder,
-          nextState.players.currentPlayerColour
-        )!
-      )
+    const nextPlayer = getNextPlayer(
+      nextState.players.playerSequence,
+      nextState.players.playerFinishOrder,
+      nextState.players.currentPlayerColour
     );
+    if (nextPlayer) nextState.players = playersReducer(nextState.players, changeTurn(nextPlayer));
   }
 
   return { nextState, moveSequence, captureData };
