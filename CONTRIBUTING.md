@@ -6,11 +6,10 @@ Thanks for taking the time to contribute to **LibreLudo**. Contributions of all 
 
 ## Core Development Principles
 
-LibreLudo is designed to be a fast, privacy-respecting PWA. To keep the codebase clean and performant, please keep the following boundaries in mind before starting work:
+LibreLudo is designed to be a fast, lightweight PWA. To keep the codebase clean and performant, please keep the following boundaries in mind before starting work:
 
 - Architecture: We use React, TypeScript, React Router (in framework mode), and Redux Toolkit. Ensure changes align with existing reducer patterns (avoid scattering global state locally), keep route files consistent with the existing structure under `src/pages`, and maintain strict type safety.
 - Dependencies: We actively minimize external dependencies to keep the app lightweight. If your feature requires a new npm package, please open an issue to discuss it first.
-- Privacy First: We are committed to an ad-free, untracked experience. PRs introducing telemetry, analytics, or any form of data collection will not be merged.
 
 ---
 
