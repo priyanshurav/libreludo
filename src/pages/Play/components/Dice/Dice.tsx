@@ -76,6 +76,7 @@ export default function Dice({ colour, playerName }: Props) {
     if (isDiceDisabled) return;
     const diceNumber = await rollDice(colour);
     const res = await handlePostDiceRoll(colour, diceNumber);
+    if (store.getState().players.isGameEnded) return;
     saveState(store.getState());
     if (res?.shouldChangeTurn) changeTurnFn();
   }, [isDiceDisabled, rollDice, colour, handlePostDiceRoll, store, changeTurnFn]);
