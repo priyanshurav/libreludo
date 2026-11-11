@@ -13,7 +13,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     name: 'LibreLudo',
     url: 'https://libreludo.org/',
     description:
-      'Play Ludo free in your browser. Ad-free, open-source, with local multiplayer and bot opponents. No downloads, no logins, no tracking.',
+      'Play Ludo free in your browser. Ad-free, open-source, with local multiplayer and bot opponents. No downloads, no logins, no ads.',
     playMode: ['MultiPlayer', 'SinglePlayer'],
     genre: ['Board Game', 'Local Multiplayer', 'Casual Game'],
     applicationCategory: 'Game',
@@ -38,7 +38,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <link rel="canonical" href="https://libreludo.org/" />
         <meta
           name="description"
-          content="Play Ludo free in your browser. Ad-free, open-source, with local multiplayer and bot opponents. No downloads, no logins, no tracking."
+          content="Play Ludo free in your browser. Ad-free, open-source, with local multiplayer and bot opponents. No downloads, no logins, no ads."
         />
 
         <meta name="theme-color" content="#7C5FFF" />

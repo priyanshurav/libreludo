@@ -71,9 +71,9 @@ export default function HomePage() {
 
           <div className={styles.block}>
             <h2>
-              <H c="🔒" /> 100% Private
+              <H c="💾" /> Pick Up Anytime
             </h2>
-            <p>Your game data stays on your device. No accounts, tracking, or ads.</p>
+            <p>Your progress saves automatically on your device, so you can leave and come back anytime.</p>
           </div>
 
           <div className={styles.block}>
